@@ -116,6 +116,7 @@ class fotoBase
               weight = weightclass;
         }
         int getWeight(){
+
             qDebug() << "Вес: " << weight;
             return weight;
         }
@@ -131,8 +132,9 @@ class fotoBase
         void setmyDate(QDate dateclass){
               date = dateclass;
         }
-        void getmyDate(){
+        QDate getmyDate(){
             qDebug() << "Дата: " << date;
+            return  date;
         }
 };
 

@@ -30,6 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->size->setText("ШШ-ДД-ВВ");
     ui->size->setCursorPosition(0);
     ui->size->setInputMask("00-00-00");  //нужна маска
+
+    ui->write1->setEnabled(false);
+    ui->write2->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
@@ -70,10 +73,10 @@ void MainWindow::createWrite() {
     category.getGategory();
 
     bool analogOrNot = ui->analogOrNot->isChecked();
-    QString analog = transferFromBoolToStr( ui->changeLens->isChecked());
+   // QString analog = transferFromBoolToStr( ui->changeLens->isChecked());
 
     fotoBase AnalogOrNot;
-    AnalogOrNot.setAnalogOrNot(analog);
+    AnalogOrNot.setAnalogOrNot(analogOrNot);
     AnalogOrNot.getAnalogOrNot();
 
     QString strProducer = ui->producer->currentText();
@@ -92,7 +95,6 @@ void MainWindow::createWrite() {
     changeLensOrNot.setChangeLense(changeLens);
     changeLensOrNot.getChangeLense();
 
-
     QString size = ui->size->text();
     fotoBase sizeOfModel;
     sizeOfModel.setSize(size);
@@ -100,6 +102,7 @@ void MainWindow::createWrite() {
 
     int weight = ui->weight->text().remove(0,3).toInt();
     fotoBase whatisweight;
+
     whatisweight.setWeight(weight);
     whatisweight.getWeight();
 
@@ -108,17 +111,29 @@ void MainWindow::createWrite() {
     whatiscost.setCost(cost);
     whatiscost.getCost();
 
-//    QString date = ui->date->text();
-//    fotoBase whatisdate;
-//    whatisdate.setmyDate(date);
-//    whatisdate.getmyDate();
+
+///
+///
+//    QString arr = static_cast<QString>(changeLensOrNot.getChangeLense());
+//    qDebug() << &arr;
 
     write1 <<  Model.getNameOfModel() //string just here, but int, bool arenot
     << category.getGategory()
     << producer.getProducer()
     << matrixResolution.getMatrRes()
+
     << sizeOfModel.getSize()
-    << ;
+    << ui->weight->text()
+    << ui->cost->text()
+    << ui->date->text();
+    //<< ;
+    write2 <<  Model.getNameOfModel() //string just here, but int, bool arenot
+    << category.getGategory()
+    << producer.getProducer()
+    << matrixResolution.getMatrRes()
+    << sizeOfModel.getSize()
+    << ui->date->text();
+//баг в 1 список добавляется еще и второй
 
 //    bool analogOrNot = ui->analogOrNot->isChecked();
 //    bool changeLens = ui->changeLens->isChecked();
@@ -142,7 +157,10 @@ QString MainWindow::checkForAble() {
 void MainWindow::on_write2_clicked()
 {
     ui->spisok->clear();
+
     ui->spisok->addItems(write2);
+//    if(write2.takeFirst() != nullptr)
+
 }
 
 void MainWindow::on_write1_clicked()
@@ -155,19 +173,23 @@ void MainWindow::on_saveBtn_clicked()
 {
     if ( ui->nameOfModel->text() != nullptr ) {
         static int access=0;
-        if(access<2) {
+        if(1) {
+            ui->write1->setEnabled(true);
+            write1.clear();///////////////////////TOO ALERT
             ui->spisok->clear();
             createWrite();
             ui->spisok->addItems(write1);
             access++;
         }
     }
-}
+}//бля надо начинать писать документацию
 void MainWindow::on_saveBtn2_clicked()
 {
     if ( ui->nameOfModel->text() != nullptr ) {
         static int access=0;
-        if(access<2) {
+        if(1) {
+            ui->write2->setEnabled(true);
+            write2.clear(); //////////////////////////ALERT
             ui->spisok->clear();
             createWrite();
             ui->spisok->addItems(write2);
@@ -175,5 +197,4 @@ void MainWindow::on_saveBtn2_clicked()
             access++;
         }
     }
-
 }
