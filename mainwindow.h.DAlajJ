@@ -1,0 +1,123 @@
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+#include <QDebug>
+#include <QValidator>
+#include <QDate>
+
+
+namespace Ui {
+class MainWindow;
+}
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+
+    QValidator::State nameOfModelValidator(QString & input ) const;
+
+
+private slots:
+    void setCheckRes();
+    void setCheckPolProf();
+
+    void on_saveBtn_clicked();
+
+private:
+    Ui::MainWindow *ui;
+};
+
+
+
+class fotoBase
+{
+    void scaningFiles();
+    private:
+        QString nameOfModel;
+        int category;
+        bool analogOrNot;
+        int producer;
+        float matrixRes;
+        bool changeLens;
+        QString size;
+        int weight;
+        int cost;
+        QDate date;
+    public:
+        void setNameOfModel(QString nameofModelclass){
+            nameOfModel = nameofModelclass;
+        }
+        void getNameOfModel(){
+            qDebug() << "Имя модели: " << nameOfModel;
+        }
+
+        void setCategory(int categoryclass){
+            category = categoryclass;
+        }
+        void getGategory(){
+            qDebug() << "Категория: " << category;
+        }
+
+        void setAnalogOrNot(int analogOrNotclass){
+            analogOrNot = analogOrNotclass;
+        }
+        void getAnalogOrNot(){
+            qDebug() << "Цифровой?: " << analogOrNot;
+        }
+
+        void setProducer(int producerclass){
+            producer = producerclass;
+        }
+        void getProducer(){
+            qDebug() << "Производитель: " <<  producer;
+        }
+
+        void setMatrRes(float matrixResolutionclass){
+            matrixRes = matrixResolutionclass;
+        }
+        void getMatrRes(){
+            qDebug() << "Разрешение матрицы: " <<  matrixRes;
+        }
+        //        bool changeLens;
+        void setChangeLense(bool changeLenseclass){
+             changeLens = changeLenseclass;
+        }
+        void getChangeLense(){
+            qDebug() << "Смена линзы: " << changeLens;
+        }
+        //QString size;
+        void setSize(QString sizeclass){
+              size = sizeclass;
+        }
+        void getSize(){
+            qDebug() << "Размер: " << size;
+        }
+        //  int weight;
+        void setWeight(int weightclass){
+              weight = weightclass;
+        }
+        void getWeight(){
+            qDebug() << "Вес: " << weight;
+        }
+        //int cost;
+        void setCost(int costclass){
+              cost = costclass;
+        }
+        void getCost(){
+            qDebug() << "Цена: " << cost;
+        }
+        //QDate date;
+        void setmyDate(QDate dateclass){
+              date = dateclass;
+        }
+        void getmyDate(){
+            qDebug() << "Дата: " << date;
+        }
+};
+
+#endif // MAINWINDOW_H

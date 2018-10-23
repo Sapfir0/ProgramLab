@@ -1,0 +1,33 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    //connect( ui->analogOrNot, SIGNAL(), SLOT(setCheckRes()) );
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
+
+    ui->cost->setPrefix("руб. ");
+    ui->weight->setPrefix("гр. ");
+    ui->weight->setPrefix("Мпикс ");
+
+    ui->size->setText("ШШ-ДД-ВВ");
+    ui->size->setCursorPosition(0);
+    ui->size->setInputMask("00-00-00");  //нужна маска
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+//если в ui->analogOrNot стоит тру, то ui->matrixResolution->setEnabled(true);
+void MainWindow::setCheckRes() {
+    if(ui->analogOrNot->checkState() == true)
+        ui->matrixResolution->setEnabled(true);
+
+}
+

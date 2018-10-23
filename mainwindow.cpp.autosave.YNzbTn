@@ -1,0 +1,108 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QRegExp>
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    //QValidator *validno = new nameOfModelValidator(this);
+//    ui->nameOfModel->setValidator(validno);
+    //connect(ui->OkButton,SIGNAL(clicked()),this,SLOT(is_Ok()));
+
+
+
+    connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
+    connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
+
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
+
+    ui->cost->setPrefix("руб. ");
+    ui->weight->setPrefix("гр. ");
+    ui->weight->setPrefix("Мпикс ");
+
+    //ui->size->setText("ШШ-ДД-ВВ");
+    ui->size->setCursorPosition(0);
+    ui->size->setInputMask("00-00-00");  //нужна маска
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+QValidator::State MainWindow::nameOfModelValidator(QString & input ) const {
+
+    QRegExp AcceptIter ("^[a-zA-z]\\w{0,29}");
+
+    if (AcceptIter.exactMatch(input))
+        return QValidator::Acceptable;
+
+    return QValidator::Invalid;
+
+
+}
+
+void MainWindow::setCheckRes() {
+
+    if (ui->analogOrNot->isChecked() == true)
+        ui->matrixResolution->setEnabled(true);
+    else
+        ui->matrixResolution->setEnabled(false);
+}
+
+void MainWindow::setCheckPolProf() {
+    if (ui->category->currentIndex() == 2)
+        ui->changeLens->setEnabled(true);
+    else
+        ui->changeLens->setEnabled(false);
+
+}
+
+
+
+void MainWindow::on_saveBtn_clicked()
+{
+    QString ModelsName = ui->nameOfModel->text();
+    fotoBase Model;
+    Model.setNameOfModel(ModelsName);
+    Model.getNameOfModel();
+
+    int indCategory = ui->category->currentIndex();
+    fotoBase category;
+    category.setCategory(indCategory);
+    category.getGategory();
+
+    bool analogOrNot = ui->analogOrNot->isChecked();
+    fotoBase AnalogOrNot;
+    AnalogOrNot.setAnalogOrNot(analogOrNot);
+    AnalogOrNot.getAnalogOrNot();
+
+    int indProducer = ui->producer->currentIndex();
+    fotoBase producer;
+    producer.setProducer(indProducer);
+    producer.getProducer();
+
+//    QString MatrixResolution = ui->matrixResolution->text();
+//    MatrixResolution.toFloat();
+//    fotoBase matrixRes;
+//    matrixRes.setMatrixResolution(MatrixResolution);
+//    matrixRes.getMatrixResolution();
+
+    bool changeLens = ui->changeLens->isChecked();
+    fotoBase changeLensOrNot;
+    changeLensOrNot.setChangeLense(changeLens);
+    changeLensOrNot.getChangeLense();
+
+//    QString size;
+//    int weight;
+//    int cost;
+//    QDate date;
+
+    QString size = ui->size->text();
+    fotoBase size;
+
+}
