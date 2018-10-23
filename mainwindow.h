@@ -16,16 +16,25 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
     void createWrite();
+    QString transferFromBoolToStr(bool var);
+    QString checkForAble();
+
 
 private slots:
     void setCheckRes();
     void setCheckPolProf();
 
     void on_saveBtn_clicked();
+
+    void on_write2_clicked();
+
+    void on_write1_clicked();
+
+    void on_saveBtn2_clicked();
 
 private:
     Ui::MainWindow *ui;
