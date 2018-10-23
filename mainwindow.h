@@ -30,11 +30,11 @@ private slots:
 
     void on_saveBtn_clicked();
 
-    void on_write2_clicked();
+    void on_denied_clicked();
 
-    void on_write1_clicked();
+    void spinChanged();
 
-    void on_saveBtn2_clicked();
+    void on_spinWriting_valueChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;

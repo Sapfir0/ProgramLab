@@ -26,22 +26,17 @@
          <widget class="QListWidget" name="spisok"/>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QPushButton" name="write1">
-            <property name="text">
-             <string>Запись 1</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="write2">
-            <property name="text">
-             <string>Запись 2</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
+         <widget class="QSpinBox" name="spinWriting">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>2</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout"/>
         </item>
        </layout>
       </widget>
@@ -173,9 +168,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="saveBtn2">
+             <widget class="QPushButton" name="denied">
               <property name="text">
-               <string>Сохранить запись 2</string>
+               <string>Отмена</string>
               </property>
              </widget>
             </item>

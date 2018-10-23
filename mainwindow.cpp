@@ -15,31 +15,36 @@ MainWindow::MainWindow(QWidget *parent) :
     QValidator *validno = new QRegExpValidator(AcceptIter, this);
     ui->nameOfModel->setValidator(validno);
 
-
-
     connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
     connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
 
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
 
-    ui->cost->setPrefix("руб. ");
-    ui->weight->setPrefix("гр. ");
+  //  ui->cost->setPrefix("руб. ");
+  //  ui->weight->setPrefix("гр. ");
     ui->matrixResolution->setPrefix("Мпикс ");
 
     //ui->size->setText("ШШ-ДД-ВВ");
     ui->size->setCursorPosition(0);
     ui->size->setInputMask("00-00-00");  //нужна маска
 
-    ui->write1->setEnabled(false);
-    ui->write2->setEnabled(false);
+
+    ui->nameOfModel->setPlaceholderText("Название модели");
+
+
+ui->cost->setSuffix(" руб.");
+ui->weight->setSuffix("гр.");
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+void MainWindow::spinChanged() {
 
+
+}
 
 void MainWindow::setCheckRes() {
 
@@ -57,7 +62,7 @@ void MainWindow::setCheckPolProf() {
 
 }
 
-
+QList<QString> write; //сначала запишем сюда
 QList<QString> write1;
 QList<QString> write2;
 
@@ -112,33 +117,23 @@ void MainWindow::createWrite() {
     whatiscost.getCost();
 
 
-///
-///
-//    QString arr = static_cast<QString>(changeLensOrNot.getChangeLense());
-//    qDebug() << &arr;
+ //   bool changeLENS = ui->changeLens->isChecked();
+//    QString lensChangeOrNot = transferFromBoolToStr(changeLENS);
 
-    write1 <<  Model.getNameOfModel() //string just here, but int, bool arenot
+    write <<  Model.getNameOfModel() //string just here, but int, bool arenot
     << category.getGategory()
+    << transferFromBoolToStr(ui->analogOrNot->isChecked())
     << producer.getProducer()
     << matrixResolution.getMatrRes()
-
+    << transferFromBoolToStr(ui->changeLens->isChecked())
     << sizeOfModel.getSize()
     << ui->weight->text()
     << ui->cost->text()
     << ui->date->text();
-    //<< ;
-    write2 <<  Model.getNameOfModel() //string just here, but int, bool arenot
-    << category.getGategory()
-    << producer.getProducer()
-    << matrixResolution.getMatrRes()
-    << sizeOfModel.getSize()
-    << ui->date->text();
+
+ //   write2 = write1;
 //баг в 1 список добавляется еще и второй
 
-//    bool analogOrNot = ui->analogOrNot->isChecked();
-//    bool changeLens = ui->changeLens->isChecked();
-//    int weight = ui->weight->text().remove(0,3).toInt();
-//    int cost = ui->cost->text().remove(0,4).toInt();
 }
 QString MainWindow::transferFromBoolToStr(bool var) {
     if(var == true)
@@ -153,48 +148,47 @@ QString MainWindow::checkForAble() {
 
 }
 
-
-void MainWindow::on_write2_clicked()
-{
-    ui->spisok->clear();
-
-    ui->spisok->addItems(write2);
-//    if(write2.takeFirst() != nullptr)
-
-}
-
-void MainWindow::on_write1_clicked()
-{
-    ui->spisok->clear();
-    ui->spisok->addItems(write1);
-}
-
 void MainWindow::on_saveBtn_clicked()
 {
     if ( ui->nameOfModel->text() != nullptr ) {
-        static int access=0;
-        if(1) {
-            ui->write1->setEnabled(true);
-            write1.clear();///////////////////////TOO ALERT
-            ui->spisok->clear();
+        write1.clear();
+        ui->spisok->clear();
+        if (ui->spinWriting->value() == 1) {
             createWrite();
             ui->spisok->addItems(write1);
-            access++;
+            qDebug() << "1i";
         }
-    }
-}//бля надо начинать писать документацию
-void MainWindow::on_saveBtn2_clicked()
-{
-    if ( ui->nameOfModel->text() != nullptr ) {
-        static int access=0;
-        if(1) {
-            ui->write2->setEnabled(true);
-            write2.clear(); //////////////////////////ALERT
-            ui->spisok->clear();
+        else  {
             createWrite();
             ui->spisok->addItems(write2);
-
-            access++;
+            qDebug() << "1e";
         }
+
     }
+}//бля надо начинать писать документацию
+void MainWindow::on_denied_clicked()
+{
+
+}
+
+
+void MainWindow::on_spinWriting_valueChanged(int arg1)
+{
+    if ( arg1 == 1) {
+        //очистить райтN ..  записать значения в райтN
+        //очистить список .. показать райтN
+        write1.clear();
+        write = write1;
+        ui->spisok->clear();
+        ui->spisok->addItems(write1);        qDebug() << "I";
+    }
+    else if ( arg1 == 2) {
+        write2.clear();
+        write = write2;
+        ui->spisok->clear();
+        ui->spisok->addItems(write2);        qDebug() << "E";
+    }
+    else
+        qDebug() << "ucantseethis";
+
 }
