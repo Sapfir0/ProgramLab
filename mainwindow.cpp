@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->nameOfModel->setPlaceholderText("Название модели");
 
 
+
 ui->cost->setSuffix(" руб.");
 ui->weight->setSuffix("гр.");
 }
@@ -148,20 +149,27 @@ QString MainWindow::checkForAble() {
 
 }
 
-void MainWindow::on_saveBtn_clicked()
+void MainWindow::on_saveBtn_clicked() //переписать эту херню,
 {
     if ( ui->nameOfModel->text() != nullptr ) {
-        write1.clear();
-        ui->spisok->clear();
-        if (ui->spinWriting->value() == 1) {
+
+        //если на спинбоксе 1, то из write записать значения в write1 (очистить юй-список, загрузить райт1)
+        //если 2, в write2
+        if (ui->spinWriting->value() == 1 ) {
+            write.clear();
             createWrite();
+            write1.clear();
+            write1 = write;
+            ui->spisok->clear();
             ui->spisok->addItems(write1);
-            qDebug() << "1i";
         }
-        else  {
+        else if(ui->spinWriting->value() == 2) {
+            write.clear();
             createWrite();
+            write2.clear();
+            write2 = write;
+            ui->spisok->clear();
             ui->spisok->addItems(write2);
-            qDebug() << "1e";
         }
 
     }
@@ -177,16 +185,16 @@ void MainWindow::on_spinWriting_valueChanged(int arg1)
     if ( arg1 == 1) {
         //очистить райтN ..  записать значения в райтN
         //очистить список .. показать райтN
-        write1.clear();
-        write = write1;
+//        write1.clear();
+//        write = write1;
         ui->spisok->clear();
-        ui->spisok->addItems(write1);        qDebug() << "I";
+        ui->spisok->addItems(write1);
     }
     else if ( arg1 == 2) {
-        write2.clear();
-        write = write2;
+//        write2.clear();
+//        write = write2;
         ui->spisok->clear();
-        ui->spisok->addItems(write2);        qDebug() << "E";
+        ui->spisok->addItems(write2);
     }
     else
         qDebug() << "ucantseethis";

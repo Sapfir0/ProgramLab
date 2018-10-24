@@ -60,7 +60,7 @@ class fotoBase
             nameOfModel = nameofModelclass;
         }
         QString getNameOfModel(){
-            qDebug() << "Имя модели: " << nameOfModel;
+            //qDebug() << "Имя модели: " << nameOfModel;
             return nameOfModel;
         }
 
@@ -68,7 +68,7 @@ class fotoBase
             category = categoryclass;
         }
         QString getGategory(){
-            qDebug() << "Категория: " << category;
+            //qDebug() << "Категория: " << category;
             return category;
         }
 
@@ -76,7 +76,7 @@ class fotoBase
             analogOrNot = analogOrNotclass;
         }
         bool getAnalogOrNot(){
-            qDebug() << "Цифровой?: " << analogOrNot;
+            //qDebug() << "Цифровой?: " << analogOrNot;
             return analogOrNot;
         }
 
@@ -84,7 +84,7 @@ class fotoBase
             producer = producerclass;
         }
         QString getProducer(){
-            qDebug() << "Производитель: " <<  producer;
+            //qDebug() << "Производитель: " <<  producer;
             return producer;
         }
 
@@ -92,7 +92,7 @@ class fotoBase
             matrixRes = matrixResolutionclass;
         }
         QString/*float*/ getMatrRes(){
-            qDebug() << "Разрешение матрицы: " <<  matrixRes;
+            //qDebug() << "Разрешение матрицы: " <<  matrixRes;
             return matrixRes;
         }
         //        bool changeLens;
@@ -100,7 +100,7 @@ class fotoBase
              changeLens = changeLenseclass;
         }
         bool getChangeLense(){
-            qDebug() << "Смена линзы: " << changeLens;
+            //qDebug() << "Смена линзы: " << changeLens;
             return changeLens;
         }
         //QString size;
@@ -108,7 +108,7 @@ class fotoBase
               size = sizeclass;
         }
         QString getSize(){
-            qDebug() << "Размер: " << size;
+            //qDebug() << "Размер: " << size;
             return size;
         }
         //  int weight;
@@ -117,7 +117,7 @@ class fotoBase
         }
         int getWeight(){
 
-            qDebug() << "Вес: " << weight;
+            //qDebug() << "Вес: " << weight;
             return weight;
         }
         //int cost;
@@ -125,7 +125,7 @@ class fotoBase
               cost = costclass;
         }
         int getCost(){
-            qDebug() << "Цена: " << cost;
+            //qDebug() << "Цена: " << cost;
             return cost;
         }
         //QDate date;
@@ -133,7 +133,7 @@ class fotoBase
               date = dateclass;
         }
         QDate getmyDate(){
-            qDebug() << "Дата: " << date;
+            //qDebug() << "Дата: " << date;
             return  date;
         }
 };
