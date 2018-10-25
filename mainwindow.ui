@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>530</height>
+    <width>939</width>
+    <height>670</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,14 +16,16 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <widget class="QWidget" name="verticalLayoutWidget_2">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QListWidget" name="spisok"/>
+         <widget class="QListWidget" name="spisok">
+          <property name="styleSheet">
+           <string notr="true">  color:#2E2F30 ;
+  background-color: rgba(0, 5, 0, 30);</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QSpinBox" name="spinWriting">
@@ -39,11 +41,31 @@
          <layout class="QHBoxLayout" name="horizontalLayout"/>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="verticalLayoutWidget_3">
+      </item>
+      <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Создать запись</string>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QLineEdit" name="nameOfModel">
             <property name="text">
@@ -141,7 +163,7 @@
              <number>100</number>
             </property>
             <property name="maximum">
-             <number>800</number>
+             <number>8000</number>
             </property>
            </widget>
           </item>
@@ -176,11 +198,24 @@
             </item>
            </layout>
           </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
          </layout>
         </item>
        </layout>
-      </widget>
-     </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -189,8 +224,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>695</width>
-     <height>22</height>
+     <width>939</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>

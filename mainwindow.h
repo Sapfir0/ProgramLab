@@ -21,8 +21,13 @@ public:
 
     void createWrite();
     QString transferFromBoolToStr(bool var);
-    QString checkForAble();
 
+    bool transferFromStrToBool(QString var);
+    void denied(QList<QString> UnitedWrite);
+    void saving(QList<QString> UnitedWrite);
+
+
+    void resizeEvent(QResizeEvent *evt);
 
 private slots:
     void setCheckRes();
