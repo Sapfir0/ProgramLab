@@ -138,7 +138,7 @@ class fotoBase
               date = dateclass;
         }
         QDate getmyDate(){
-            //qDebug() << "Дата: " << date;
+            qDebug() << "Дата: " << date;
             return  date;
         }
 };

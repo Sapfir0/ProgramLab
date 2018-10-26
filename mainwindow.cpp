@@ -35,14 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->weight->setSuffix(" гр.");
 
 
+    setWindowTitle("Почти курсач");
 
-
-//теняха
-//    QGraphicsDropShadowEffect* shadowEffect = new QGraphicsDropShadowEffect(this);
-//     shadowEffect -> setBlurRadius(9.0);
-//     shadowEffect -> setColor(QColor(0, 0, 0, 100));
-//     shadowEffect -> setOffset(4.0);
-//     ui->spisok->setGraphicsEffect(shadowEffect);
 }
 
 MainWindow::~MainWindow()
@@ -72,6 +66,7 @@ void MainWindow::setCheckPolProf() {
 QList<QString> write; //сначала запишем сюда
 QList<QString> write1;
 QList<QString> write2;
+QDate DATA;
 
 void MainWindow::createWrite() {
     QString ModelsName = ui->nameOfModel->text();
@@ -123,6 +118,10 @@ void MainWindow::createWrite() {
     whatiscost.setCost(cost);
     whatiscost.getCost();
 
+    fotoBase data;
+    data.setmyDate(ui->date->date());
+    DATA = data.getmyDate();
+
 
     write <<  Model.getNameOfModel() //string just here, but int, bool arenot
     << category.getGategory()
@@ -134,6 +133,7 @@ void MainWindow::createWrite() {
     << ui->weight->text()
     << ui->cost->text()
     << ui->date->text();
+   // << ui->date->
 
 }
 QString MainWindow::transferFromBoolToStr(bool var) {
@@ -172,9 +172,15 @@ void MainWindow::on_saveBtn_clicked() //переписать эту херню,
             ui->spisok->addItems(write2);
         }
     }
-}//бля надо начинать писать документацию
-void MainWindow::saving(QList<QString> UnitedWrite) {
+}
 
+void MainWindow::saving(QList<QString> UnitedWrite) {
+    write.clear();
+    createWrite();
+    UnitedWrite.clear();
+    UnitedWrite = write;
+    ui->spisok->clear();
+    ui->spisok->addItems(UnitedWrite);
 
 }
 void MainWindow::on_denied_clicked()
@@ -207,8 +213,7 @@ void MainWindow::denied(QList<QString> UnitedWrite) {
         ui->size->setText(UnitedWrite[6]);
         ui->weight->setValue(UnitedWrite[7].remove( UnitedWrite[7].size()-3, UnitedWrite[7].size()).toInt() );
         ui->cost->setValue(UnitedWrite[8].remove( UnitedWrite[8].size()-4, UnitedWrite[8].size()).toInt() );
-       // ui->date->setDate(UnitedWrite[9]);
-
+        ui->date->setDate(DATA);
     }
 }
 
