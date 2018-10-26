@@ -36,16 +36,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     setWindowTitle("Почти курсач");
-
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-void MainWindow::spinChanged() {
-
-
 }
 
 void MainWindow::setCheckRes() {
@@ -63,10 +58,10 @@ void MainWindow::setCheckPolProf() {
         ui->changeLens->setEnabled(false);
 }
 
-QList<QString> write; //сначала запишем сюда
-QList<QString> write1;
-QList<QString> write2;
-QDate DATA;
+static QList<QString> write; //сначала запишем сюда
+static QList<QString> write1; //если будут ошибки, убрать статик
+static QList<QString> write2;
+static QDate DATA;
 
 void MainWindow::createWrite() {
     QString ModelsName = ui->nameOfModel->text();
@@ -125,16 +120,14 @@ void MainWindow::createWrite() {
 
     write <<  Model.getNameOfModel() //string just here, but int, bool arenot
     << category.getGategory()
-    << transferFromBoolToStr(ui->analogOrNot->isChecked())
+    << transferFromBoolToStr( AnalogOrNot.getAnalogOrNot() )
     << producer.getProducer()
     << matrixResolution.getMatrRes()
-    << transferFromBoolToStr(ui->changeLens->isChecked())
+    << transferFromBoolToStr( changeLensOrNot.getChangeLense() )
     << sizeOfModel.getSize()
     << ui->weight->text()
     << ui->cost->text()
     << ui->date->text();
-   // << ui->date->
-
 }
 QString MainWindow::transferFromBoolToStr(bool var) {
     if(var == true)
@@ -202,7 +195,7 @@ void MainWindow::on_denied_clicked()
 void MainWindow::denied(QList<QString> UnitedWrite) {
 
     if ( !write.isEmpty() )
-    {
+    {//возвращение данных из списка в форму
         qDebug() << "NULL";
         ui->nameOfModel->setText(UnitedWrite[0]);
         ui->category->setCurrentText(UnitedWrite[1]);

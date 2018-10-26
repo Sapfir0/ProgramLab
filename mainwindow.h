@@ -37,8 +37,6 @@ private slots:
 
     void on_denied_clicked();
 
-    void spinChanged();
-
     void on_spinWriting_valueChanged(int arg1);
 
 private:
