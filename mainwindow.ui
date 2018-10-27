@@ -16,33 +16,40 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QListWidget" name="spisok">
-          <property name="styleSheet">
-           <string notr="true">  color:#2E2F30 ;
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QListWidget" name="spisok">
+            <property name="styleSheet">
+             <string notr="true">  color:#2E2F30 ;
   background-color: rgba(0, 5, 0, 30);</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spinWriting">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>2</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout"/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinWriting">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>2</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout"/>
+          </item>
+         </layout>
         </item>
        </layout>
-      </item>
-      <item>
+      </widget>
+      <widget class="QWidget" name="">
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
@@ -67,118 +74,228 @@
            </widget>
           </item>
           <item>
-           <widget class="QLineEdit" name="nameOfModel">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="category">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <property name="text">
-              <string>Профессиональный</string>
-             </property>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Название модели</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <property name="text">
-              <string>Любительский</string>
-             </property>
+             <widget class="QLineEdit" name="nameOfModel">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Категория</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <property name="text">
-              <string>Полупрофессиональный</string>
-             </property>
+             <widget class="QComboBox" name="category">
+              <item>
+               <property name="text">
+                <string>Профессиональный</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Любительский</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Полупрофессиональный</string>
+               </property>
+              </item>
+             </widget>
             </item>
-           </widget>
+           </layout>
           </item>
           <item>
-           <widget class="QCheckBox" name="analogOrNot">
-            <property name="text">
-             <string>Цифровой</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QComboBox" name="producer">
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
-             <property name="text">
-              <string>Nikon</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Panasonic</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Sony</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Canon</string>
-             </property>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Цифровой</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <property name="text">
-              <string>Olympus</string>
-             </property>
+             <widget class="QCheckBox" name="analogOrNot">
+              <property name="text">
+               <string>Цифровой</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Производитель</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <property name="text">
-              <string>Зенит</string>
-             </property>
+             <widget class="QComboBox" name="producer">
+              <item>
+               <property name="text">
+                <string>Nikon</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Panasonic</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Sony</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Canon</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Olympus</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Зенит</string>
+               </property>
+              </item>
+             </widget>
             </item>
-           </widget>
+           </layout>
           </item>
           <item>
-           <widget class="QDoubleSpinBox" name="matrixResolution">
-            <property name="minimum">
-             <double>2.000000000000000</double>
-            </property>
-            <property name="maximum">
-             <double>20.000000000000000</double>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Разрешение матрицы</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="matrixResolution">
+              <property name="minimum">
+               <double>2.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>20.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QCheckBox" name="changeLens">
-            <property name="text">
-             <string>Возможность смены объектива</string>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Возможность смены объектива</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="changeLens">
+              <property name="text">
+               <string>Возможность смены объектива</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QLineEdit" name="size">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Габариты</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="size">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QSpinBox" name="weight">
-            <property name="minimum">
-             <number>100</number>
-            </property>
-            <property name="maximum">
-             <number>8000</number>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Вес</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="weight">
+              <property name="minimum">
+               <number>100</number>
+              </property>
+              <property name="maximum">
+               <number>8000</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QSpinBox" name="cost">
-            <property name="minimum">
-             <number>1000</number>
-            </property>
-            <property name="maximum">
-             <number>150000</number>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Цена</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="cost">
+              <property name="minimum">
+               <number>1000</number>
+              </property>
+              <property name="maximum">
+               <number>150000</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QDateEdit" name="date"/>
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <item>
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Дата выпуска</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDateEdit" name="date"/>
+            </item>
+           </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -214,8 +331,8 @@
          </layout>
         </item>
        </layout>
-      </item>
-     </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -225,7 +342,7 @@
      <x>0</x>
      <y>0</y>
      <width>939</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

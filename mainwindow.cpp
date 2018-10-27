@@ -2,18 +2,15 @@
 #include "ui_mainwindow.h"
 #include <QRegExp>
 #include <QDate>
+#include "fotobase.h"
 
-
-#include <QGraphicsEffect>
-//НЕДОРАБОТКА
-//как перевести значение из QString в QDate
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    QRegExp AcceptIter ("^[a-zA-z]\\w{0,29}");
+    QRegExp AcceptIter ("^[a-zA-zа-яА-Я]\\w{0,29}");
     QValidator *validno = new QRegExpValidator(AcceptIter, this);
     ui->nameOfModel->setValidator(validno);
 
@@ -34,8 +31,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->cost->setSuffix(" руб.");
     ui->weight->setSuffix(" гр.");
 
-
     setWindowTitle("Почти курсач");
+
+
 }
 
 MainWindow::~MainWindow()
@@ -65,55 +63,55 @@ static QDate DATA;
 
 void MainWindow::createWrite() {
     QString ModelsName = ui->nameOfModel->text();
-    fotoBase Model;
+    fotobase Model;
     Model.setNameOfModel(ModelsName);
     Model.getNameOfModel();
 
     QString strCategory = ui->category->currentText();
-    fotoBase category;
+    fotobase category;
     category.setCategory(strCategory);
     category.getGategory();
 
     bool analogOrNot = ui->analogOrNot->isChecked();
    // QString analog = transferFromBoolToStr( ui->changeLens->isChecked());
 
-    fotoBase AnalogOrNot;
+    fotobase AnalogOrNot;
     AnalogOrNot.setAnalogOrNot(analogOrNot);
     AnalogOrNot.getAnalogOrNot();
 
     QString strProducer = ui->producer->currentText();
-    fotoBase producer;
+    fotobase producer;
     producer.setProducer(strProducer);
     producer.getProducer();
 
    /* float*/ QString whatismatrres = ui->matrixResolution->text().remove(0,6);
-    fotoBase matrixResolution;
+    fotobase matrixResolution;
     matrixResolution.setMatrRes(whatismatrres);
     matrixResolution.getMatrRes();
 
     bool changeLens = ui->changeLens->isChecked();
     //checkForAble();
-    fotoBase changeLensOrNot;
+    fotobase changeLensOrNot;
     changeLensOrNot.setChangeLense(changeLens);
     changeLensOrNot.getChangeLense();
 
     QString size = ui->size->text();
-    fotoBase sizeOfModel;
+    fotobase sizeOfModel;
     sizeOfModel.setSize(size);
     sizeOfModel.getSize();
 
     int weight = ui->weight->text().remove(0,3).toInt();
-    fotoBase whatisweight;
+    fotobase whatisweight;
 
     whatisweight.setWeight(weight);
     whatisweight.getWeight();
 
     int cost = ui->cost->text().remove(0,4).toInt();
-    fotoBase whatiscost;
+    fotobase whatiscost;
     whatiscost.setCost(cost);
     whatiscost.getCost();
 
-    fotoBase data;
+    fotobase data;
     data.setmyDate(ui->date->date());
     DATA = data.getmyDate();
 
@@ -142,7 +140,7 @@ bool MainWindow::transferFromStrToBool(QString var) {
         return false;
 }
 
-void MainWindow::on_saveBtn_clicked() //переписать эту херню,
+void MainWindow::on_saveBtn_clicked()
 {
     if ( ui->nameOfModel->text() != nullptr ) {
 
@@ -194,13 +192,10 @@ void MainWindow::on_denied_clicked()
 }
 void MainWindow::denied(QList<QString> UnitedWrite) {
 //происходи вылет при нажатии на отмену есл в списке ничего нет
-    if ( !write.isEmpty() /*or !write2.*/)
+    if ( !write.isEmpty())
     {//возвращение данных из списка в форму
-        if ( ui->spinWriting->value() == 1 and !write1.isEmpty())
+        if ( (ui->spinWriting->value() == 1 and !write1.isEmpty()) or (ui->spinWriting->value() == 2 and !write2.isEmpty()))
         {
-            if (ui->spinWriting->value() == 2 and !write2.isEmpty())
-            {
-                qDebug() << "NULL";
                 ui->nameOfModel->setText(UnitedWrite[0]);
                 ui->category->setCurrentText(UnitedWrite[1]);
                 ui->analogOrNot->setChecked( transferFromStrToBool(UnitedWrite[2]) );
@@ -211,7 +206,6 @@ void MainWindow::denied(QList<QString> UnitedWrite) {
                 ui->weight->setValue(UnitedWrite[7].remove( UnitedWrite[7].size()-3, UnitedWrite[7].size()).toInt() );
                 ui->cost->setValue(UnitedWrite[8].remove( UnitedWrite[8].size()-4, UnitedWrite[8].size()).toInt() );
                 ui->date->setDate(DATA);
-            }
         }
     }
 }
@@ -223,29 +217,20 @@ void MainWindow::on_spinWriting_valueChanged(int arg1)
         //очистить список .. показать райтN
         ui->spisok->clear();
         ui->spisok->addItems(write1);
+
+        denied(write1);
+
     }
     else if ( arg1 == 2) {
         ui->spisok->clear();
         ui->spisok->addItems(write2);
+
+        denied(write2);
+
     }
     else
         qDebug() << "ucantseethis";
 
 }
 
-
-
-
-//удалить хех
-
-void MainWindow::resizeEvent(QResizeEvent *evt)
-{
-//бекграунд
-//    Q_UNUSED(evt);
-//    QPixmap bkgnd(":/img/95579c89365128e9322bfd247b353bc6.jpg");
-//    bkgnd = bkgnd.scaled(size(), Qt::IgnoreAspectRatio);
-//    QPalette plt = palette();
-//    plt.setBrush(QPalette::Background,bkgnd);
-//    setPalette(plt);
-}
 
