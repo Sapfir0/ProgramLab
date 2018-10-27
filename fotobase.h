@@ -20,6 +20,9 @@ private:
     QDate date;
 public:
     fotobase();
+    void ourBaseSetter(fotobase writing);
+    void ourBaseGetter(fotobase writing);
+
     void setNameOfModel(QString nameofModelclass){
         nameOfModel = nameofModelclass;
     }

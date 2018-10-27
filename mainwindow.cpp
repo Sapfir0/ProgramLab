@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+    #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QRegExp>
 #include <QDate>
@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 
     QRegExp AcceptIter ("^[a-zA-zа-яА-Я]\\w{0,29}");
     QValidator *validno = new QRegExpValidator(AcceptIter, this);
@@ -24,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //ui->size->setText("ШШ-ДД-ВВ");
     ui->size->setCursorPosition(0);
-    ui->size->setInputMask("00-00-00");  //нужна маска
+    ui->size->setInputMask("00-00-00 мм.");  //нужна маска
 
     ui->nameOfModel->setPlaceholderText("Название модели");
 
@@ -56,77 +57,49 @@ void MainWindow::setCheckPolProf() {
         ui->changeLens->setEnabled(false);
 }
 
-static QList<QString> write; //сначала запишем сюда
-static QList<QString> write1; //если будут ошибки, убрать статик
-static QList<QString> write2;
+//static QList<QString> write; //сначала запишем сюда
+//static QList<QString> write1; //если будут ошибки, убрать статик
+//static QList<QString> write2;
 static QDate DATA;
 
 void MainWindow::createWrite() {
+    fotobase write;
+    fotobase write1;
+    fotobase write2;
+
     QString ModelsName = ui->nameOfModel->text();
-    fotobase Model;
-    Model.setNameOfModel(ModelsName);
-    Model.getNameOfModel();
-
     QString strCategory = ui->category->currentText();
-    fotobase category;
-    category.setCategory(strCategory);
-    category.getGategory();
-
     bool analogOrNot = ui->analogOrNot->isChecked();
-   // QString analog = transferFromBoolToStr( ui->changeLens->isChecked());
-
-    fotobase AnalogOrNot;
-    AnalogOrNot.setAnalogOrNot(analogOrNot);
-    AnalogOrNot.getAnalogOrNot();
-
     QString strProducer = ui->producer->currentText();
-    fotobase producer;
-    producer.setProducer(strProducer);
-    producer.getProducer();
-
-   /* float*/ QString whatismatrres = ui->matrixResolution->text().remove(0,6);
-    fotobase matrixResolution;
-    matrixResolution.setMatrRes(whatismatrres);
-    matrixResolution.getMatrRes();
-
+    /* float*/ QString whatismatrres = ui->matrixResolution->text().remove(0,6);
     bool changeLens = ui->changeLens->isChecked();
-    //checkForAble();
-    fotobase changeLensOrNot;
-    changeLensOrNot.setChangeLense(changeLens);
-    changeLensOrNot.getChangeLense();
-
     QString size = ui->size->text();
-    fotobase sizeOfModel;
-    sizeOfModel.setSize(size);
-    sizeOfModel.getSize();
-
     int weight = ui->weight->text().remove(0,3).toInt();
-    fotobase whatisweight;
-
-    whatisweight.setWeight(weight);
-    whatisweight.getWeight();
-
     int cost = ui->cost->text().remove(0,4).toInt();
-    fotobase whatiscost;
-    whatiscost.setCost(cost);
-    whatiscost.getCost();
-
-    fotobase data;
-    data.setmyDate(ui->date->date());
-    DATA = data.getmyDate();
+    QDate mydata = ui->date->date();
 
 
-    write <<  Model.getNameOfModel() //string just here, but int, bool arenot
-    << category.getGategory()
-    << transferFromBoolToStr( AnalogOrNot.getAnalogOrNot() )
-    << producer.getProducer()
-    << matrixResolution.getMatrRes()
-    << transferFromBoolToStr( changeLensOrNot.getChangeLense() )
-    << sizeOfModel.getSize()
-    << ui->weight->text()
-    << ui->cost->text()
-    << ui->date->text();
+
+    write.setNameOfModel(ModelsName);
+    write.setCategory(strCategory);
+    write.setAnalogOrNot(analogOrNot);
+    write.setProducer(strProducer);
+    write.setMatrRes(whatismatrres);
+    write.setChangeLense(changeLens);
+    write.setSize(size);
+    write.setWeight(weight);
+    write.setCost(cost);
+    write.setmyDate(mydata);
+
+
+
+   // DATA = data.getmyDate();
+
+
+
+    // qDebug() << write.getNameOfModel();
 }
+
 QString MainWindow::transferFromBoolToStr(bool var) {
     if(var == true)
         return "true";
@@ -147,12 +120,8 @@ void MainWindow::on_saveBtn_clicked()
         //если на спинбоксе 1, то из write записать значения в write1 (очистить юй-список, загрузить райт1)
         //если 2, в write2
         if (ui->spinWriting->value() == 1 ) {
-            write.clear();
             createWrite();
-            write1.clear();
-            write1 = write;
-            ui->spisok->clear();
-            ui->spisok->addItems(write1);
+            fotobase::ourBaseGetter(fotobase::ourBaseSetter());
         }
         else if (ui->spinWriting->value() == 2) {
             write.clear();
