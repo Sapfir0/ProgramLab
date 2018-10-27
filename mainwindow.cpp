@@ -193,20 +193,26 @@ void MainWindow::on_denied_clicked()
     }
 }
 void MainWindow::denied(QList<QString> UnitedWrite) {
-
-    if ( !write.isEmpty() )
+//происходи вылет при нажатии на отмену есл в списке ничего нет
+    if ( !write.isEmpty() /*or !write2.*/)
     {//возвращение данных из списка в форму
-        qDebug() << "NULL";
-        ui->nameOfModel->setText(UnitedWrite[0]);
-        ui->category->setCurrentText(UnitedWrite[1]);
-        ui->analogOrNot->setChecked( transferFromStrToBool(UnitedWrite[2]) );
-        ui->producer->setCurrentText(UnitedWrite[3]);
-        ui->matrixResolution->setValue( UnitedWrite[4].remove(0,6).toInt() );
-        ui->changeLens->setChecked( transferFromStrToBool(UnitedWrite[5]) );
-        ui->size->setText(UnitedWrite[6]);
-        ui->weight->setValue(UnitedWrite[7].remove( UnitedWrite[7].size()-3, UnitedWrite[7].size()).toInt() );
-        ui->cost->setValue(UnitedWrite[8].remove( UnitedWrite[8].size()-4, UnitedWrite[8].size()).toInt() );
-        ui->date->setDate(DATA);
+        if ( ui->spinWriting->value() == 1 and !write1.isEmpty())
+        {
+            if (ui->spinWriting->value() == 2 and !write2.isEmpty())
+            {
+                qDebug() << "NULL";
+                ui->nameOfModel->setText(UnitedWrite[0]);
+                ui->category->setCurrentText(UnitedWrite[1]);
+                ui->analogOrNot->setChecked( transferFromStrToBool(UnitedWrite[2]) );
+                ui->producer->setCurrentText(UnitedWrite[3]);
+                ui->matrixResolution->setValue( UnitedWrite[4].remove(0,6).toInt() );
+                ui->changeLens->setChecked( transferFromStrToBool(UnitedWrite[5]) );
+                ui->size->setText(UnitedWrite[6]);
+                ui->weight->setValue(UnitedWrite[7].remove( UnitedWrite[7].size()-3, UnitedWrite[7].size()).toInt() );
+                ui->cost->setValue(UnitedWrite[8].remove( UnitedWrite[8].size()-4, UnitedWrite[8].size()).toInt() );
+                ui->date->setDate(DATA);
+            }
+        }
     }
 }
 
