@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>939</width>
-    <height>670</height>
+    <width>571</width>
+    <height>433</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,16 +20,26 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QListWidget" name="spisok">
+           <widget class="QTableWidget" name="spisok">
             <property name="styleSheet">
              <string notr="true">  color:#2E2F30 ;
   background-color: rgba(0, 5, 0, 30);</string>
             </property>
+            <column>
+             <property name="text">
+              <string>Колонка</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Формат</string>
+             </property>
+            </column>
            </widget>
           </item>
           <item>
@@ -49,7 +59,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
@@ -341,8 +351,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>939</width>
-     <height>22</height>
+     <width>571</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>

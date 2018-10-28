@@ -8,61 +8,38 @@
 class fotobase
 {
 private:
-    QString nameOfModel;
-    QString category;
-    bool analogOrNot;
-    QString producer;
-    QString/*float*/ matrixRes;
-    bool changeLens;
-    QString size;
-    int weight;
-    int cost;
-    QDate date;
+    QString nameOfModel; //Название модели
+    QString category; //Категория
+    bool analogOrNot; //Цифровой
+    QString producer; //Изготовитель
+    QString/*float*/ matrixRes; //Разрешение матрицы
+    bool changeLens; //Сменная линза
+    QString size; //Размер
+    int weight; //Вес
+    int cost; //Цена
+    QDate date; //Дата
 public:
     fotobase();
+
+
     void ourBaseSetter(fotobase writing);
     void ourBaseGetter(fotobase writing);
 
-    void setNameOfModel(QString nameofModelclass){
-        nameOfModel = nameofModelclass;
-    }
-    QString getNameOfModel(){
-        //qDebug() << "Имя модели: " << nameOfModel;
-        return nameOfModel;
-    }
+    void setNameOfModel(QString nameofModelclass);
+    QString getNameOfModel();
 
-    void setCategory(QString categoryclass){
-        category = categoryclass;
-    }
-    QString getGategory(){
-        //qDebug() << "Категория: " << category;
-        return category;
-    }
+    void setCategory(QString categoryclass);
+    QString getGategory();
 
-    void setAnalogOrNot(int analogOrNotclass){
-        analogOrNot = analogOrNotclass;
-    }
-    bool getAnalogOrNot(){
-        //qDebug() << "Цифровой?: " << analogOrNot;
-        return analogOrNot;
-    }
+    void setAnalogOrNot(int analogOrNotclass);
+    bool getAnalogOrNot();
 
-    void setProducer(QString producerclass){
-        producer = producerclass;
-    }
-    QString getProducer(){
-        //qDebug() << "Производитель: " <<  producer;
-        return producer;
-    }
+    void setProducer(QString producerclass);
+    QString getProducer();
 
-    void setMatrRes(/*float*/QString matrixResolutionclass){
-        matrixRes = matrixResolutionclass;
-    }
-    QString/*float*/ getMatrRes(){
-        //qDebug() << "Разрешение матрицы: " <<  matrixRes;
-        return matrixRes;
-    }
-    //        bool changeLens;
+    void setMatrRes(/*float*/QString matrixResolutionclass);
+    QString/*float*/ getMatrRes();
+
     void setChangeLense(bool changeLenseclass){
          changeLens = changeLenseclass;
     }

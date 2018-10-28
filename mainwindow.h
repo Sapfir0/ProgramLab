@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QValidator>
 #include <QDate>
+#include "fotobase.h"
 
 
 namespace Ui {
@@ -19,12 +20,19 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void createWrite();
+    void createWrite(fotobase writing);
     QString transferFromBoolToStr(bool var);
 
     bool transferFromStrToBool(QString var);
     void denied(QList<QString> UnitedWrite);
-    void saving(QList<QString> UnitedWrite);
+    void zapolnenie();
+
+
+    void createRandomWrite(fotobase write);
+//    fotobase whereiswrite;
+////    fotobase write1;
+////    fotobase write2;
+//    fotobase write[10];
 
 private slots:
     void setCheckRes();
@@ -38,6 +46,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    fotobase write[10];
 };
 
 
