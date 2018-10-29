@@ -4,7 +4,7 @@
 #include <QDate>
 
 #include <QRandomGenerator>
-
+#include "randomfunctions.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -61,7 +61,46 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 
     return write;
 }
+fotobase MainWindow::createRandomRecord() //тут ошибка
+{
+    fotobase write;
 
+    QTime now = QTime::currentTime();
+    qsrand( now.msec() ); //угадай что это такое
+
+    QString ModelsName = randString(rand()%30+1);
+    QString strCategory = category.at(rand()%3);
+    bool analogOrNot = randomBool();
+    QString strProducer = producer.at(rand()%6);
+//    double whatismatrres;
+    bool changeLens = randomBool();
+    QString size = randString(rand()%6+1);
+    int weight = rand() % 8000 + 100 ;
+    int cost = rand() % 150000  + 1000;
+//    QDate mydata;
+
+    write.setNameOfModel(ModelsName);
+    write.setCategory(strCategory);
+    write.setAnalogOrNot(analogOrNot);
+    write.setProducer(strProducer);
+//    write.setMatrRes(whatismatrres);
+    write.setChangeLense(changeLens);
+    write.setSize(size); //нужна специальная функция
+    write.setWeight(weight);
+    write.setCost(cost);
+//    write.setmyDate(mydata);
+    qDebug() << write.getProducer();
+    return write;
+}
+
+void MainWindow::zapolnenie() {
+
+    for (int i=1; i<=10; i++)
+    {
+        record[indexOfRecord] = createRandomRecord();
+
+    }
+}
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
 {
     //set ui from value;
@@ -74,9 +113,6 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->weight->setValue(value.getWeight());
     ui->cost->setValue(value.getCost());
     ui->date->setDate(value.getmyDate());
-    qDebug() << value.getChangeLense();
-    qDebug() << value.getCost();
-    qDebug() << value.getWeight();
 
 }
 
@@ -98,7 +134,7 @@ void MainWindow::on_spinWriting_valueChanged(int arg1) //Spinbox изменил 
 }
 
 
-QString MainWindow::transferFromBoolToStr(bool var) {
+QString transferFromBoolToStr(bool var) {
     if(var == true)
         return "true";
     else
@@ -128,5 +164,16 @@ void MainWindow::createWindow() {
 
     setWindowTitle("Почти курсач");
 
+    ui->producer->addItems(producer);
+    ui->category->addItems(category);
 
+
+
+
+
+}
+
+void MainWindow::on_filling_clicked()
+{
+    createRandomRecord();
 }

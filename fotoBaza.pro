@@ -30,7 +30,8 @@ SOURCES += \
 
 HEADERS += \
         mainwindow.h \
-    fotobase.h
+    fotobase.h \
+    randomfunctions.h
 
 FORMS += \
         mainwindow.ui

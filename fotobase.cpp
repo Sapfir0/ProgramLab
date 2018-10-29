@@ -1,4 +1,5 @@
 #include "fotobase.h"
+#include  <QDate>
 
 fotobase::fotobase()
 {
@@ -11,7 +12,7 @@ fotobase::fotobase()
     size = "00-00-00";
     weight = 100;
     cost = 1000;
-    //date = "01.01.2018";
+   // date
 }
 
 void fotobase::setNameOfModel(QString nameofModelclass){

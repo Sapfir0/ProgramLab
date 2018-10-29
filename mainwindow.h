@@ -6,7 +6,7 @@
 #include <QValidator>
 #include <QDate>
 #include "fotobase.h"
-
+#include <QStringList>
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +26,7 @@ public:
 
     QString transferFromBoolToStr(bool var);
 
+    fotobase createRandomRecord();
     void denied();
     void zapolnenie();
     void createWindow(); //здесь конструктор класса(хех)
@@ -40,10 +41,15 @@ private slots:
     void on_denied_clicked(); //нажатие на кнопку Отменить
     void on_spinWriting_valueChanged(int arg1);
 
+    void on_filling_clicked();
+
 private:
     Ui::MainWindow *ui;
     fotobase record[10]; //10 экземпляров
     int indexOfRecord = 0; //это счетчик [1,10]
+
+    QStringList producer = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
+    QStringList category = { "Профессиональный", "Любительский", "Полупрофессиональный"};
 };
 
 

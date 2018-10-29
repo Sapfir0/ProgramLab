@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>571</width>
-    <height>475</height>
+    <height>519</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -111,23 +111,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="category">
-              <item>
-               <property name="text">
-                <string>Профессиональный</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Любительский</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Полупрофессиональный</string>
-               </property>
-              </item>
-             </widget>
+             <widget class="QComboBox" name="category"/>
             </item>
            </layout>
           </item>
@@ -159,38 +143,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="producer">
-              <item>
-               <property name="text">
-                <string>Nikon</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Panasonic</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Sony</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Canon</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Olympus</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Зенит</string>
-               </property>
-              </item>
-             </widget>
+             <widget class="QComboBox" name="producer"/>
             </item>
            </layout>
           </item>
@@ -326,6 +279,13 @@
            </layout>
           </item>
           <item>
+           <widget class="QPushButton" name="filling">
+            <property name="text">
+             <string>Заполнить</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -352,7 +312,7 @@
      <x>0</x>
      <y>0</y>
      <width>571</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
