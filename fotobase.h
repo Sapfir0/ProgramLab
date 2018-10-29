@@ -36,46 +36,20 @@ public:
     void setMatrRes(double matrixResolutionclass);
     double getMatrRes();
 
-    void setChangeLense(bool changeLenseclass){
-         changeLens = changeLenseclass;
-    }
-    bool getChangeLense(){
-        //qDebug() << "Смена линзы: " << changeLens;
-        return changeLens;
-    }
-    //QString size;
-    void setSize(QString sizeclass){
-          size = sizeclass;
-    }
-    QString getSize(){
-        //qDebug() << "Размер: " << size;
-        return size;
-    }
-    //  int weight;
-    void setWeight(int weightclass){
-          weight = weightclass;
-    }
-    int getWeight(){
+    void setChangeLense(bool changeLenseclass);
+    bool getChangeLense();
 
-        //qDebug() << "Вес: " << weight;
-        return weight;
-    }
-    //int cost;
-    void setCost(int costclass){
-          cost = costclass;
-    }
-    int getCost(){
-        //qDebug() << "Цена: " << cost;
-        return cost;
-    }
-    //QDate date;
-    void setmyDate(QDate dateclass){
-          date = dateclass;
-    }
-    QDate getmyDate(){
-        qDebug() << "Дата: " << date;
-        return  date;
-    }
+    void setSize(QString sizeclass);
+    QString getSize();
+
+    void setWeight(int weightclass);
+    int getWeight();
+
+    void setCost(int costclass);
+    int getCost();
+
+    void setmyDate(QDate dateclass);
+    QDate getmyDate();
 };
 
 

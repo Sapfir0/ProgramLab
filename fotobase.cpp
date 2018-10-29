@@ -45,3 +45,44 @@ double fotobase::getMatrRes(){
     //qDebug() << "Разрешение матрицы: " <<  matrixRes;
     return matrixRes;
 }
+
+void fotobase::setChangeLense(bool changeLenseclass){
+     changeLens = changeLenseclass;
+}
+bool fotobase::getChangeLense(){
+    //qDebug() << "Смена линзы: " << changeLens;
+    return changeLens;
+}
+
+void fotobase::setSize(QString sizeclass){
+      size = sizeclass;
+}
+QString fotobase::getSize(){
+    //qDebug() << "Размер: " << size;
+    return size;
+}
+//  int weight;
+void fotobase::setWeight(int weightclass){
+      weight = weightclass;
+}
+int fotobase::getWeight(){
+    //qDebug() << "Вес: " << weight;
+    return weight;
+}
+
+
+void fotobase::setCost(int costclass){
+      cost = costclass;
+}
+int fotobase::getCost(){
+    //qDebug() << "Цена: " << cost;
+    return cost;
+}
+
+void fotobase::setmyDate(QDate dateclass){
+      date = dateclass;
+}
+QDate fotobase::getmyDate(){
+    qDebug() << "Дата: " << date;
+    return  date;
+}

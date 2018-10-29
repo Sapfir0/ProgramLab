@@ -43,8 +43,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    fotobase write[10]; //10 экземпляров
-    int indexWrite = 0; //это счетчик [1,10]
+    fotobase record[10]; //10 экземпляров
+    int indexOfRecord = 0; //это счетчик [1,10]
 };
 
 

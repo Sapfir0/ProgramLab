@@ -74,23 +74,25 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->weight->setValue(value.getWeight());
     ui->cost->setValue(value.getCost());
     ui->date->setDate(value.getmyDate());
+    //qDebug() << value.getProducer();
 }
 
 void MainWindow::on_saveBtn_clicked()
 {
-    write[indexWrite] = createRecord();
-    loadRecord( write[indexWrite] );
+    record[indexOfRecord] = createRecord();
+    loadRecord( record[indexOfRecord] );
 }
 
 void MainWindow::on_denied_clicked()
 {
-    loadRecord(write[indexWrite]);
+    loadRecord(record[indexOfRecord]);
 }
 
 void MainWindow::on_spinWriting_valueChanged(int arg1)
 {
-    indexWrite = arg1;
-    qDebug() << indexWrite;
+    indexOfRecord = arg1;
+    qDebug() << indexOfRecord;
+    loadRecord( record[indexOfRecord] );
 }
 
 
