@@ -12,7 +12,7 @@ private:
     QString category; //Категория
     bool analogOrNot; //Цифровой
     QString producer; //Изготовитель
-    QString/*float*/ matrixRes; //Разрешение матрицы
+    double matrixRes; //Разрешение матрицы
     bool changeLens; //Сменная линза
     QString size; //Размер
     int weight; //Вес
@@ -20,10 +20,6 @@ private:
     QDate date; //Дата
 public:
     fotobase();
-
-
-    void ourBaseSetter(fotobase writing);
-    void ourBaseGetter(fotobase writing);
 
     void setNameOfModel(QString nameofModelclass);
     QString getNameOfModel();
@@ -37,8 +33,8 @@ public:
     void setProducer(QString producerclass);
     QString getProducer();
 
-    void setMatrRes(/*float*/QString matrixResolutionclass);
-    QString/*float*/ getMatrRes();
+    void setMatrRes(double matrixResolutionclass);
+    double getMatrRes();
 
     void setChangeLense(bool changeLenseclass){
          changeLens = changeLenseclass;

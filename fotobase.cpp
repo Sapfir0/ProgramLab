@@ -4,32 +4,6 @@ fotobase::fotobase()
 {
 
 }
-void fotobase::ourBaseSetter(fotobase writing) {
-    qDebug() << "sstop it";
-//    writing.getNameOfModel();
-//    writing.getGategory();
-//    writing.getAnalogOrNot();
-//    writing.getProducer();
-//    writing.getMatrRes();
-//    writing.getChangeLense();
-//    writing.getSize();
-//    writing.getWeight();
-//    writing.getCost();
-//    writing.getmyDate();
-}
-void fotobase::ourBaseGetter(fotobase writing) {
-    writing.getNameOfModel();
-    writing.getGategory();
-    writing.getAnalogOrNot();
-    writing.getProducer();
-    writing.getMatrRes();
-    writing.getChangeLense();
-    writing.getSize();
-    writing.getWeight();
-    writing.getCost();
-    writing.getmyDate();
-}
-
 
 void fotobase::setNameOfModel(QString nameofModelclass){
     nameOfModel = nameofModelclass;
@@ -64,10 +38,10 @@ QString fotobase::getProducer(){
     return producer;
 }
 
-void fotobase::setMatrRes(/*float*/QString matrixResolutionclass){
+void fotobase::setMatrRes(double matrixResolutionclass){
     matrixRes = matrixResolutionclass;
 }
-QString/*float*/ fotobase::getMatrRes(){
+double fotobase::getMatrRes(){
     //qDebug() << "Разрешение матрицы: " <<  matrixRes;
     return matrixRes;
 }

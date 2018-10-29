@@ -1,4 +1,4 @@
-    #include "mainwindow.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QRegExp>
 #include <QDate>
@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    createWindow();
 }
 
 MainWindow::~MainWindow()
@@ -32,18 +33,19 @@ void MainWindow::setCheckPolProf() {
         ui->changeLens->setEnabled(false);
 }
 
-
-void MainWindow::createWrite(fotobase write) {
+fotobase MainWindow::createRecord() //из ui в экземпляр класса
+{
+    fotobase write;
 
     QString ModelsName = ui->nameOfModel->text();
     QString strCategory = ui->category->currentText();
     bool analogOrNot = ui->analogOrNot->isChecked();
     QString strProducer = ui->producer->currentText();
-    /* float*/ QString whatismatrres = ui->matrixResolution->text().remove(0,6);
+    double whatismatrres = ui->matrixResolution->value();
     bool changeLens = ui->changeLens->isChecked();
     QString size = ui->size->text();
-    int weight = ui->weight->text().remove(0,3).toInt();
-    int cost = ui->cost->text().remove(0,4).toInt();
+    int weight = ui->weight->value();
+    int cost = ui->cost->value();
     QDate mydata = ui->date->date();
 
     write.setNameOfModel(ModelsName);
@@ -57,112 +59,38 @@ void MainWindow::createWrite(fotobase write) {
     write.setCost(cost);
     write.setmyDate(mydata);
 
-  // qDebug() << write.getNameOfModel();
+    return write;
+}
+
+void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
+{
+    //set ui from value;
+    ui->nameOfModel->setText(value.getNameOfModel());
+    ui->category->setCurrentText(value.getGategory());
+    ui->analogOrNot->setChecked(value.getAnalogOrNot());
+    ui->producer->setCurrentText(value.getProducer());
+    ui->changeLens->setChecked(value.getChangeLense());
+    ui->size->setText(value.getSize());
+    ui->weight->setValue(value.getWeight());
+    ui->cost->setValue(value.getCost());
+    ui->date->setDate(value.getmyDate());
 }
 
 void MainWindow::on_saveBtn_clicked()
 {
-    if ( ui->nameOfModel->text() != nullptr ) {
-
-        if (ui->spinWriting->value() == 1 ) {
-            createWrite(write[1]);
-            qDebug() << write[1].getNameOfModel();
-
-            createRandomWrite(write[1]);
-
-        }
-        else if (ui->spinWriting->value() == 2) {
-            createWrite(write[2]);
-            qDebug() << write[2].getGategory();
-        }
-    }
-}
-
-void MainWindow::zapolnenie() {
-
-    //записать во все 10 записей
-    for (int i=1; i<=9; i++)
-    {
-        createWrite(write[i]);
-    }
-
-}
-int randomRange(int low, int high)
-{
-    return rand() % (high - low + 1) + low;
-}
-
-void MainWindow::createRandomWrite(fotobase write) {
-
-    srand(time(NULL));
-
-    int stop = rand() % 30 + 1;
-    for (int n = 0; n < stop; ++n)
-    {
-        const char ch = randomRange('A', 'Z');
-        qDebug() << ch;
-    }
-    QRandomGenerator randoming;
-//задать рандмное выражение соотвествувющее регулярке
-
-
-    int randCategory = rand() % 3 + 1;
-    int randProducer = rand() % 6 + 1;
-    QString ModelsName;
-    QString strCategory = ui->category->currentText();
-    bool analogOrNot = ui->analogOrNot->isChecked();
-    QString strProducer = ui->producer->currentText();
-    /* float*/ QString whatismatrres = ui->matrixResolution->text().remove(0,6);
-    bool changeLens = ui->changeLens->isChecked();
-    QString size = ui->size->text();
-    int randWeight = rand() % 8000 + 100;
-    int weight = ui->weight->text().remove(0,3).toInt();
-    int randCost = rand() % 150000 + 1000;
-    int cost = ui->cost->text().remove(0,4).toInt();
-    QDate mydata = ui->date->date();
-
-    write.setNameOfModel(ModelsName);
-    write.setCategory(strCategory);
-    write.setAnalogOrNot(analogOrNot);
-    write.setProducer(strProducer);
-    write.setMatrRes(whatismatrres);
-    write.setChangeLense(changeLens);
-    write.setSize(size);
-    write.setWeight(weight);
-    write.setCost(cost);
-    write.setmyDate(mydata);
-
-
+    write[indexWrite] = createRecord();
+    loadRecord( write[indexWrite] );
 }
 
 void MainWindow::on_denied_clicked()
 {
-    //при нажатии на отмену мы должны запизхнуть в форму вводимых данных
-    //то что у нас в текущем райте
-    //мы не можем использовать райт, потому что при переключении между записями райт не меняется
-    if ( ui->spinWriting->value() == 1)
-    {
-
-    }
-    else if (ui->spinWriting->value() == 2)
-    {
-
-    }
-}
-void MainWindow::denied(QList<QString> UnitedWrite) {
-
+    loadRecord(write[indexWrite]);
 }
 
 void MainWindow::on_spinWriting_valueChanged(int arg1)
 {
-    int arg[9];
-    if ( arg1 == 1) {
-    }
-    else if ( arg1 == 2) {
-    }
-    else
-        qDebug() << "ucantseethis";
-
+    indexWrite = arg1;
+    qDebug() << indexWrite;
 }
 
 
@@ -171,12 +99,6 @@ QString MainWindow::transferFromBoolToStr(bool var) {
         return "true";
     else
         return "false";
-}
-bool MainWindow::transferFromStrToBool(QString var) {
-    if ( var=="true")
-        return true;
-    else
-        return false;
 }
 
 void MainWindow::createWindow() {
@@ -190,8 +112,6 @@ void MainWindow::createWindow() {
 
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
-
-    ui->matrixResolution->setPrefix("Мпикс ");
 
     //ui->size->setText("ШШ-ДД-ВВ");
     ui->size->setCursorPosition(0);

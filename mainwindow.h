@@ -20,35 +20,31 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void createWrite(fotobase writing);
+    fotobase createRecord();//из ui в экземпляр класса
+    void loadRecord(fotobase value); //выводит на ui данные из экземпляра класса
+
     QString transferFromBoolToStr(bool var);
 
-    bool transferFromStrToBool(QString var);
-    void denied(QList<QString> UnitedWrite);
+    void denied();
     void zapolnenie();
 
     void createWindow();
 
-
     void createRandomWrite(fotobase write);
-//    fotobase whereiswrite;
-////    fotobase write1;
-////    fotobase write2;
-//    fotobase write[10];
+
 
 private slots:
+
     void setCheckRes();
     void setCheckPolProf();
-
     void on_saveBtn_clicked();
-
     void on_denied_clicked();
-
     void on_spinWriting_valueChanged(int arg1);
 
 private:
     Ui::MainWindow *ui;
-    fotobase write[10];
+    fotobase write[10]; //10 экземпляров
+    int indexWrite = 0; //это счетчик [1,10]
 };
 
 
