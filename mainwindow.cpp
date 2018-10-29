@@ -3,36 +3,13 @@
 #include <QRegExp>
 #include <QDate>
 
+#include <QRandomGenerator>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-
-    QRegExp AcceptIter ("^[a-zA-zа-яА-Я]\\w{0,29}");
-    QValidator *validno = new QRegExpValidator(AcceptIter, this);
-    ui->nameOfModel->setValidator(validno);
-
-    connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
-    connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
-
-    ui->changeLens->setEnabled(false);
-    ui->matrixResolution->setEnabled(false);
-
-    ui->matrixResolution->setPrefix("Мпикс ");
-
-    //ui->size->setText("ШШ-ДД-ВВ");
-    ui->size->setCursorPosition(0);
-    ui->size->setInputMask("00-00-00 мм.");  //нужна маска
-
-    ui->nameOfModel->setPlaceholderText("Название модели");
-
-    ui->cost->setSuffix(" руб.");
-    ui->weight->setSuffix(" гр.");
-
-    setWindowTitle("Почти курсач");
-
 }
 
 MainWindow::~MainWindow()
@@ -91,6 +68,8 @@ void MainWindow::on_saveBtn_clicked()
             createWrite(write[1]);
             qDebug() << write[1].getNameOfModel();
 
+            createRandomWrite(write[1]);
+
         }
         else if (ui->spinWriting->value() == 2) {
             createWrite(write[2]);
@@ -121,7 +100,11 @@ void MainWindow::createRandomWrite(fotobase write) {
     for (int n = 0; n < stop; ++n)
     {
         const char ch = randomRange('A', 'Z');
+        qDebug() << ch;
     }
+    QRandomGenerator randoming;
+//задать рандмное выражение соотвествувющее регулярке
+
 
     int randCategory = rand() % 3 + 1;
     int randProducer = rand() % 6 + 1;
@@ -194,4 +177,32 @@ bool MainWindow::transferFromStrToBool(QString var) {
         return true;
     else
         return false;
+}
+
+void MainWindow::createWindow() {
+
+    QRegExp AcceptIter ("^[a-zA-zа-яА-Я]\\w{0,29}");
+    QValidator *validno = new QRegExpValidator(AcceptIter, this);
+    ui->nameOfModel->setValidator(validno);
+
+    connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
+    connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
+
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
+
+    ui->matrixResolution->setPrefix("Мпикс ");
+
+    //ui->size->setText("ШШ-ДД-ВВ");
+    ui->size->setCursorPosition(0);
+    ui->size->setInputMask("00-00-00 мм.");  //нужна маска
+
+    ui->nameOfModel->setPlaceholderText("Название модели");
+
+    ui->cost->setSuffix(" руб.");
+    ui->weight->setSuffix(" гр.");
+
+    setWindowTitle("Почти курсач");
+
+
 }

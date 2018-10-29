@@ -27,6 +27,8 @@ public:
     void denied(QList<QString> UnitedWrite);
     void zapolnenie();
 
+    void createWindow();
+
 
     void createRandomWrite(fotobase write);
 //    fotobase whereiswrite;
