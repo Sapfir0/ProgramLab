@@ -74,24 +74,26 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->weight->setValue(value.getWeight());
     ui->cost->setValue(value.getCost());
     ui->date->setDate(value.getmyDate());
-    //qDebug() << value.getProducer();
+    qDebug() << value.getChangeLense();
+    qDebug() << value.getCost();
+    qDebug() << value.getWeight();
+
 }
 
-void MainWindow::on_saveBtn_clicked()
+void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
-    record[indexOfRecord] = createRecord();
-    loadRecord( record[indexOfRecord] );
+    record[indexOfRecord] = createRecord(); //запишем в текущий record значения из ui
+    loadRecord( record[indexOfRecord] ); //показать их
 }
 
-void MainWindow::on_denied_clicked()
+void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
     loadRecord(record[indexOfRecord]);
 }
 
-void MainWindow::on_spinWriting_valueChanged(int arg1)
+void MainWindow::on_spinWriting_valueChanged(int arg1) //Spinbox изменил значение
 {
     indexOfRecord = arg1;
-    qDebug() << indexOfRecord;
     loadRecord( record[indexOfRecord] );
 }
 

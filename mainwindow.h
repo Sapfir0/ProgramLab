@@ -21,15 +21,14 @@ public:
     ~MainWindow();
 
     fotobase createRecord();//из ui в экземпляр класса
+
     void loadRecord(fotobase value); //выводит на ui данные из экземпляра класса
 
     QString transferFromBoolToStr(bool var);
 
     void denied();
     void zapolnenie();
-
-    void createWindow();
-
+    void createWindow(); //здесь конструктор класса(хех)
     void createRandomWrite(fotobase write);
 
 
@@ -37,8 +36,8 @@ private slots:
 
     void setCheckRes();
     void setCheckPolProf();
-    void on_saveBtn_clicked();
-    void on_denied_clicked();
+    void on_saveBtn_clicked(); //нажатие на кнопку Сохранить
+    void on_denied_clicked(); //нажатие на кнопку Отменить
     void on_spinWriting_valueChanged(int arg1);
 
 private:

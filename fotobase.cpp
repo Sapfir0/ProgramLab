@@ -2,7 +2,16 @@
 
 fotobase::fotobase()
 {
-
+    nameOfModel = "default";
+    category = "Профессиональный";
+    analogOrNot = false;
+    producer = "Nikon";
+    matrixRes = 2.00;
+    changeLens = false;
+    size = "00-00-00";
+    weight = 100;
+    cost = 1000;
+    //date = "01.01.2018";
 }
 
 void fotobase::setNameOfModel(QString nameofModelclass){
@@ -20,7 +29,6 @@ QString fotobase::getGategory(){
     //qDebug() << "Категория: " << category;
     return category;
 }
-
 
 void fotobase::setAnalogOrNot(int analogOrNotclass){
     analogOrNot = analogOrNotclass;
