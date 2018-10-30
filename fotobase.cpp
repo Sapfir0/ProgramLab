@@ -3,7 +3,7 @@
 
 fotobase::fotobase()
 {
-    nameOfModel = "default";
+    nameOfModel = "";
     category = "Профессиональный";
     analogOrNot = false;
     producer = "Nikon";
@@ -11,7 +11,7 @@ fotobase::fotobase()
     changeLens = false;
     size = "00-00-00";
     weight = 100;
-    cost = 1000;
+    cost = 3000;
    // date
 }
 

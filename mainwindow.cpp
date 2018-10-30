@@ -119,7 +119,9 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
     record[indexOfRecord] = createRecord(); //запишем в текущий record значения из ui
+    qDebug() << "Запись" << indexOfRecord << "создана";
     loadRecord( record[indexOfRecord] ); //показать их
+
 }
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
@@ -169,7 +171,8 @@ void MainWindow::createWindow() {
 
 
 
-
+   loadRecord( record[indexOfRecord] ); //первая инициализация
+   //по-другому не получилось
 
 }
 
