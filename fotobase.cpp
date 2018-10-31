@@ -11,8 +11,8 @@ fotobase::fotobase()
     changeLens = false;
     size = "00-00-00";
     weight = 100;
-    cost = 3000;
-   // date
+    cost = 1000;
+    date.setDate(2000, 1,1);
 }
 
 void fotobase::setNameOfModel(QString nameofModelclass){
@@ -79,7 +79,6 @@ int fotobase::getWeight(){
     return weight;
 }
 
-
 void fotobase::setCost(int costclass){
       cost = costclass;
 }
@@ -92,6 +91,6 @@ void fotobase::setmyDate(QDate dateclass){
       date = dateclass;
 }
 QDate fotobase::getmyDate(){
-    qDebug() << "Дата: " << date;
+   // qDebug() << "Дата: " << date;
     return  date;
 }

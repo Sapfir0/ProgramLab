@@ -59,6 +59,8 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
     write.setCost(cost);
     write.setmyDate(mydata);
 
+    qDebug() << write.getMatrRes();
+
     return write;
 }
 fotobase MainWindow::createRandomRecord() //тут ошибка
@@ -70,37 +72,57 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
 
     QString ModelsName = randString(rand()%30+1);
     QString strCategory = category.at(rand()%3);
+    bool changeLens;
+    if (strCategory == category.at(2))
+        changeLens = randomBool();
+    else
+        changeLens = "2."; //ставит 20.00
+
+    double whatismatrres;
     bool analogOrNot = randomBool();
+    if ( analogOrNot == true)
+        whatismatrres = my_rand(0.01, 20.00);
+
     QString strProducer = producer.at(rand()%6);
-//    double whatismatrres;
-    bool changeLens = randomBool();
-    QString size = randString(rand()%6+1);
+    QString size = randSize();
     int weight = rand() % 8000 + 100 ;
     int cost = rand() % 150000  + 1000;
-//    QDate mydata;
+    QDate mydata = randomDate(mydata);
 
     write.setNameOfModel(ModelsName);
     write.setCategory(strCategory);
     write.setAnalogOrNot(analogOrNot);
     write.setProducer(strProducer);
-//    write.setMatrRes(whatismatrres);
+    write.setMatrRes(whatismatrres);
     write.setChangeLense(changeLens);
     write.setSize(size); //нужна специальная функция
     write.setWeight(weight);
     write.setCost(cost);
-//    write.setmyDate(mydata);
-    qDebug() << write.getProducer();
+    write.setmyDate(mydata);
+
     return write;
 }
 
-void MainWindow::zapolnenie() {
 
-    for (int i=1; i<=10; i++)
+void MainWindow::filling() {
+
+
+}
+
+void MainWindow::on_filling_clicked()
+{
+    record[indexOfRecord] = createRandomRecord();
+    qDebug() << "Рандомная запись" << indexOfRecord << "создана";
+    loadRecord( record[indexOfRecord] ); //показать их
+    qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
+
+    for (int i=0; i<=9; i++)
     {
-        record[indexOfRecord] = createRandomRecord();
-
+        record[i] = createRandomRecord();
+        qDebug() << record[i].getProducer();
     }
 }
+
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
 {
     //set ui from value;
@@ -108,11 +130,40 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->category->setCurrentText(value.getGategory());
     ui->analogOrNot->setChecked(value.getAnalogOrNot());
     ui->producer->setCurrentText(value.getProducer());
+    ui->matrixResolution->setValue(value.getMatrRes());
     ui->changeLens->setChecked(value.getChangeLense());
     ui->size->setText(value.getSize());
     ui->weight->setValue(value.getWeight());
     ui->cost->setValue(value.getCost());
     ui->date->setDate(value.getmyDate());
+    ///////////////////вывод на table
+//    Колонка	Формат
+//    Название модели	Полностью
+//    Цена (руб)	В формате целых чисел
+
+    ui->spisok->setShowGrid(true);
+    ui->spisok->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->spisok->horizontalHeader()->setStretchLastSection(true);
+    ui->spisok->verticalHeader()->setStretchLastSection(true);
+
+    //Заголовки столбцов
+    QStringList horizontalHeader;
+    horizontalHeader << "Колонка" << "Формат";
+    //Заголовки строк
+    ui->spisok->setColumnCount(horizontalHeader.size()); // указываем количество столбцов
+    ui->spisok->setHorizontalHeaderLabels(horizontalHeader);
+    ui->spisok->setRowCount(10);
+
+    int count = 1;
+    for ( int rows=0; rows<ui->spisok->rowCount();  rows++)
+        for ( int column=0; column<ui->spisok->columnCount();  column++)
+        {
+            //QTableWidgetItem *item = new QTableWidgetItem();
+            ui->spisok->setItem(rows,0,new QTableWidgetItem(record[rows].getNameOfModel()));
+            ui->spisok->setItem(rows,1,new QTableWidgetItem(record[rows].getCost())); //не в строках, а в интах
+            count++;
+        }
+
 
 }
 
@@ -121,27 +172,27 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     record[indexOfRecord] = createRecord(); //запишем в текущий record значения из ui
     qDebug() << "Запись" << indexOfRecord << "создана";
     loadRecord( record[indexOfRecord] ); //показать их
-
+    qDebug() << "Запись" << indexOfRecord << "загружена";
 }
 
+void MainWindow::sorting() {
+   //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
+
+}
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
     loadRecord(record[indexOfRecord]);
+    qDebug() << "Запись" << indexOfRecord << "загружена";
+
 }
 
 void MainWindow::on_spinWriting_valueChanged(int arg1) //Spinbox изменил значение
 {
     indexOfRecord = arg1;
     loadRecord( record[indexOfRecord] );
+    qDebug() << "Запись" << indexOfRecord << "загружена";
 }
 
-
-QString transferFromBoolToStr(bool var) {
-    if(var == true)
-        return "true";
-    else
-        return "false";
-}
 
 void MainWindow::createWindow() {
 
@@ -154,7 +205,6 @@ void MainWindow::createWindow() {
 
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
-
     //ui->size->setText("ШШ-ДД-ВВ");
     ui->size->setCursorPosition(0);
     ui->size->setInputMask("00-00-00 мм.");  //нужна маска
@@ -170,13 +220,7 @@ void MainWindow::createWindow() {
     ui->category->addItems(category);
 
 
-
    loadRecord( record[indexOfRecord] ); //первая инициализация
    //по-другому не получилось
 
-}
-
-void MainWindow::on_filling_clicked()
-{
-    createRandomRecord();
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>571</width>
-    <height>519</height>
+    <width>853</width>
+    <height>668</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,16 +30,6 @@
              <string notr="true">  color:#2E2F30 ;
   background-color: rgba(0, 5, 0, 30);</string>
             </property>
-            <column>
-             <property name="text">
-              <string>Колонка</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Формат</string>
-             </property>
-            </column>
            </widget>
           </item>
           <item>
@@ -311,7 +301,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>571</width>
+     <width>853</width>
      <height>20</height>
     </rect>
    </property>

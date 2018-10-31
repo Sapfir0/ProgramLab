@@ -28,9 +28,11 @@ public:
 
     fotobase createRandomRecord();
     void denied();
-    void zapolnenie();
+    void filling();
     void createWindow(); //здесь конструктор класса(хех)
     void createRandomWrite(fotobase write);
+
+    void sorting();
 
 
 private slots:
@@ -46,7 +48,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     fotobase record[10]; //10 экземпляров
-    int indexOfRecord = 0; //это счетчик [1,10]
+    int indexOfRecord = 1; //это счетчик [1,10]
 
     QStringList producer = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
     QStringList category = { "Профессиональный", "Любительский", "Полупрофессиональный"};
