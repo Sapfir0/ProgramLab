@@ -20,7 +20,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setCheckRes() {
 
-    if (ui->analogOrNot->isChecked() == true)
+    if (ui->analogOrNot->isChecked())
         ui->matrixResolution->setEnabled(true);
     else
         ui->matrixResolution->setEnabled(false);
@@ -70,8 +70,9 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
     QTime now = QTime::currentTime();
     qsrand( now.msec() ); //угадай что это такое
 
-    QString ModelsName = randString(rand()%30+1);
-    QString strCategory = category.at(rand()%3);
+    //QString ModelsName = randString(rand()%30+1);
+    QString ModelsName = modelsName.at(rand()%modelsName.size());
+    QString strCategory = fotobase categoryList.at(rand()%category.size());
     bool changeLens;
     if (strCategory == category.at(2))
         changeLens = randomBool();
@@ -83,7 +84,8 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
     if ( analogOrNot == true)
         whatismatrres = my_rand(0.01, 20.00);
 
-    QString strProducer = producer.at(rand()%6);
+
+    QString strProducer = producer.at(rand()%producer.size());
     QString size = randSize();
     int weight = rand() % 8000 + 100 ;
     int cost = rand() % 150000  + 1000;
@@ -111,16 +113,16 @@ void MainWindow::filling() {
 
 void MainWindow::on_filling_clicked()
 {
-    record[indexOfRecord] = createRandomRecord();
-    qDebug() << "Рандомная запись" << indexOfRecord << "создана";
-    loadRecord( record[indexOfRecord] ); //показать их
-    qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
 
     for (int i=0; i<=9; i++)
     {
         record[i] = createRandomRecord();
         qDebug() << record[i].getProducer();
     }
+    qDebug() << "Рандомная запись" << indexOfRecord << "создана";
+    loadRecord( record[indexOfRecord] ); //показать их
+    qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
+
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
@@ -129,8 +131,10 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->nameOfModel->setText(value.getNameOfModel());
     ui->category->setCurrentText(value.getGategory());
     ui->analogOrNot->setChecked(value.getAnalogOrNot());
+    setCheckRes();
     ui->producer->setCurrentText(value.getProducer());
     ui->matrixResolution->setValue(value.getMatrRes());
+    setCheckPolProf();
     ui->changeLens->setChecked(value.getChangeLense());
     ui->size->setText(value.getSize());
     ui->weight->setValue(value.getWeight());
@@ -146,23 +150,13 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
     ui->spisok->verticalHeader()->setStretchLastSection(true);
 
-    //Заголовки столбцов
-    QStringList horizontalHeader;
-    horizontalHeader << "Колонка" << "Формат";
-    //Заголовки строк
-    ui->spisok->setColumnCount(horizontalHeader.size()); // указываем количество столбцов
-    ui->spisok->setHorizontalHeaderLabels(horizontalHeader);
     ui->spisok->setRowCount(10);
 
-    int count = 1;
     for ( int rows=0; rows<ui->spisok->rowCount();  rows++)
-        for ( int column=0; column<ui->spisok->columnCount();  column++)
-        {
-            //QTableWidgetItem *item = new QTableWidgetItem();
+    {
             ui->spisok->setItem(rows,0,new QTableWidgetItem(record[rows].getNameOfModel()));
-            ui->spisok->setItem(rows,1,new QTableWidgetItem(record[rows].getCost())); //не в строках, а в интах
-            count++;
-        }
+            ui->spisok->setItem(rows,1,new QTableWidgetItem(QString::number(record[rows].getCost()))); //не в строках, а в интах
+     }
 
 
 }
@@ -205,7 +199,7 @@ void MainWindow::createWindow() {
 
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
-    //ui->size->setText("ШШ-ДД-ВВ");
+
     ui->size->setCursorPosition(0);
     ui->size->setInputMask("00-00-00 мм.");  //нужна маска
 

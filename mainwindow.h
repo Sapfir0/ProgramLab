@@ -50,8 +50,7 @@ private:
     fotobase record[10]; //10 экземпляров
     int indexOfRecord = 1; //это счетчик [1,10]
 
-    QStringList producer = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
-    QStringList category = { "Профессиональный", "Любительский", "Полупрофессиональный"};
+
 };
 
 
