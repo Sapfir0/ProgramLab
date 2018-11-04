@@ -27,8 +27,7 @@
           <item>
            <widget class="QTableWidget" name="spisok">
             <property name="styleSheet">
-             <string notr="true">  color:#2E2F30 ;
-  background-color: rgba(0, 5, 0, 30);</string>
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -38,7 +37,7 @@
              <number>1</number>
             </property>
             <property name="maximum">
-             <number>2</number>
+             <number>10</number>
             </property>
            </widget>
           </item>
@@ -302,7 +301,7 @@
      <x>0</x>
      <y>0</y>
      <width>853</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

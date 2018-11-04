@@ -18,8 +18,11 @@ private:
     int weight; //Вес
     int cost; //Цена
     QDate date; //Дата
+
+
 public:
     fotobase();
+    int compare(const fotobase&, const fotobase&);
 
     void setNameOfModel(QString nameofModelclass);
     QString getNameOfModel();

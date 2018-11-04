@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include <QDebug>
 
 bool randomBool()  {
     return 0 + (rand() % (1 - 0 + 1)) == 1;
@@ -50,8 +51,7 @@ int my_rand(int MinValue, int MaxValue) {
 }
 
 QDate randomDate(QDate data) {
-
-    data.setDate(my_rand(1752,2100),my_rand(1,12),my_rand(1,31));
+    data.setDate(my_rand(1755,2100),my_rand(1,12),my_rand(1,31));
     return data;
 }
 
