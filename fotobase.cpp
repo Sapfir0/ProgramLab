@@ -11,12 +11,12 @@ fotobase::fotobase()
     changeLens = false;
     size = "00-00-00";
     weight = 100;
-    cost = 1000;
+    cost = 0;
     date.setDate(2000, 1,1);
 }
 
 int fotobase::compare(const fotobase& c1, const fotobase& c2) {
-    if (c1.category!=c2.category) return c1.category - c2.category;
+    //if (c1.category!=c2.category) return c1.category - c2.category;
 
 }
 

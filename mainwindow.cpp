@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QRegExp>
 #include <QDate>
@@ -70,25 +70,28 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
     QTime now = QTime::currentTime();
     qsrand( now.msec() ); //угадай что это такое
 
-    //QString ModelsName = randString(rand()%30+1);
-    QString ModelsName = modelsName.at(rand()%modelsName.size());
-    QString strCategory = fotobase categoryList.at(rand()%category.size());
+    QString ModelsName = nameOfModelList.at(rand()%nameOfModelList.size());
+    QString strCategory = categoryList.at(rand()%categoryList.size());
     bool changeLens;
-    if (strCategory == category.at(2))
+
+    if (strCategory == categoryList.at(2))
         changeLens = randomBool();
     else
-        changeLens = "2."; //ставит 20.00
+        changeLens = false;
 
     double whatismatrres;
     bool analogOrNot = randomBool();
     if ( analogOrNot == true)
         whatismatrres = my_rand(0.01, 20.00);
+    else
+        whatismatrres = 2.0;
 
 
-    QString strProducer = producer.at(rand()%producer.size());
+    QString strProducer = producerList.at(rand()%producerList.size());
     QString size = randSize();
     int weight = rand() % 8000 + 100 ;
     int cost = rand() % 150000  + 1000;
+
     QDate mydata = randomDate(mydata);
 
     write.setNameOfModel(ModelsName);
@@ -113,12 +116,12 @@ void MainWindow::filling() {
 
 void MainWindow::on_filling_clicked()
 {
-
     for (int i=0; i<=9; i++)
     {
         record[i] = createRandomRecord();
-        qDebug() << record[i].getProducer();
     }
+   // fillingTable(10);
+
     qDebug() << "Рандомная запись" << indexOfRecord << "создана";
     loadRecord( record[indexOfRecord] ); //показать их
     qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
@@ -140,6 +143,11 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->weight->setValue(value.getWeight());
     ui->cost->setValue(value.getCost());
     ui->date->setDate(value.getmyDate());
+    qDebug() << value.getmyDate();
+
+
+}
+void MainWindow::initializationTable (int rows, int columns) {
     ///////////////////вывод на table
 //    Колонка	Формат
 //    Название модели	Полностью
@@ -150,16 +158,28 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
     ui->spisok->verticalHeader()->setStretchLastSection(true);
 
-    ui->spisok->setRowCount(10);
+    QStringList horizontalHeaders;
+    horizontalHeaders << "Название модели" << "Цена (руб)";
+    ui->spisok->setHorizontalHeaderLabels(horizontalHeaders);
 
-    for ( int rows=0; rows<ui->spisok->rowCount();  rows++)
-    {
-            ui->spisok->setItem(rows,0,new QTableWidgetItem(record[rows].getNameOfModel()));
-            ui->spisok->setItem(rows,1,new QTableWidgetItem(QString::number(record[rows].getCost()))); //не в строках, а в интах
-     }
+    ui->spisok->setRowCount(rows);
+    ui->spisok->setColumnCount(columns);
+//    ui->spisok->hideRow(0);
 
 
 }
+
+
+void MainWindow::fillingTable(int rows) {
+
+    for ( int i=0; i < rows;  i++)
+    {
+            ui->spisok->setItem(rows,0,new QTableWidgetItem(record[rows].getNameOfModel()));
+            ui->spisok->setItem(i,1 ,new QTableWidgetItem(QString::number(record[rows].getCost()))); //не в строках, а в интах
+     }
+
+}
+
 
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
@@ -210,11 +230,14 @@ void MainWindow::createWindow() {
 
     setWindowTitle("Почти курсач");
 
-    ui->producer->addItems(producer);
-    ui->category->addItems(category);
+    ui->producer->addItems(producerList);
+    ui->category->addItems(categoryList);
 
 
    loadRecord( record[indexOfRecord] ); //первая инициализация
    //по-другому не получилось
+
+   initializationTable(11, 2);
+
 
 }

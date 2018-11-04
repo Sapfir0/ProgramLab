@@ -19,12 +19,6 @@ private:
     int cost; //Цена
     QDate date; //Дата
 
-    //перекинь это в класс фотобейс
-    //Инициализируйте static QList вне объявления класса.
-    //static const QList<QString> MyClass::list={"1", "2"};
-    QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
-    QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};
-    QStringList nameOfModelList = { "GH-4", "TY-3", "Porec", "Revolution", "Фото", "GEK", "KEK", "I" };
 
 public:
     fotobase();

@@ -34,6 +34,10 @@ public:
 
     void sorting();
 
+    void initializationTable(int,int);
+
+    void fillingTable(int rows);
+
 
 private slots:
 
@@ -50,6 +54,12 @@ private:
     fotobase record[10]; //10 экземпляров
     int indexOfRecord = 1; //это счетчик [1,10]
 
+    //перекинь это в класс фотобейс
+    //Инициализируйте static QList вне объявления класса.
+    //static const QList<QString> MyClass::list={"1", "2"};
+    QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
+    QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};
+    QStringList nameOfModelList = { "GH-4", "TY-3", "Porec", "Revolution", "Фото", "GEK", "KEK", "I" };
 
 };
 
