@@ -120,7 +120,7 @@ void MainWindow::on_filling_clicked()
     {
         record[i] = createRandomRecord();
     }
-   // fillingTable(10);
+    fillingTable(10);
 
     qDebug() << "Рандомная запись" << indexOfRecord << "создана";
     loadRecord( record[indexOfRecord] ); //показать их
@@ -128,6 +128,15 @@ void MainWindow::on_filling_clicked()
 
 }
 
+void MainWindow::fillingTable(int rows) {
+
+    for ( int nrows=0; nrows < rows;  nrows++)
+    {
+            ui->spisok->setItem(nrows,0,new QTableWidgetItem(record[nrows].getNameOfModel())); //берет одинаковые данные
+            ui->spisok->setItem(nrows,1 ,new QTableWidgetItem(QString::number(record[nrows].getCost())));
+     }
+
+}
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
 {
     //set ui from value;
@@ -169,16 +178,6 @@ void MainWindow::initializationTable (int rows, int columns) {
 
 }
 
-
-void MainWindow::fillingTable(int rows) {
-
-    for ( int i=0; i < rows;  i++)
-    {
-            ui->spisok->setItem(rows,0,new QTableWidgetItem(record[rows].getNameOfModel()));
-            ui->spisok->setItem(i,1 ,new QTableWidgetItem(QString::number(record[rows].getCost()))); //не в строках, а в интах
-     }
-
-}
 
 
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
