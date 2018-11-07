@@ -130,10 +130,10 @@ void MainWindow::on_filling_clicked()
 
 void MainWindow::fillingTable(int rows) {
 
-    for ( int nrows=0; nrows < rows;  nrows++)
+    for ( int rowsCount=0; rowsCount<rows; rowsCount++)
     {
-            ui->spisok->setItem(nrows,0,new QTableWidgetItem(record[nrows].getNameOfModel())); //берет одинаковые данные
-            ui->spisok->setItem(nrows,1 ,new QTableWidgetItem(QString::number(record[nrows].getCost())));
+            ui->spisok->setItem(rowsCount, 0, new QTableWidgetItem(record[rowsCount].getNameOfModel())); //берет одинаковые данные
+            ui->spisok->setItem(rowsCount, 1, new QTableWidgetItem(QString::number(record[rowsCount].getCost())));
      }
 
 }
@@ -151,11 +151,10 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->size->setText(value.getSize());
     ui->weight->setValue(value.getWeight());
     ui->cost->setValue(value.getCost());
-    ui->date->setDate(value.getmyDate());
-   // qDebug() << value.getmyDate();
-
-
+    ui->date->setDate(value.getmyDate());   
 }
+
+
 void MainWindow::initializationTable (int rows, int columns) {
     ///////////////////вывод на table
 //    Колонка	Формат
@@ -167,32 +166,38 @@ void MainWindow::initializationTable (int rows, int columns) {
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
     ui->spisok->verticalHeader()->setStretchLastSection(true);
 
-    QStringList horizontalHeaders;
-    horizontalHeaders << "Название модели" << "Цена (руб)";
+    QStringList horizontalHeaders = { "Название модели" , "Цена (руб)" };
     ui->spisok->setHorizontalHeaderLabels(horizontalHeaders);
 
     ui->spisok->setRowCount(rows);
     ui->spisok->setColumnCount(columns);
 
-    ui->spisok->hideRow(0); //т.к.  первая строчка нулевая
-
-
+    //ui->spisok->hideRow(0); //т.к.  первая строчка нулевая
+    //const QStringList enum_ = { "0","1","2","3","4","5","6","7","8","9","10"};
+    //ui->spisok->setVerticalHeaderLabels(enum_);
 }
-
 
 
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
+    if (ui->nameOfModel->text() == nullptr )
+        return;
+
     record[indexOfRecord] = createRecord(); //запишем в текущий record значения из ui
     qDebug() << "Запись" << indexOfRecord << "создана";
     loadRecord( record[indexOfRecord] ); //показать их
     qDebug() << "Запись" << indexOfRecord << "загружена";
+
+    ui->spisok->setItem( indexOfRecord, 0, new QTableWidgetItem(record[indexOfRecord].getNameOfModel())  );
+    ui->spisok->setItem( indexOfRecord, 1, new QTableWidgetItem(QString::number(record[indexOfRecord].getCost()))  );
+
 }
 
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
 
 }
+
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
     loadRecord(record[indexOfRecord]);
@@ -202,7 +207,7 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
 
 void MainWindow::on_spinWriting_valueChanged(int arg1) //Spinbox изменил значение
 {
-    indexOfRecord = arg1;
+    indexOfRecord = arg1-1; //вычтем 1 чтобы в спине было значение [1,10], а в таблице  [0,9]
     loadRecord( record[indexOfRecord] );
 
     ui->spisok->selectRow(indexOfRecord);
@@ -235,11 +240,9 @@ void MainWindow::createWindow() {
     ui->producer->addItems(producerList);
     ui->category->addItems(categoryList);
 
-
    loadRecord( record[indexOfRecord] ); //первая инициализация
-   //по-другому не получилось
 
-   initializationTable(11, 2);
+   initializationTable(10, 2);
 
 
 }

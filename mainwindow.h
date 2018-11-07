@@ -51,8 +51,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    fotobase record[10]; //10 экземпляров
-    int indexOfRecord = 1; //это счетчик [1,10]
+    fotobase record[11]; //10 экземпляров
+    int indexOfRecord = 0; //это счетчик [1,10] мухах
 
     //перекинь это в класс фотобейс
     //Инициализируйте static QList вне объявления класса.
