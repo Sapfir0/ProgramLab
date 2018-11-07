@@ -59,7 +59,7 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
     write.setCost(cost);
     write.setmyDate(mydata);
 
-    qDebug() << write.getMatrRes();
+   // qDebug() << write.getMatrRes();
 
     return write;
 }
@@ -152,7 +152,7 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->weight->setValue(value.getWeight());
     ui->cost->setValue(value.getCost());
     ui->date->setDate(value.getmyDate());
-    qDebug() << value.getmyDate();
+   // qDebug() << value.getmyDate();
 
 
 }
@@ -163,7 +163,7 @@ void MainWindow::initializationTable (int rows, int columns) {
 //    Цена (руб)	В формате целых чисел
 
     ui->spisok->setShowGrid(true);
-    ui->spisok->setSelectionMode(QAbstractItemView::SingleSelection);
+    //ui->spisok->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
     ui->spisok->verticalHeader()->setStretchLastSection(true);
 
@@ -173,7 +173,8 @@ void MainWindow::initializationTable (int rows, int columns) {
 
     ui->spisok->setRowCount(rows);
     ui->spisok->setColumnCount(columns);
-//    ui->spisok->hideRow(0);
+
+    ui->spisok->hideRow(0); //т.к.  первая строчка нулевая
 
 
 }
@@ -203,6 +204,8 @@ void MainWindow::on_spinWriting_valueChanged(int arg1) //Spinbox изменил 
 {
     indexOfRecord = arg1;
     loadRecord( record[indexOfRecord] );
+
+    ui->spisok->selectRow(indexOfRecord);
     qDebug() << "Запись" << indexOfRecord << "загружена";
 }
 
