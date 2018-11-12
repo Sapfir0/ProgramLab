@@ -1,6 +1,8 @@
 <RCC>
-    <qresource prefix="/img" lang="ru">
+    <qresource lang="ru" prefix="/img">
         <file>What+everyones+thinking+dad+im+gonna+hill+him+if.jpg</file>
         <file>95579c89365128e9322bfd247b353bc6.jpg</file>
+        <file>icons8-linux-26.png</file>
+        <file>icons8-windows-xp-26.png</file>
     </qresource>
 </RCC>

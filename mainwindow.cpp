@@ -166,7 +166,7 @@ void MainWindow::initializationTable (int rows, int columns) {
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
     ui->spisok->verticalHeader()->setStretchLastSection(true);
 
-    QStringList horizontalHeaders = { "Название модели" , "Цена (руб)" };
+    const QStringList horizontalHeaders = { "Название модели" , "Цена (руб)" };
     ui->spisok->setHorizontalHeaderLabels(horizontalHeaders);
 
     ui->spisok->setRowCount(rows);
