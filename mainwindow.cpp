@@ -5,6 +5,7 @@
 
 #include <QRandomGenerator>
 #include "randomfunctions.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -59,8 +60,6 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
     write.setCost(cost);
     write.setmyDate(mydata);
 
-   // qDebug() << write.getMatrRes();
-
     return write;
 }
 fotobase MainWindow::createRandomRecord() //тут ошибка
@@ -82,17 +81,17 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
     double whatismatrres;
     bool analogOrNot = randomBool();
     if ( analogOrNot == true)
-        whatismatrres = my_rand(0.01, 20.00);
+        whatismatrres = workingRandom(0.05, 20.00);
     else
         whatismatrres = 2.0;
-
 
     QString strProducer = producerList.at(rand()%producerList.size());
     QString size = randSize();
     int weight = rand() % 8000 + 100 ;
     int cost = rand() % 150000  + 1000;
 
-    QDate mydata = randomDate(mydata);
+    QDate mydata;
+    mydata = randomDate(mydata);
 
     write.setNameOfModel(ModelsName);
     write.setCategory(strCategory);
@@ -166,21 +165,14 @@ void MainWindow::initializationTable (int rows, int columns) {
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
     ui->spisok->verticalHeader()->setStretchLastSection(true);
 
-    const QStringList horizontalHeaders = { "Название модели" , "Цена (руб)" };
-    ui->spisok->setHorizontalHeaderLabels(horizontalHeaders);
-
     ui->spisok->setRowCount(rows);
     ui->spisok->setColumnCount(columns);
-
-    //ui->spisok->hideRow(0); //т.к.  первая строчка нулевая
-    //const QStringList enum_ = { "0","1","2","3","4","5","6","7","8","9","10"};
-    //ui->spisok->setVerticalHeaderLabels(enum_);
 }
 
 
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
-    if (ui->nameOfModel->text() == nullptr )
+    if (ui->nameOfModel->text() == nullptr ) //пустая строка
         return;
 
     record[indexOfRecord] = createRecord(); //запишем в текущий record значения из ui
@@ -190,7 +182,6 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
     ui->spisok->setItem( indexOfRecord, 0, new QTableWidgetItem(record[indexOfRecord].getNameOfModel())  );
     ui->spisok->setItem( indexOfRecord, 1, new QTableWidgetItem(QString::number(record[indexOfRecord].getCost()))  );
-
 }
 
 void MainWindow::sorting() {
@@ -243,6 +234,5 @@ void MainWindow::createWindow() {
    loadRecord( record[indexOfRecord] ); //первая инициализация
 
    initializationTable(10, 2);
-
 
 }

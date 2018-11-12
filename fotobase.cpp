@@ -17,6 +17,7 @@ fotobase::fotobase()
 
 int fotobase::compare(const fotobase& c1, const fotobase& c2) {
     //if (c1.category!=c2.category) return c1.category - c2.category;
+    // Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
 
 }
 

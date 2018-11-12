@@ -29,6 +29,16 @@
             <property name="styleSheet">
              <string notr="true"/>
             </property>
+            <column>
+             <property name="text">
+              <string>Название модели</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Цена (руб)</string>
+             </property>
+            </column>
            </widget>
           </item>
           <item>
