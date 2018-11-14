@@ -6,6 +6,8 @@
 #include <QRandomGenerator>
 #include "randomfunctions.h"
 
+#include <algorithm>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -115,24 +117,27 @@ void MainWindow::filling() {
 
 void MainWindow::on_filling_clicked()
 {
-    for (int i=0; i<=9; i++)
+    for (int i = 0; i < 10; i++)
     {
         record[i] = createRandomRecord();
     }
-    fillingTable(10);
+    fillingTable(record.size());
 
     qDebug() << "Рандомная запись" << indexOfRecord << "создана";
     loadRecord( record[indexOfRecord] ); //показать их
     qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
-
 }
 
 void MainWindow::fillingTable(int rows) {
 
     for ( int rowsCount=0; rowsCount<rows; rowsCount++)
     {
-            ui->spisok->setItem(rowsCount, 0, new QTableWidgetItem(record[rowsCount].getNameOfModel())); //берет одинаковые данные
-            ui->spisok->setItem(rowsCount, 1, new QTableWidgetItem(QString::number(record[rowsCount].getCost())));
+        QTableWidgetItem *item = new QTableWidgetItem(record[rowsCount].getNameOfModel());
+        item->setFlags(item->flags() ^ Qt::ItemIsEditable);
+        ui->spisok->setItem(rowsCount, 0, item); //берет одинаковые данные
+        item = new QTableWidgetItem(QString::number(record[rowsCount].getCost()));
+                item->setFlags(item->flags() ^ Qt::ItemIsEditable);
+        ui->spisok->setItem(rowsCount, 1, item);
      }
 
 }
@@ -161,9 +166,14 @@ void MainWindow::initializationTable (int rows, int columns) {
 //    Цена (руб)	В формате целых чисел
 
     ui->spisok->setShowGrid(true);
-    //ui->spisok->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
     ui->spisok->verticalHeader()->setStretchLastSection(true);
+    /*for (int i=0; i<rows; i++)
+        for (int j=0; j<columns; j++)
+        {
+            QTableWidgetItem *item = new QTableWidgetItem();
+            item->setFlags(item->flags() ^ Qt::ItemIsEditable);
+        }*/
 
     ui->spisok->setRowCount(rows);
     ui->spisok->setColumnCount(columns);
@@ -186,7 +196,7 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
-
+    //std::sort(record.begin(), record.end());
 }
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
@@ -210,6 +220,7 @@ void MainWindow::createWindow() {
 
     QRegExp AcceptIter ("^[a-zA-zа-яА-Я]\\w{0,29}");
     QValidator *validno = new QRegExpValidator(AcceptIter, this);
+    record.resize(10);
     ui->nameOfModel->setValidator(validno);
 
     connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );

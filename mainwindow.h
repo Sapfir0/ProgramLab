@@ -51,7 +51,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    fotobase record[11]; //10 экземпляров
+    QVector <fotobase> record; //10 экземпляров
     int indexOfRecord = 0; //это счетчик [1,10] мухах
 
     //перекинь это в класс фотобейс

@@ -15,10 +15,50 @@ fotobase::fotobase()
     date.setDate(2000, 1,1);
 }
 
-int fotobase::compare(const fotobase& c1, const fotobase& c2) {
+int fotobase::compare(const fotobase& firstI, const fotobase& secondI) {
     //if (c1.category!=c2.category) return c1.category - c2.category;
     // Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
+    if ( firstI.category != secondI.category )
+    {
+        if ( firstI.category < secondI.category)
+            return  -1;
+        else
+            return  1;
+    }
 
+    if ( firstI.matrixRes != secondI.matrixRes )
+    {
+        if ( firstI.matrixRes < secondI.matrixRes)
+            return  -1;
+        else
+            return  1;
+    }
+
+    if ( firstI.cost != secondI.cost )
+    {
+        if ( firstI.cost < secondI.cost )
+            return  -1;
+        else
+            return  1;
+    }
+
+    if ( firstI.producer != secondI.producer )
+    {
+        if ( firstI.producer < secondI.producer )
+            return  -1;
+        else
+            return  1;
+    }
+
+    if ( firstI.nameOfModel != secondI.nameOfModel )
+    {
+        if ( firstI.nameOfModel < secondI.nameOfModel )
+            return  -1;
+        else
+            return  1;
+    }
+
+        return 0;
 }
 
 void fotobase::setNameOfModel(QString nameofModelclass){
