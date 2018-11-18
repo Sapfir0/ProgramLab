@@ -18,22 +18,22 @@ fotobase::fotobase()
 //fotobase fotobase::operator <(fotobase record) {
 //    record.category
 //}
-bool fotobase::operator >(fotobase record) {
+bool fotobase::operator >(const fotobase &record) {
     return compare(*this, record) > 0;
 }
-bool fotobase::operator >=(fotobase record) {
+bool fotobase::operator >=(const fotobase &record) {
     return compare(*this, record) >= 0;
 }
-bool fotobase::operator <=(fotobase record) {
+bool fotobase::operator <=(const fotobase &record) {
     return compare(*this, record) <= 0;
 }
-bool fotobase::operator <(const fotobase record) {
+bool fotobase::operator <(const fotobase &record) {
     return compare(*this, record) < 0;
 }
-bool fotobase::operator ==(fotobase record) {
+bool fotobase::operator ==(const fotobase &record) {
     return compare(*this, record) == 0;
 }
-bool fotobase::operator !=(fotobase record) {
+bool fotobase::operator !=(const fotobase &record) {
     return compare(*this, record) != 0;
 }
 

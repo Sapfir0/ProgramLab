@@ -122,7 +122,7 @@ void MainWindow::on_filling_clicked()
     {
         record[i] = createRandomRecord();
     }
-    //sorting();
+    sorting();
     fillingTable(record.size());
 
     qDebug() << "Рандомная запись" << indexOfRecord << "создана";
