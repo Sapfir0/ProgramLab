@@ -7,7 +7,7 @@
 #include <QTime>
 
 bool randomBool()  {
-    return 0 + (rand() % (1 - 0 + 1)) == 2 / (1 << 1);
+    return 0 + (rand() % (1 - 0 + 1)) == 1;
 }
 
 QString randSize() {

@@ -22,7 +22,14 @@ private:
 
 public:
     fotobase();
-    int compare(const fotobase&, const fotobase&);
+    static int compare(const fotobase&, const fotobase&);
+    bool operator <(const fotobase);
+    bool operator >(const fotobase);
+    bool operator <=(const fotobase);
+    bool operator >=(const fotobase);
+    bool operator ==(const fotobase);
+    bool operator !=(const fotobase);
+   // void operator =(fotobase write);
 
     void setNameOfModel(QString nameofModelclass);
     QString getNameOfModel();

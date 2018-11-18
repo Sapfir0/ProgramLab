@@ -7,6 +7,7 @@
 #include "randomfunctions.h"
 
 #include <algorithm>
+#include <functional>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -121,11 +122,16 @@ void MainWindow::on_filling_clicked()
     {
         record[i] = createRandomRecord();
     }
+    //sorting();
     fillingTable(record.size());
 
     qDebug() << "Рандомная запись" << indexOfRecord << "создана";
     loadRecord( record[indexOfRecord] ); //показать их
     qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
+
+//    std::function<int(fotobase, fotobase)> foo;
+//    foo = fotobase::compare;
+//    foo();
 }
 
 void MainWindow::fillingTable(int rows) {
@@ -133,8 +139,9 @@ void MainWindow::fillingTable(int rows) {
     for ( int rowsCount=0; rowsCount<rows; rowsCount++)
     {
         QTableWidgetItem *item = new QTableWidgetItem(record[rowsCount].getNameOfModel());
-        item->setFlags(item->flags() ^ Qt::ItemIsEditable);
-        ui->spisok->setItem(rowsCount, 0, item); //берет одинаковые данные
+                item->setFlags(item->flags() ^ Qt::ItemIsEditable);
+        ui->spisok->setItem(rowsCount, 0, item);
+
         item = new QTableWidgetItem(QString::number(record[rowsCount].getCost()));
                 item->setFlags(item->flags() ^ Qt::ItemIsEditable);
         ui->spisok->setItem(rowsCount, 1, item);
@@ -196,7 +203,9 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
-    //std::sort(record.begin(), record.end());
+    std::sort(record.begin(), record.end());
+    qDebug() << "Записи отсортированы";
+
 }
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить

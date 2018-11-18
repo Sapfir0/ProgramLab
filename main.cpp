@@ -13,12 +13,12 @@ int main(int argc, char *argv[])
      OS = "Linux";
 #endif
 
-     if ( OS == "Windows")     {
-        qApp->setWindowIcon(QIcon(":/img/icons8-windows-xp-26.png"));
-     }
-     else if ( OS == "Linux")     {
-         qApp->setWindowIcon(QIcon(":/img/icons8-linux-26.png"));
-     }
+//     if ( OS == "Windows")     {
+//        qApp->setWindowIcon(QIcon(":/img/icons8-windows-xp-26.png"));
+//     }
+//     else if ( OS == "Linux")     {
+//         qApp->setWindowIcon(QIcon(":/img/icons8-linux-26.png"));
+//     }
 
 
     MainWindow w;
