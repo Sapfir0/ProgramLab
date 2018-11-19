@@ -23,18 +23,23 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setCheckRes() {
-
-    if (ui->analogOrNot->isChecked())
-        ui->matrixResolution->setEnabled(true);
-    else
-        ui->matrixResolution->setEnabled(false);
+    if ( callEnableDisable == 1)
+    {
+        if (ui->analogOrNot->isChecked())
+            ui->matrixResolution->setEnabled(true);
+        else
+            ui->matrixResolution->setEnabled(false);
+    }
 }
 
 void MainWindow::setCheckPolProf() {
-    if (ui->category->currentIndex() == 2)
-        ui->changeLens->setEnabled(true);
-    else
-        ui->changeLens->setEnabled(false);
+    if ( callEnableDisable == 1)
+    {
+        if (ui->category->currentIndex() == 2)
+            ui->changeLens->setEnabled(true);
+        else
+            ui->changeLens->setEnabled(false);
+    }
 }
 
 fotobase MainWindow::createRecord() //из ui в экземпляр класса
@@ -126,7 +131,7 @@ void MainWindow::on_filling_clicked()
     fillingTable(record.size());
 
     qDebug() << "Рандомная запись" << indexOfRecord << "создана";
-    loadRecord( record[indexOfRecord] ); //показать их
+ //   loadRecord( record[indexOfRecord] ); //показать их
     qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
 
 }
@@ -334,6 +339,11 @@ void MainWindow::on_deleteBtn_clicked()
     delete ditem;
     delete ditem2;
 
+    int temp = ui->spisok->currentRow();
+    if ( ui->spisok->currentRow() == 0)
+        ui->spisok->selectRow(temp++);
+    else
+        ui->spisok->selectRow(temp--);
 }
 
 
@@ -341,4 +351,5 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
 {
     qDebug() << currentRow;
     indexOfRecord = currentRow;
+    loadRecord( record[indexOfRecord] );
 }
