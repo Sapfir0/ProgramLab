@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     createWindow();
 }
-
+//delete is dont working correctly
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -129,9 +129,6 @@ void MainWindow::on_filling_clicked()
     loadRecord( record[indexOfRecord] ); //показать их
     qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
 
-//    std::function<int(fotobase, fotobase)> foo;
-//    foo = fotobase::compare;
-//    foo();
 }
 
 void MainWindow::fillingTable(int rows) {
@@ -139,11 +136,9 @@ void MainWindow::fillingTable(int rows) {
     for ( int rowsCount=0; rowsCount<rows; rowsCount++)
     {
         QTableWidgetItem *item = new QTableWidgetItem(record[rowsCount].getNameOfModel());
-                item->setFlags(item->flags() ^ Qt::ItemIsEditable);
         ui->spisok->setItem(rowsCount, 0, item);
 
         item = new QTableWidgetItem(QString::number(record[rowsCount].getCost()));
-                item->setFlags(item->flags() ^ Qt::ItemIsEditable);
         ui->spisok->setItem(rowsCount, 1, item);
      }
 
@@ -171,16 +166,12 @@ void MainWindow::initializationTable (int rows, int columns) {
 //    Колонка	Формат
 //    Название модели	Полностью
 //    Цена (руб)	В формате целых чисел
-
     ui->spisok->setShowGrid(true);
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
     ui->spisok->verticalHeader()->setStretchLastSection(true);
-    /*for (int i=0; i<rows; i++)
-        for (int j=0; j<columns; j++)
-        {
-            QTableWidgetItem *item = new QTableWidgetItem();
-            item->setFlags(item->flags() ^ Qt::ItemIsEditable);
-        }*/
+    ui->spisok->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->spisok->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->spisok->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->spisok->setRowCount(rows);
     ui->spisok->setColumnCount(columns);
@@ -199,6 +190,10 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
     ui->spisok->setItem( indexOfRecord, 0, new QTableWidgetItem(record[indexOfRecord].getNameOfModel())  );
     ui->spisok->setItem( indexOfRecord, 1, new QTableWidgetItem(QString::number(record[indexOfRecord].getCost()))  );
+
+    callEnableDisable=0;
+    reset();
+    editMode(indexOfRecord, false);
 }
 
 void MainWindow::sorting() {
@@ -213,17 +208,31 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     loadRecord(record[indexOfRecord]);
     qDebug() << "Запись" << indexOfRecord << "загружена";
 
+    callEnableDisable=0;
+    reset();
+    editMode(indexOfRecord, false);
+
 }
 
-void MainWindow::on_spinWriting_valueChanged(int arg1) //Spinbox изменил значение
-{
-    indexOfRecord = arg1-1; //вычтем 1 чтобы в спине было значение [1,10], а в таблице  [0,9]
-    loadRecord( record[indexOfRecord] );
+void MainWindow::enableDisableEdit(bool arg) {
 
-    ui->spisok->selectRow(indexOfRecord);
-    qDebug() << "Запись" << indexOfRecord << "загружена";
+    ui->analogOrNot->setEnabled(arg);
+    ui->category->setEnabled(arg);
+    ui->cost->setEnabled(arg);
+    ui->date->setEnabled(arg);
+    ui->nameOfModel->setEnabled(arg);
+    ui->producer->setEnabled(arg);
+    ui->size->setEnabled(arg);
+    ui->weight->setEnabled(arg);
+
+    ui->saveBtn->setVisible(arg);
+    ui->denied->setVisible(arg);
+
+    ui->filling->setEnabled(!arg);
+    ui->deleteBtn->setEnabled(!arg);
+    ui->createBtn->setEnabled(!arg);
+
 }
-
 
 void MainWindow::createWindow() {
 
@@ -235,8 +244,7 @@ void MainWindow::createWindow() {
     connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
     connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
 
-    ui->changeLens->setEnabled(false);
-    ui->matrixResolution->setEnabled(false);
+    enableDisableEdit(false);
 
     ui->size->setCursorPosition(0);
     ui->size->setInputMask("00-00-00 мм.");  //нужна маска
@@ -255,4 +263,82 @@ void MainWindow::createWindow() {
 
    initializationTable(10, 2);
 
+   ui->saveBtn->hide();
+   ui->denied->hide();
+   ui->spinWriting->setDisabled(true);
+
+}
+
+void MainWindow::on_editBtn_clicked()
+{
+    if ( callEnableDisable == 0)    {
+        editMode(indexOfRecord, true);
+        qDebug() << "edit";
+        callEnableDisable=1;
+    }
+    else if(callEnableDisable ==1) {
+        editMode(indexOfRecord, false);
+        qDebug() << "!edit";
+        reset();
+        callEnableDisable=0;
+    }
+
+}
+void MainWindow::reset() {
+
+    ui->nameOfModel->setText("");
+    ui->category->setCurrentText("Профессиональный");
+    ui->analogOrNot->setChecked(false);
+    setCheckRes();
+    ui->producer->setCurrentText("Nikon");
+    ui->matrixResolution->setValue(2.00);
+    setCheckPolProf();
+    ui->changeLens->setChecked(false);
+    ui->size->setText("00-00-00");
+    ui->weight->setValue(100);
+    ui->cost->setValue(0);
+    QDate data;
+    data.setDate(2000, 1,1);
+    ui->date->setDate(data);
+}
+
+void MainWindow::on_createBtn_clicked()
+{
+    record[indexOfRecord] = createRecord();
+    qDebug() << "create record:" << indexOfRecord << record[indexOfRecord].getNameOfModel() << record[indexOfRecord].getCost() ;
+    loadRecord(record[indexOfRecord]);
+    QTableWidgetItem *item = new QTableWidgetItem(record[indexOfRecord].getNameOfModel());
+    QTableWidgetItem *item2 = new QTableWidgetItem(record[indexOfRecord].getCost());
+    ui->spisok->setItem(indexOfRecord, 0, item);
+    ui->spisok->setItem(indexOfRecord, 1, item2);
+    callEnableDisable=1;
+    editMode(indexOfRecord, true);
+}
+void MainWindow::editMode(int row, bool arg) {
+
+    if ( arg)
+        ui->statusBar->showMessage("Режим редактирования");
+    else
+        ui->statusBar->showMessage(" ");
+
+    enableDisableEdit(arg);
+    ui->spisok->selectRow(row);
+}
+
+void MainWindow::on_deleteBtn_clicked()
+{
+    qDebug() << "del";
+
+    QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
+    QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
+    delete ditem;
+    delete ditem2;
+
+}
+
+
+void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    qDebug() << currentRow;
+    indexOfRecord = currentRow;
 }

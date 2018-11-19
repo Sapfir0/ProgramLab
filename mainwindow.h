@@ -45,18 +45,26 @@ private slots:
     void setCheckPolProf();
     void on_saveBtn_clicked(); //нажатие на кнопку Сохранить
     void on_denied_clicked(); //нажатие на кнопку Отменить
-    void on_spinWriting_valueChanged(int arg1);
+    void editMode(int,bool);
+    void enableDisableEdit(bool);
+    void reset();
 
     void on_filling_clicked();
+
+    void on_createBtn_clicked();
+
+    void on_editBtn_clicked();
+
+    void on_deleteBtn_clicked();
+
+    void on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 
 private:
     Ui::MainWindow *ui;
     QVector <fotobase> record; //10 экземпляров
     int indexOfRecord = 0; //это счетчик [1,10] мухах
 
-    //перекинь это в класс фотобейс
-    //Инициализируйте static QList вне объявления класса.
-    //static const QList<QString> MyClass::list={"1", "2"};
+    int callEnableDisable = 0;
     QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
     QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};
     QStringList nameOfModelList = { "GH-4", "TY-3", "Cyber-shot DSC-RX100", "Revolution", "X-A5", "EOS 77D", "TG-5", "Pen E-PL9" };

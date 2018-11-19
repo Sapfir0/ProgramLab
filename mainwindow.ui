@@ -63,19 +63,6 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
            <widget class="QLabel" name="label">
             <property name="text">
              <string>Создать запись</string>
@@ -262,6 +249,38 @@
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
+             <widget class="QPushButton" name="createBtn">
+              <property name="text">
+               <string>Создать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="editBtn">
+              <property name="text">
+               <string>Редактировать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="deleteBtn">
+              <property name="text">
+               <string>Удалить</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="filling">
+            <property name="text">
+             <string>Заполнить</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_14">
+            <item>
              <widget class="QPushButton" name="saveBtn">
               <property name="text">
                <string>Сохранить</string>
@@ -276,13 +295,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QPushButton" name="filling">
-            <property name="text">
-             <string>Заполнить</string>
-            </property>
-           </widget>
           </item>
           <item>
            <spacer name="verticalSpacer">
@@ -311,7 +323,7 @@
      <x>0</x>
      <y>0</y>
      <width>853</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
