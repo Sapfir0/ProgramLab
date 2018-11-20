@@ -198,6 +198,8 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
     callEnableDisable=0;
     reset();
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
     editMode(indexOfRecord, false);
 }
 
@@ -215,6 +217,8 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
 
     callEnableDisable=0;
     reset();
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
     editMode(indexOfRecord, false);
 
 }
@@ -288,6 +292,8 @@ void MainWindow::on_editBtn_clicked()
     else if(callEnableDisable ==1) {
         editMode(indexOfRecord, false);
         qDebug() << "!edit";
+        ui->changeLens->setEnabled(false);
+        ui->matrixResolution->setEnabled(false);
         reset();
         callEnableDisable=0;
     }
@@ -359,5 +365,7 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
 
     callEnableDisable=0;
     //reset();
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
     editMode(indexOfRecord, false);
 }
