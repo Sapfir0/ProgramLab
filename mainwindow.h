@@ -7,6 +7,7 @@
 #include <QDate>
 #include "fotobase.h"
 #include <QStringList>
+#include <vector>
 
 namespace Ui {
 class MainWindow;
@@ -68,7 +69,7 @@ private:
     QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
     QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};
     QStringList nameOfModelList = { "GH-4", "TY-3", "Cyber-shot DSC-RX100", "Revolution", "X-A5", "EOS 77D", "TG-5", "Pen E-PL9" };
-
+    std::vector<double> resolution = { 2.45, 5.67, 16,73, 12.6, 11.23, 32.12};
 };
 
 

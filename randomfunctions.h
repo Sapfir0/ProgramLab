@@ -28,10 +28,11 @@ int my_rand(int MinValue, int MaxValue) {
     return (MaxValue - MinValue)*static_cast<int>(qrand())/RAND_MAX + MinValue;
 }
 
-template <class T>
-T workingRandom(T MinValue, T MaxValue) {
-    return static_cast<T>((qrand()%RAND_MAX)%(int)(MaxValue - MinValue) + MinValue);
+//template <class T>
+int workingRandom(int MinValue, int MaxValue) {
+    return static_cast<int>((qrand()%RAND_MAX)%(int)(MaxValue - MinValue) + MinValue);
 }
+
 
 /*int workingRandom(int MinValue, int MaxValue) {
     return ((int)(qrand())%RAND_MAX)%(MaxValue - MinValue) + MinValue;

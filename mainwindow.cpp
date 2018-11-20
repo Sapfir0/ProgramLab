@@ -89,7 +89,7 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
     double whatismatrres;
     bool analogOrNot = randomBool();
     if ( analogOrNot == true)
-        whatismatrres = workingRandom(0.05, 20.00);
+        whatismatrres = resolution.at(qrand()%resolution.size());
     else
         whatismatrres = 2.0;
 
@@ -272,6 +272,10 @@ void MainWindow::createWindow() {
    ui->denied->hide();
    ui->spinWriting->setDisabled(true);
 
+   ui->changeLens->setEnabled(false);
+   ui->matrixResolution->setEnabled(false);
+
+
 }
 
 void MainWindow::on_editBtn_clicked()
@@ -352,4 +356,8 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
     qDebug() << currentRow;
     indexOfRecord = currentRow;
     loadRecord( record[indexOfRecord] );
+
+    callEnableDisable=0;
+    //reset();
+    editMode(indexOfRecord, false);
 }
