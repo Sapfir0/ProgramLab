@@ -29,7 +29,6 @@ public:
 
     fotobase createRandomRecord();
     void denied();
-    void filling();
     void createWindow(); //здесь конструктор класса(хех)
     void createRandomWrite(fotobase write);
 
@@ -64,7 +63,8 @@ private:
     Ui::MainWindow *ui;
     QVector <fotobase> record; //10 экземпляров
     int indexOfRecord = 0; //это счетчик [1,10] мухах
-
+    const int countRecordAndRows=35;
+    bool kostil=0;
     int callEnableDisable = 0;
     QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
     QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};

@@ -5,7 +5,7 @@
 
 #include <QRandomGenerator>
 #include "randomfunctions.h"
-
+#include <QMessageBox>
 #include <algorithm>
 #include <functional>
 
@@ -116,11 +116,6 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
 }
 
 
-void MainWindow::filling() {
-
-
-}
-
 void MainWindow::on_filling_clicked()
 {
     for (int i = 0; i < 10; i++)
@@ -128,7 +123,9 @@ void MainWindow::on_filling_clicked()
         record[i] = createRandomRecord();
     }
     sorting();
-    fillingTable(record.size());
+    fillingTable(ui->spisok->rowCount());
+    if ( ui->spisok->rowCount() < 10)
+        initializationTable(10,2);
 
     qDebug() << "Рандомная запись" << indexOfRecord << "создана";
  //   loadRecord( record[indexOfRecord] ); //показать их
@@ -173,24 +170,28 @@ void MainWindow::initializationTable (int rows, int columns) {
 //    Цена (руб)	В формате целых чисел
     ui->spisok->setShowGrid(true);
     ui->spisok->horizontalHeader()->setStretchLastSection(true);
-    ui->spisok->verticalHeader()->setStretchLastSection(true);
+   // ui->spisok->verticalHeader()->setStretchLastSection(true);
     ui->spisok->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->spisok->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->spisok->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->spisok->setRowCount(rows);
     ui->spisok->setColumnCount(columns);
+
+    //ui->spisok->setItem(rows,1, new QTableWidgetItem "Добавить новую запись");
 }
 
 
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
-    if (ui->nameOfModel->text() == nullptr ) //пустая строка
+    if (ui->nameOfModel->text() == nullptr ) {//пустая строка
+        QMessageBox::warning(nullptr,"Alert", "Название не задано");
         return;
+    }
 
     record[indexOfRecord] = createRecord(); //запишем в текущий record значения из ui
     qDebug() << "Запись" << indexOfRecord << "создана";
-    loadRecord( record[indexOfRecord] ); //показать их
+    //loadRecord( record[indexOfRecord] ); //показать их
     qDebug() << "Запись" << indexOfRecord << "загружена";
 
     ui->spisok->setItem( indexOfRecord, 0, new QTableWidgetItem(record[indexOfRecord].getNameOfModel())  );
@@ -212,7 +213,7 @@ void MainWindow::sorting() {
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
-    loadRecord(record[indexOfRecord]);
+    //loadRecord(record[indexOfRecord]);
     qDebug() << "Запись" << indexOfRecord << "загружена";
 
     callEnableDisable=0;
@@ -220,6 +221,15 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
     editMode(indexOfRecord, false);
+    if (kostil == 1)
+    {
+        QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
+        QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
+        delete ditem;
+        delete ditem2;
+
+        ui->spisok->removeRow(indexOfRecord);
+    }
 
 }
 
@@ -240,45 +250,6 @@ void MainWindow::enableDisableEdit(bool arg) {
     ui->filling->setEnabled(!arg);
     ui->deleteBtn->setEnabled(!arg);
     ui->createBtn->setEnabled(!arg);
-
-}
-
-void MainWindow::createWindow() {
-
-    QRegExp AcceptIter ("^[a-zA-zа-яА-Я]\\w{0,29}");
-    QValidator *validno = new QRegExpValidator(AcceptIter, this);
-    record.resize(10);
-    ui->nameOfModel->setValidator(validno);
-
-    connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
-    connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
-
-    enableDisableEdit(false);
-
-    ui->size->setCursorPosition(0);
-    ui->size->setInputMask("00-00-00 мм.");  //нужна маска
-
-    ui->nameOfModel->setPlaceholderText("Название модели");
-
-    ui->cost->setSuffix(" руб.");
-    ui->weight->setSuffix(" гр.");
-
-    setWindowTitle("Почти курсач");
-
-    ui->producer->addItems(producerList);
-    ui->category->addItems(categoryList);
-
-   loadRecord( record[indexOfRecord] ); //первая инициализация
-
-   initializationTable(10, 2);
-
-   ui->saveBtn->hide();
-   ui->denied->hide();
-   ui->spinWriting->setDisabled(true);
-
-   ui->changeLens->setEnabled(false);
-   ui->matrixResolution->setEnabled(false);
-
 
 }
 
@@ -319,15 +290,25 @@ void MainWindow::reset() {
 
 void MainWindow::on_createBtn_clicked()
 {
-    record[indexOfRecord] = createRecord();
-    qDebug() << "create record:" << indexOfRecord << record[indexOfRecord].getNameOfModel() << record[indexOfRecord].getCost() ;
-    loadRecord(record[indexOfRecord]);
-    QTableWidgetItem *item = new QTableWidgetItem(record[indexOfRecord].getNameOfModel());
-    QTableWidgetItem *item2 = new QTableWidgetItem(record[indexOfRecord].getCost());
-    ui->spisok->setItem(indexOfRecord, 0, item);
-    ui->spisok->setItem(indexOfRecord, 1, item2);
+    if ( countRecordAndRows-ui->spisok->rowCount() <= 1 ) {
+         QMessageBox::warning(nullptr,"Alert", "Превышено максимальное число записей");
+         return;
+    }
+    int var = ui->spisok->rowCount();
+    initializationTable(var+1,2);
+    record[var] = createRecord();
+    //loadRecord(record[var]);
+    QTableWidgetItem *item = new QTableWidgetItem(record[var].getNameOfModel());
+    QTableWidgetItem *item2 = new QTableWidgetItem(record[var].getCost());
+    ui->spisok->setItem(var, 0, item);
+    ui->spisok->setItem(var, 1, item2);
     callEnableDisable=1;
-    editMode(indexOfRecord, true);
+    editMode(var, true);
+    kostil =1;
+    //improvizanalCurrentCellChanged
+
+
+    sorting();
 }
 void MainWindow::editMode(int row, bool arg) {
 
@@ -338,16 +319,23 @@ void MainWindow::editMode(int row, bool arg) {
 
     enableDisableEdit(arg);
     ui->spisok->selectRow(row);
+
+
 }
 
 void MainWindow::on_deleteBtn_clicked()
 {
-    qDebug() << "del";
+    if ( ui->spisok->rowCount() <= 1 ) {
+         QMessageBox::critical(nullptr,"Alert", "Не делай так");
+         return;
+    }
 
     QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
     QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
     delete ditem;
     delete ditem2;
+
+    ui->spisok->removeRow(indexOfRecord);
 
     int temp = ui->spisok->currentRow();
     if ( ui->spisok->currentRow() == 0)
@@ -361,11 +349,51 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
 {
     qDebug() << currentRow;
     indexOfRecord = currentRow;
-    loadRecord( record[indexOfRecord] );
+    //loadRecord( record[indexOfRecord] );
+    if (kostil == 1 ) {
+        callEnableDisable=0;
+        ui->changeLens->setEnabled(false);
+        ui->matrixResolution->setEnabled(false);
+        editMode(indexOfRecord, false);
+        kostil=0;
+    }
+}
 
-    callEnableDisable=0;
-    //reset();
-    ui->changeLens->setEnabled(false);
-    ui->matrixResolution->setEnabled(false);
-    editMode(indexOfRecord, false);
+void MainWindow::createWindow() {
+
+    QRegExp AcceptIter ("^[a-zA-zа-яА-Я]\\w{0,29}");
+    QValidator *validno = new QRegExpValidator(AcceptIter, this);
+    record.resize(countRecordAndRows);
+    ui->nameOfModel->setValidator(validno);
+
+    connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
+    connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
+
+    enableDisableEdit(false);
+
+    ui->size->setCursorPosition(0);
+    ui->size->setInputMask("00-00-00 мм.");  //нужна маска
+
+    ui->nameOfModel->setPlaceholderText("Название модели");
+
+    ui->cost->setSuffix(" руб.");
+    ui->weight->setSuffix(" гр.");
+
+    setWindowTitle("Почти курсач");
+
+    ui->producer->addItems(producerList);
+    ui->category->addItems(categoryList);
+
+   loadRecord( record[indexOfRecord] ); //первая инициализация
+
+   initializationTable(1, 2);
+
+   ui->saveBtn->hide();
+   ui->denied->hide();
+   ui->spinWriting->setDisabled(true);
+
+   ui->changeLens->setEnabled(false);
+   ui->matrixResolution->setEnabled(false);
+
+
 }
