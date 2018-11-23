@@ -29,18 +29,18 @@ public:
     void sorting();
     void initializationTable(int,int);
 
-    void fillingTable(int rows);
+    void fillingTable(int rows); //
 
 
 private slots:
 
-    void setCheckRes();
-    void setCheckPolProf();
+    void setCheckRes();//ui
+    void setCheckPolProf(); //ui
     void on_saveBtn_clicked(); //нажатие на кнопку Сохранить
     void on_denied_clicked(); //нажатие на кнопку Отменить
-    void editMode(int,bool);
-    void enableDisableEdit(bool);
-    void reset();
+    void editMode(int,bool); //режим редактирования
+    void enableDisableEdit(bool); //включение/выключение интерфейса
+    void reset();//сброс интерфейса на дефолт
 
     void on_filling_clicked();
     void on_createBtn_clicked();
@@ -52,13 +52,13 @@ private:
     Ui::MainWindow *ui;  //уй
     QVector <fotobase> record; //записи тут
     int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
-    const int countRecordAndRows=35; //макс число записей
+    const int countRecordAndRows=998; //макс число записей
     bool improvisanalCurrentCellChanged=0; //костылек для выхода из режима редактирования
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
     QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" }; //самодокуентирующийся код
     QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};
     QStringList nameOfModelList = { "GH-4", "TY-3", "Cyber-shot DSC-RX100", "Revolution", "X-A5", "EOS 77D", "TG-5", "Pen E-PL9" };
-    std::vector<double> resolution = { 2.45, 5.67, 16,73, 12.6, 11.23, 32.12};
+    QVector<double> resolution = { 2.45, 5.67, 16,73, 12.6, 11.23, 32.12};
 };
 
 

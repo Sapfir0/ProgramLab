@@ -24,15 +24,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::setCheckRes() {
     if ( callEnableDisable == 1)    {
-        if (ui->analogOrNot->isChecked()) ui->matrixResolution->setEnabled(true);
-        else                              ui->matrixResolution->setEnabled(false);
+        if (ui->analogOrNot->isChecked())
+            ui->matrixResolution->setEnabled(true);
+        else
+            ui->matrixResolution->setEnabled(false);
     }
 }
 
 void MainWindow::setCheckPolProf() {
     if ( callEnableDisable == 1)    {
-        if (ui->category->currentIndex() == 2) ui->changeLens->setEnabled(true);
-        else                                   ui->changeLens->setEnabled(false);
+        if (ui->category->currentIndex() == 2)
+            ui->changeLens->setEnabled(true);
+        else
+            ui->changeLens->setEnabled(false);
     }
 }
 
@@ -101,19 +105,26 @@ fotobase MainWindow::createRandomRecord()
 
 void MainWindow::on_filling_clicked()
 {
-    const int countOfFilling = 10;
-    for (int i = 0; i < countOfFilling; i++)
+    //const int countOfFilling = 10;
+    static int currentRow = 10;
+
+    if ( countRecordAndRows-ui->spisok->rowCount() <= 11 ) {
+         QMessageBox::warning(nullptr,"Alert", "Превышено максимальное число записей");
+         return;
+    }
+
+    for (int i = 0; i < currentRow; i++)
     {
         record[i] = createRandomRecord();
     }
+    for (int i=0;i<currentRow;i++)
+    initializationTable(currentRow,2);
+
     sorting();
-    if ( ui->spisok->rowCount() < countOfFilling)
-        initializationTable(countOfFilling,2);
+
     fillingTable(ui->spisok->rowCount());
 
-    qDebug() << "Рандомная запись" << indexOfRecord << "создана";
- //   loadRecord( record[indexOfRecord] ); //показать их
-    qDebug() << "Рандомная запись" << indexOfRecord << "загружена";
+    currentRow+=10;
 
 }
 
@@ -162,7 +173,6 @@ void MainWindow::initializationTable (int rows, int columns) {
     ui->spisok->setRowCount(rows);
     ui->spisok->setColumnCount(columns);
 
-    //ui->spisok->setItem(rows,1, new QTableWidgetItem "Добавить новую запись");
 }
 
 
@@ -187,7 +197,9 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     ui->matrixResolution->setEnabled(false);
     editMode(indexOfRecord, false);
     ///////////////////
-    fillingTable(ui->spisok->rowCount());
+//    fillingTable(ui->spisok->rowCount());
+//    for (int i=0; i<ui->spisok->rowCount(); i++)
+//        qDebug() << record[i];
     ////////////////////
     sorting();
 }
@@ -195,7 +207,7 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
     std::sort(record.begin(), record.end());
-
+    //fillingTable(ui->spisok->rowCount());
     qDebug() << "Записи отсортированы";
 }
 
@@ -338,7 +350,7 @@ void MainWindow::on_deleteBtn_clicked()
 
 void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
-    qDebug() << currentRow;
+   // qDebug() << currentRow;
     indexOfRecord = currentRow;
     loadRecord( record[indexOfRecord] );
 
