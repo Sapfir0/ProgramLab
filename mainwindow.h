@@ -64,7 +64,7 @@ private:
     QVector <fotobase> record; //10 экземпляров
     int indexOfRecord = 0; //это счетчик [1,10] мухах
     const int countRecordAndRows=35;
-    bool kostil=0;
+    bool improvisanalCurrentCellChanged=0;
     int callEnableDisable = 0;
     QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" };
     QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};

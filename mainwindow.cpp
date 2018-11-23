@@ -207,6 +207,7 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
     std::sort(record.begin(), record.end());
+
     qDebug() << "Записи отсортированы";
 
 }
@@ -221,7 +222,7 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
     editMode(indexOfRecord, false);
-    if (kostil == 1)
+    if (improvisanalCurrentCellChanged == 1)
     {
         QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
         QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
@@ -302,10 +303,16 @@ void MainWindow::on_createBtn_clicked()
     QTableWidgetItem *item2 = new QTableWidgetItem(record[var].getCost());
     ui->spisok->setItem(var, 0, item);
     ui->spisok->setItem(var, 1, item2);
+
+
+    ui->spisok->selectRow(var);
+
     callEnableDisable=1;
     editMode(var, true);
-    kostil =1;
-    //improvizanalCurrentCellChanged
+
+
+    improvisanalCurrentCellChanged =1;
+
 
 
     sorting();
@@ -349,13 +356,15 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
 {
     qDebug() << currentRow;
     indexOfRecord = currentRow;
-    //loadRecord( record[indexOfRecord] );
-    if (kostil == 1 ) {
+    loadRecord( record[indexOfRecord] );
+
+    if (improvisanalCurrentCellChanged == 1 ) {
         callEnableDisable=0;
+        reset();
         ui->changeLens->setEnabled(false);
         ui->matrixResolution->setEnabled(false);
         editMode(indexOfRecord, false);
-        kostil=0;
+        improvisanalCurrentCellChanged=0;
     }
 }
 
