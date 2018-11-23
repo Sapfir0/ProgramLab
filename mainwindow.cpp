@@ -23,22 +23,16 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setCheckRes() {
-    if ( callEnableDisable == 1)
-    {
-        if (ui->analogOrNot->isChecked())
-            ui->matrixResolution->setEnabled(true);
-        else
-            ui->matrixResolution->setEnabled(false);
+    if ( callEnableDisable == 1)    {
+        if (ui->analogOrNot->isChecked()) ui->matrixResolution->setEnabled(true);
+        else                              ui->matrixResolution->setEnabled(false);
     }
 }
 
 void MainWindow::setCheckPolProf() {
-    if ( callEnableDisable == 1)
-    {
-        if (ui->category->currentIndex() == 2)
-            ui->changeLens->setEnabled(true);
-        else
-            ui->changeLens->setEnabled(false);
+    if ( callEnableDisable == 1)    {
+        if (ui->category->currentIndex() == 2) ui->changeLens->setEnabled(true);
+        else                                   ui->changeLens->setEnabled(false);
     }
 }
 
@@ -46,31 +40,20 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 {
     fotobase write;
 
-    QString ModelsName = ui->nameOfModel->text();
-    QString strCategory = ui->category->currentText();
-    bool analogOrNot = ui->analogOrNot->isChecked();
-    QString strProducer = ui->producer->currentText();
-    double whatismatrres = ui->matrixResolution->value();
-    bool changeLens = ui->changeLens->isChecked();
-    QString size = ui->size->text();
-    int weight = ui->weight->value();
-    int cost = ui->cost->value();
-    QDate mydata = ui->date->date();
-
-    write.setNameOfModel(ModelsName);
-    write.setCategory(strCategory);
-    write.setAnalogOrNot(analogOrNot);
-    write.setProducer(strProducer);
-    write.setMatrRes(whatismatrres);
-    write.setChangeLense(changeLens);
-    write.setSize(size);
-    write.setWeight(weight);
-    write.setCost(cost);
-    write.setmyDate(mydata);
+    write.setNameOfModel(ui->nameOfModel->text());
+    write.setCategory(ui->category->currentText());
+    write.setAnalogOrNot(ui->analogOrNot->isChecked());
+    write.setProducer(ui->producer->currentText());
+    write.setMatrRes(ui->matrixResolution->value());
+    write.setChangeLense(ui->changeLens->isChecked());
+    write.setSize(ui->size->text());
+    write.setWeight(ui->weight->value());
+    write.setCost(ui->cost->value());
+    write.setmyDate(ui->date->date());
 
     return write;
 }
-fotobase MainWindow::createRandomRecord() //тут ошибка
+fotobase MainWindow::createRandomRecord()
 {
     fotobase write;
 
@@ -107,7 +90,7 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
     write.setProducer(strProducer);
     write.setMatrRes(whatismatrres);
     write.setChangeLense(changeLens);
-    write.setSize(size); //нужна специальная функция
+    write.setSize(size);
     write.setWeight(weight);
     write.setCost(cost);
     write.setmyDate(mydata);
@@ -118,14 +101,15 @@ fotobase MainWindow::createRandomRecord() //тут ошибка
 
 void MainWindow::on_filling_clicked()
 {
-    for (int i = 0; i < 10; i++)
+    const int countOfFilling = 10;
+    for (int i = 0; i < countOfFilling; i++)
     {
         record[i] = createRandomRecord();
     }
     sorting();
+    if ( ui->spisok->rowCount() < countOfFilling)
+        initializationTable(countOfFilling,2);
     fillingTable(ui->spisok->rowCount());
-    if ( ui->spisok->rowCount() < 10)
-        initializationTable(10,2);
 
     qDebug() << "Рандомная запись" << indexOfRecord << "создана";
  //   loadRecord( record[indexOfRecord] ); //показать их
@@ -202,6 +186,10 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
     editMode(indexOfRecord, false);
+    ///////////////////
+    fillingTable(ui->spisok->rowCount());
+    ////////////////////
+    sorting();
 }
 
 void MainWindow::sorting() {
@@ -209,7 +197,6 @@ void MainWindow::sorting() {
     std::sort(record.begin(), record.end());
 
     qDebug() << "Записи отсортированы";
-
 }
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
@@ -222,6 +209,7 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
     editMode(indexOfRecord, false);
+    sorting();
     if (improvisanalCurrentCellChanged == 1)
     {
         QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
@@ -263,6 +251,7 @@ void MainWindow::on_editBtn_clicked()
     }
     else if(callEnableDisable ==1) {
         editMode(indexOfRecord, false);
+        sorting();
         qDebug() << "!edit";
         ui->changeLens->setEnabled(false);
         ui->matrixResolution->setEnabled(false);
@@ -310,10 +299,7 @@ void MainWindow::on_createBtn_clicked()
     callEnableDisable=1;
     editMode(var, true);
 
-
     improvisanalCurrentCellChanged =1;
-
-
 
     sorting();
 }
@@ -326,8 +312,6 @@ void MainWindow::editMode(int row, bool arg) {
 
     enableDisableEdit(arg);
     ui->spisok->selectRow(row);
-
-
 }
 
 void MainWindow::on_deleteBtn_clicked()
@@ -364,6 +348,7 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
         ui->changeLens->setEnabled(false);
         ui->matrixResolution->setEnabled(false);
         editMode(indexOfRecord, false);
+        sorting();
         improvisanalCurrentCellChanged=0;
     }
 }
@@ -403,6 +388,4 @@ void MainWindow::createWindow() {
 
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
-
-
 }

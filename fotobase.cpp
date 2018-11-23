@@ -15,9 +15,6 @@ fotobase::fotobase()
     date.setDate(2000, 1,1);
 }
 
-//fotobase fotobase::operator <(fotobase record) {
-//    record.category
-//}
 bool fotobase::operator >(const fotobase &record) {
     return compare(*this, record) > 0;
 }
@@ -36,8 +33,6 @@ bool fotobase::operator ==(const fotobase &record) {
 bool fotobase::operator !=(const fotobase &record) {
     return compare(*this, record) != 0;
 }
-
-
 
 
 int fotobase::compare(const fotobase& firstI, const fotobase& secondI)  {
