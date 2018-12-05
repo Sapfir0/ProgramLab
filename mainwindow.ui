@@ -97,7 +97,23 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="category"/>
+             <widget class="QComboBox" name="category">
+              <item>
+               <property name="text">
+                <string>Профессиональный</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Любительский</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Полупрофессиональный</string>
+               </property>
+              </item>
+             </widget>
             </item>
            </layout>
           </item>
@@ -129,7 +145,38 @@
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="producer"/>
+             <widget class="QComboBox" name="producer">
+              <item>
+               <property name="text">
+                <string>Nikon</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Panasonic</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Sony</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Canon</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Olympus</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Зенит</string>
+               </property>
+              </item>
+             </widget>
             </item>
            </layout>
           </item>
@@ -323,7 +370,7 @@
      <x>0</x>
      <y>0</y>
      <width>853</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

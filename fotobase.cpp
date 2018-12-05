@@ -1,5 +1,6 @@
 #include "fotobase.h"
 #include  <QDate>
+#include "randomfunctions.h"
 
 fotobase::fotobase()
 {
@@ -89,7 +90,7 @@ int fotobase::compare(const fotobase& firstI, const fotobase& secondI)  {
 void fotobase::setNameOfModel(QString nameofModelclass){
     nameOfModel = nameofModelclass;
 }
-QString fotobase::getNameOfModel(){
+QString fotobase::getNameOfModel() const{
     //qDebug() << "Имя модели: " << nameOfModel;
     return nameOfModel;
 }
@@ -97,7 +98,7 @@ QString fotobase::getNameOfModel(){
 void fotobase::setCategory(QString categoryclass){
     category = categoryclass;
 }
-QString fotobase::getGategory(){
+QString fotobase::getGategory() const{
     //qDebug() << "Категория: " << category;
     return category;
 }
@@ -105,7 +106,7 @@ QString fotobase::getGategory(){
 void fotobase::setAnalogOrNot(int analogOrNotclass){
     analogOrNot = analogOrNotclass;
 }
-bool fotobase::getAnalogOrNot(){
+bool fotobase::getAnalogOrNot() const{
     //qDebug() << "Цифровой?: " << analogOrNot;
     return analogOrNot;
 }
@@ -113,7 +114,7 @@ bool fotobase::getAnalogOrNot(){
 void fotobase::setProducer(QString producerclass){
     producer = producerclass;
 }
-QString fotobase::getProducer(){
+QString fotobase::getProducer() const{
     //qDebug() << "Производитель: " <<  producer;
     return producer;
 }
@@ -121,7 +122,7 @@ QString fotobase::getProducer(){
 void fotobase::setMatrRes(double matrixResolutionclass){
     matrixRes = matrixResolutionclass;
 }
-double fotobase::getMatrRes(){
+double fotobase::getMatrRes() const{
     //qDebug() << "Разрешение матрицы: " <<  matrixRes;
     return matrixRes;
 }
@@ -129,7 +130,7 @@ double fotobase::getMatrRes(){
 void fotobase::setChangeLense(bool changeLenseclass){
      changeLens = changeLenseclass;
 }
-bool fotobase::getChangeLense(){
+bool fotobase::getChangeLense() const {
     //qDebug() << "Смена линзы: " << changeLens;
     return changeLens;
 }
@@ -137,7 +138,7 @@ bool fotobase::getChangeLense(){
 void fotobase::setSize(QString sizeclass){
       size = sizeclass;
 }
-QString fotobase::getSize(){
+QString fotobase::getSize() const{
     //qDebug() << "Размер: " << size;
     return size;
 }
@@ -145,7 +146,7 @@ QString fotobase::getSize(){
 void fotobase::setWeight(int weightclass){
       weight = weightclass;
 }
-int fotobase::getWeight(){
+int fotobase::getWeight() const{
     //qDebug() << "Вес: " << weight;
     return weight;
 }
@@ -153,7 +154,7 @@ int fotobase::getWeight(){
 void fotobase::setCost(int costclass){
       cost = costclass;
 }
-int fotobase::getCost(){
+int fotobase::getCost() const{
     //qDebug() << "Цена: " << cost;
     return cost;
 }
@@ -161,7 +162,51 @@ int fotobase::getCost(){
 void fotobase::setmyDate(QDate dateclass){
       date = dateclass;
 }
-QDate fotobase::getmyDate(){
+QDate fotobase::getmyDate() const{
    // qDebug() << "Дата: " << date;
     return  date;
+}
+
+
+fotobase fotobase::randomix( ) {
+
+    fotobase write;
+    QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};
+    QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" }; //самодокуентирующийся код
+    QStringList nameOfModelList = { "GH-4", "TY-3", "Cyber-shot DSC-RX100", "Revolution", "X-A5", "EOS 77D", "TG-5", "Pen E-PL9" };
+    QVector<double> resolution = { 2.45, 5.67, 16,73, 12.6, 11.23, 32.12};
+    QTime now = QTime::currentTime();
+    qsrand( now.msec() ); //угадай что это такое
+
+    QString strCategory = categoryList.at(rand()%categoryList.size());
+    bool changeLens;
+
+    if (strCategory == categoryList.at(2))
+        changeLens = randomBool();
+    else
+        changeLens = false;
+
+    double whatismatrres;
+    bool analogOrNot = randomBool();
+    if ( analogOrNot == true)
+        whatismatrres = resolution.at(qrand()%resolution.size());
+    else
+        whatismatrres = 2.0;
+
+
+    QDate mydata;
+    mydata = randomDate(mydata);
+
+    write.setNameOfModel( nameOfModelList.at( rand() % nameOfModelList.size()) );
+    write.setCategory ( strCategory);
+    write.setAnalogOrNot ( analogOrNot);
+    write.setProducer ( producerList.at(rand() % producerList.size() ) );
+    write.setMatrRes ( whatismatrres );
+    write.setChangeLense ( changeLens );
+    write.setSize ( randSize() );
+    write.setWeight ( qrand() % 8000 + 100);
+    write.setCost ( qrand() % 150000  + 1000  );
+    write.setmyDate ( mydata);
+
+    return write;
 }

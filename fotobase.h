@@ -31,35 +31,39 @@ public:
     bool operator !=(const fotobase&);
    // void operator =(fotobase write);
 
+
+
+    static fotobase randomix( );
+
     void setNameOfModel(QString nameofModelclass);
-    QString getNameOfModel();
+    QString getNameOfModel() const;
 
     void setCategory(QString categoryclass);
-    QString getGategory();
+    QString getGategory() const;
 
     void setAnalogOrNot(int analogOrNotclass);
-    bool getAnalogOrNot();
+    bool getAnalogOrNot() const;
 
     void setProducer(QString producerclass);
-    QString getProducer();
+    QString getProducer() const;
 
     void setMatrRes(double matrixResolutionclass);
-    double getMatrRes();
+    double getMatrRes() const;
 
     void setChangeLense(bool changeLenseclass);
-    bool getChangeLense();
+    bool getChangeLense() const;
 
     void setSize(QString sizeclass);
-    QString getSize();
+    QString getSize() const;
 
     void setWeight(int weightclass);
-    int getWeight();
+    int getWeight() const;
 
     void setCost(int costclass);
-    int getCost();
+    int getCost() const;
 
     void setmyDate(QDate dateclass);
-    QDate getmyDate();
+    QDate getmyDate()  const;
 };
 
 
