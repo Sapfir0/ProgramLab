@@ -29,6 +29,8 @@ public:
     void initializationTable(int rows);
 
     void fillingTable(int rows); //
+    int deleting();
+
 
 
 private slots:
@@ -47,13 +49,17 @@ private slots:
     void on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 
 private:
-    Ui::MainWindow *ui;  //уй
+    Ui::MainWindow *ui;
     fotobase record[1000]; //записи тут
-    int kolvo_zapisey = 0;
+    int numberOfRecords = 0;
     int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
     const int countRecordAndRows=998; //макс число записей
     bool improvisanalCurrentCellChanged=0; //костылек для выхода из режима редактирования
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
+
+    bool edit=0;
+    bool kostil=0;
+
 };
 
 

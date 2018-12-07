@@ -63,16 +63,16 @@ void MainWindow::on_filling_clicked()
     }
 
     for (int i = 0; i < 10; i++) {
-        record[kolvo_zapisey+i] =  fotobase::randomix();
+        record[numberOfRecords+i] =  fotobase::randomix();
     }
 
     for (int i=0; i < 10; i++)
-        initializationTable(kolvo_zapisey+i+1);
+        initializationTable(numberOfRecords+i+1);
 
-    kolvo_zapisey += 10;
+    numberOfRecords += 10;
 
     sorting();
-    fillingTable(kolvo_zapisey);
+    fillingTable(numberOfRecords);
 }
 
 void MainWindow::fillingTable(int rows) {
@@ -126,17 +126,19 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     }
     record[indexOfRecord] = createRecord(); //запишем в текущий record значения из ui
     sorting();
-    fillingTable(kolvo_zapisey);
+    fillingTable(numberOfRecords);
 
     callEnableDisable=0;
     loadRecord(fotobase());
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
     editMode(false);
+
+    kostil=0;
 }
 
 void MainWindow::sorting() {
-    std::sort(record, record+kolvo_zapisey);
+    std::sort(record, record+numberOfRecords);
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
 }
 
@@ -148,6 +150,17 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     ui->matrixResolution->setEnabled(false);
     editMode(false);
     loadRecord(record[indexOfRecord]);
+
+    ///////////
+    /// \brief deleting
+
+    kostil=0;
+
+    qDebug() << edit;
+    if (edit == 0) {
+        deleting();
+    }
+
 }
 
 void MainWindow::enableDisableEdit(bool arg) {
@@ -176,6 +189,7 @@ void MainWindow::on_editBtn_clicked()
     if ( callEnableDisable == 0)    {
         editMode(true);
         callEnableDisable=1;
+        loadRecord(record[indexOfRecord]);
     }
     else if(callEnableDisable ==1) {
         editMode(false);
@@ -184,6 +198,7 @@ void MainWindow::on_editBtn_clicked()
         loadRecord(fotobase());
         callEnableDisable=0;
     }
+    edit=1;
 
 }
 
@@ -191,24 +206,27 @@ void MainWindow::on_editBtn_clicked()
 void MainWindow::on_createBtn_clicked()
 {
     if ( countRecordAndRows-ui->spisok->rowCount() <= 1 ) {
-         QMessageBox::warning(nullptr,"Alert", "Превышено максимальное число записей");
+         QMessageBox::warning(nullptr,"Achive completed", "Превышено максимальное число записей");
          return;
     }
-    initializationTable(kolvo_zapisey+1);
-    record[kolvo_zapisey] = fotobase();
+    initializationTable(numberOfRecords+1);
+    record[numberOfRecords] = fotobase();
 
-    QTableWidgetItem *item = new QTableWidgetItem(record[kolvo_zapisey].getNameOfModel());
-    QTableWidgetItem *item2 = new QTableWidgetItem(record[kolvo_zapisey].getCost());
-    ui->spisok->setItem(kolvo_zapisey, 0, item);
-    ui->spisok->setItem(kolvo_zapisey, 1, item2);
+    QTableWidgetItem *item = new QTableWidgetItem(record[numberOfRecords].getNameOfModel());
+    QTableWidgetItem *item2 = new QTableWidgetItem(record[numberOfRecords].getCost());
+    ui->spisok->setItem(numberOfRecords, 0, item);
+    ui->spisok->setItem(numberOfRecords, 1, item2);
     ui->spisok->setCurrentItem(item);
     callEnableDisable=1;
-    kolvo_zapisey++;
+    numberOfRecords++;
     editMode(true);
 
     improvisanalCurrentCellChanged =1;
 
     loadRecord(fotobase());
+
+    edit=0; //нажатие на кнопку отмену было после крейт -> удалить запись
+    kostil=1; //строка создана, а запись еще нет
 }
 
 
@@ -224,31 +242,64 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-    if (ui->spisok->rowCount() != 1)
+
+//    if (ui->spisok->rowCount() != 1)
+//        ui->spisok->removeRow(indexOfRecord);
+//    else {
+//        initializationTable(0);
+//    }
+//    for (int i = indexOfRecord; i < numberOfRecords-1; i++)
+//        record[i] = record[i+1];
+//    numberOfRecords--;
+//    if (numberOfRecords < 0)
+//        numberOfRecords = 0;
+
+
+    deleting();
+
+}
+
+
+
+int MainWindow::deleting() {
+
+    if (ui->spisok->rowCount() == 1 ) {
+        qDebug("ыыы");
+        return -1;
+    }
+
+    if (improvisanalCurrentCellChanged == 1) {
+
+        QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
+        QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
+        delete ditem;
+        delete ditem2;
         ui->spisok->removeRow(indexOfRecord);
-    for (int i = indexOfRecord; i < kolvo_zapisey-1; i++)
-        record[i] = record[i+1];
-    kolvo_zapisey--;
-    if (kolvo_zapisey < 0)
-        kolvo_zapisey = 0;
+        numberOfRecords--;
+    }
+    return 0;
 }
 
 
 void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
+
     indexOfRecord = currentRow;
     loadRecord( record[indexOfRecord]);
     editMode(false);
 
-//    if (improvisanalCurrentCellChanged == 1 ) {
-//        callEnableDisable=0;
-//        loadRecord(fotobase());
-//        ui->changeLens->setEnabled(false);
-//        ui->matrixResolution->setEnabled(false);
-//        editMode(false);
+    if (kostil==1) {
+        qDebug() << "Тут должен быть костыль: "<< kostil;
+//        int resOfDeleting = deleting();
 
-//        improvisanalCurrentCellChanged=0;
-//    }
+//        if (resOfDeleting == -1)
+//            qDebug() << "Исключение";
+        ui->spisok->removeRow(previousRow);
+        numberOfRecords--;
+        kostil=0;
+    }
+
+
 }
 
 void MainWindow::createWindow() {
