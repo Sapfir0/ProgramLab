@@ -255,6 +255,7 @@ void MainWindow::on_deleteBtn_clicked()
 //        numberOfRecords = 0;
 
 
+
     deleting();
 
 }
@@ -267,26 +268,27 @@ int MainWindow::deleting() {
         qDebug("ыыы");
         return -1;
     }
+//первая итерация после смены текущей строки неверная(она идет -2, а не -1)
 
-    if (improvisanalCurrentCellChanged == 1) {
+    qDebug() << indexOfRecord-1;
+    QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord-1, 0);
+    QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord-1, 1);
+    delete ditem;
+    delete ditem2;
+    ui->spisok->removeRow(indexOfRecord-1);
+    numberOfRecords--;
 
-        QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
-        QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
-        delete ditem;
-        delete ditem2;
-        ui->spisok->removeRow(indexOfRecord);
-        numberOfRecords--;
-    }
     return 0;
 }
 
 
 void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
-
     indexOfRecord = currentRow;
     loadRecord( record[indexOfRecord]);
     editMode(false);
+
+
 
     if (kostil==1) {
         qDebug() << "Тут должен быть костыль: "<< kostil;
