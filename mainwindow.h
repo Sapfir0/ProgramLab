@@ -39,7 +39,6 @@ private slots:
     void on_denied_clicked(); //нажатие на кнопку Отменить
     void editMode(bool); //режим редактирования
     void enableDisableEdit(bool); //включение/выключение интерфейса
-    void reset();//сброс интерфейса на дефолт
 
     void on_filling_clicked();
     void on_createBtn_clicked();

@@ -102,7 +102,7 @@ void MainWindow::loadRecord(fotobase value) //выводит на ui данны�
     ui->size->setText(value.getSize());
     ui->weight->setValue(value.getWeight());
     ui->cost->setValue(value.getCost());
-    ui->date->setDate(value.getmyDate());   
+    ui->date->setDate(value.getmyDate());
 }
 
 
@@ -129,7 +129,7 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     fillingTable(kolvo_zapisey);
 
     callEnableDisable=0;
-    reset();
+    loadRecord(fotobase());
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
     editMode(false);
@@ -143,7 +143,7 @@ void MainWindow::sorting() {
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
     callEnableDisable=0;
-    reset();
+    loadRecord(fotobase());
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
     editMode(false);
@@ -181,28 +181,12 @@ void MainWindow::on_editBtn_clicked()
         editMode(false);
         ui->changeLens->setEnabled(false);
         ui->matrixResolution->setEnabled(false);
-        reset();
+        loadRecord(fotobase());
         callEnableDisable=0;
     }
 
 }
-void MainWindow::reset() {
 
-    ui->nameOfModel->setText("");
-    ui->category->setCurrentText("Профессиональный");
-    ui->analogOrNot->setChecked(false);
-    setCheckRes();
-    ui->producer->setCurrentText("Nikon");
-    ui->matrixResolution->setValue(2.00);
-    setCheckPolProf();
-    ui->changeLens->setChecked(false);
-    ui->size->setText("00-00-00");
-    ui->weight->setValue(100);
-    ui->cost->setValue(0);
-    QDate data;
-    data.setDate(2000, 1,1);
-    ui->date->setDate(data);
-}
 
 void MainWindow::on_createBtn_clicked()
 {
@@ -210,20 +194,21 @@ void MainWindow::on_createBtn_clicked()
          QMessageBox::warning(nullptr,"Alert", "Превышено максимальное число записей");
          return;
     }
-    int var = ui->spisok->rowCount();
-    kolvo_zapisey++;
-    initializationTable(var+1);
-    record[var] = createRecord();
+    initializationTable(kolvo_zapisey+1);
+    record[kolvo_zapisey] = fotobase();
 
-    QTableWidgetItem *item = new QTableWidgetItem(record[var].getNameOfModel());
-    QTableWidgetItem *item2 = new QTableWidgetItem(record[var].getCost());
-    ui->spisok->setItem(var, 0, item);
-    ui->spisok->setItem(var, 1, item2);
-
+    QTableWidgetItem *item = new QTableWidgetItem(record[kolvo_zapisey].getNameOfModel());
+    QTableWidgetItem *item2 = new QTableWidgetItem(record[kolvo_zapisey].getCost());
+    ui->spisok->setItem(kolvo_zapisey, 0, item);
+    ui->spisok->setItem(kolvo_zapisey, 1, item2);
+    ui->spisok->setCurrentItem(item);
     callEnableDisable=1;
+    kolvo_zapisey++;
     editMode(true);
 
     improvisanalCurrentCellChanged =1;
+
+    loadRecord(fotobase());
 }
 
 
@@ -239,12 +224,13 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-    if (ui->spisok->rowCount() != 1)//иначе вылетает блять сука говно ебучий куте ска
+    if (ui->spisok->rowCount() != 1)
         ui->spisok->removeRow(indexOfRecord);
     for (int i = indexOfRecord; i < kolvo_zapisey-1; i++)
         record[i] = record[i+1];
     kolvo_zapisey--;
-    if (kolvo_zapisey < 0) kolvo_zapisey = 0;
+    if (kolvo_zapisey < 0)
+        kolvo_zapisey = 0;
 }
 
 
@@ -256,7 +242,7 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
 
 //    if (improvisanalCurrentCellChanged == 1 ) {
 //        callEnableDisable=0;
-//        reset();
+//        loadRecord(fotobase());
 //        ui->changeLens->setEnabled(false);
 //        ui->matrixResolution->setEnabled(false);
 //        editMode(false);
@@ -284,9 +270,6 @@ void MainWindow::createWindow() {
     ui->cost->setSuffix(" руб.");
     ui->weight->setSuffix(" гр.");
     setWindowTitle("Почти курсач");
-
-    //ui->producer->addItems(producerList);
-    //ui->category->addItems(categoryList);
 
    loadRecord( record[indexOfRecord] ); //первая инициализация
 
