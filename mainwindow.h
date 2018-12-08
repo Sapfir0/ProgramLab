@@ -54,11 +54,14 @@ private:
     int numberOfRecords = 0;
     int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
     const int countRecordAndRows=998; //макс число записей
-    bool improvisanalCurrentCellChanged=0; //костылек для выхода из режима редактирования
+    //bool improvisanalCurrentCellChanged=0; //выход из режима редактирования
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
 
-    bool edit=0;
-    bool kostil=0;
+    bool edit=0; //нажатие на кнопку отмену было после create -> удалить запись
+    bool nonCreating=0;//строка создана, а запись еще нет
+
+    int iteration=0; //для корректного удаления
+
 
 };
 

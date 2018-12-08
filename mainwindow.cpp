@@ -134,7 +134,7 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     ui->matrixResolution->setEnabled(false);
     editMode(false);
 
-    kostil=0;
+    nonCreating=0;
 }
 
 void MainWindow::sorting() {
@@ -154,7 +154,7 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     ///////////
     /// \brief deleting
 
-    kostil=0;
+    nonCreating=0;
 
     qDebug() << edit;
     if (edit == 0) {
@@ -221,12 +221,12 @@ void MainWindow::on_createBtn_clicked()
     numberOfRecords++;
     editMode(true);
 
-    improvisanalCurrentCellChanged =1;
+    //improvisanalCurrentCellChanged =1;
 
     loadRecord(fotobase());
 
     edit=0; //нажатие на кнопку отмену было после крейт -> удалить запись
-    kostil=1; //строка создана, а запись еще нет
+    nonCreating=1; //строка создана, а запись еще нет
 }
 
 
@@ -255,27 +255,37 @@ void MainWindow::on_deleteBtn_clicked()
 //        numberOfRecords = 0;
 
 
-
     deleting();
-
+    iteration=1;
 }
 
 
 
 int MainWindow::deleting() {
 
-    if (ui->spisok->rowCount() == 1 ) {
-        qDebug("ыыы");
-        return -1;
-    }
-//первая итерация после смены текущей строки неверная(она идет -2, а не -1)
+//    if (ui->spisok->rowCount() <= 1 ) {
+//        qDebug("мы на первой и единственной строчке");
+//        return -1;
+//    }
+//все кроме первой итерации после смены текущей строки неверная //////////////вроде робит
+    //qDebug() << indexOfRecord-1;
 
-    qDebug() << indexOfRecord-1;
-    QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord-1, 0);
-    QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord-1, 1);
-    delete ditem;
-    delete ditem2;
-    ui->spisok->removeRow(indexOfRecord-1);
+   // if (iteration==0) {
+        QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
+        QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
+
+        delete ditem;
+        delete ditem2;
+        ui->spisok->removeRow(indexOfRecord);
+        indexOfRecord--;
+ //   }
+//    if (iteration==1) {
+//        QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord-1, 0);
+//        QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord-1, 1);
+//        delete ditem;
+//        delete ditem2;
+//        ui->spisok->removeRow(indexOfRecord-1);
+//    }
     numberOfRecords--;
 
     return 0;
@@ -288,17 +298,15 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
     loadRecord( record[indexOfRecord]);
     editMode(false);
 
-
-
-    if (kostil==1) {
-        qDebug() << "Тут должен быть костыль: "<< kostil;
+    iteration=0;
+    if (nonCreating==1) {
+        qDebug() << "Тут должен быть костыль: "<< nonCreating;
 //        int resOfDeleting = deleting();
-
 //        if (resOfDeleting == -1)
 //            qDebug() << "Исключение";
         ui->spisok->removeRow(previousRow);
         numberOfRecords--;
-        kostil=0;
+        nonCreating=0;
     }
 
 
@@ -332,4 +340,5 @@ void MainWindow::createWindow() {
 
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
+
 }
