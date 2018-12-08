@@ -182,6 +182,11 @@ void MainWindow::enableDisableEdit(bool arg) {
     ui->createBtn->setEnabled(!arg);
     ui->editBtn->setEnabled(!arg);
 
+    if (numberOfRecords==0) {
+    ui->editBtn->setEnabled(false);
+    ui->deleteBtn->setEnabled(false);
+    }
+
 }
 
 void MainWindow::on_editBtn_clicked()
@@ -221,7 +226,6 @@ void MainWindow::on_createBtn_clicked()
     numberOfRecords++;
     editMode(true);
 
-    //improvisanalCurrentCellChanged =1;
 
     loadRecord(fotobase());
 
@@ -242,19 +246,6 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-
-//    if (ui->spisok->rowCount() != 1)
-//        ui->spisok->removeRow(indexOfRecord);
-//    else {
-//        initializationTable(0);
-//    }
-//    for (int i = indexOfRecord; i < numberOfRecords-1; i++)
-//        record[i] = record[i+1];
-//    numberOfRecords--;
-//    if (numberOfRecords < 0)
-//        numberOfRecords = 0;
-
-
     deleting();
     iteration=1;
 }
@@ -263,29 +254,36 @@ void MainWindow::on_deleteBtn_clicked()
 
 int MainWindow::deleting() {
 
-//    if (ui->spisok->rowCount() <= 1 ) {
-//        qDebug("мы на первой и единственной строчке");
-//        return -1;
-//    }
-//все кроме первой итерации после смены текущей строки неверная //////////////вроде робит
-    //qDebug() << indexOfRecord-1;
+    if (ui->spisok->rowCount() <= 1 ) {
+        qDebug("мы на первой и единственной строчке");
+        QMessageBox::information(nullptr,"Alert", "Вылетаем");
 
-   // if (iteration==0) {
-        QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
-        QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
+        try {
+            if (ui->spisok->rowCount() <= 1  ) {
+                ui->spisok->clearContents();
+                //ui->spisok->setRowCount(0);
+                indexOfRecord=0;
+                numberOfRecords=0;
+                throw 1;
+            }
 
-        delete ditem;
-        delete ditem2;
-        ui->spisok->removeRow(indexOfRecord);
-        indexOfRecord--;
- //   }
-//    if (iteration==1) {
-//        QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord-1, 0);
-//        QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord-1, 1);
-//        delete ditem;
-//        delete ditem2;
-//        ui->spisok->removeRow(indexOfRecord-1);
-//    }
+        } catch (int i) {
+
+            qDebug() << "exception " << i;
+        }
+
+        return -1;
+    }
+
+
+    QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
+    QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
+    delete ditem;
+    delete ditem2;
+    ui->spisok->removeRow(indexOfRecord);
+    indexOfRecord--;
+
+
     numberOfRecords--;
 
     return 0;
@@ -340,5 +338,6 @@ void MainWindow::createWindow() {
 
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
+
 
 }
