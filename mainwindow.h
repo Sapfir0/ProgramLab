@@ -9,6 +9,8 @@
 #include <QStringList>
 #include <vector>
 
+#include <QList>
+
 namespace Ui {
 class MainWindow;
 }
@@ -31,6 +33,14 @@ public:
     void fillingTable(int rows); //
     int deleting();
 
+    //4 lab
+
+    void createDatabase();
+    void loadDatabase();
+    void saveDatabase();
+    void saveDatabaseUs();
+
+
 
 
 private slots:
@@ -50,9 +60,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    fotobase record[1000]; //записи тут
+    QList<fotobase> record; //записи тут
     int numberOfRecords = 0;
-    int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
+    int indexOfRecord = 1; //это счетчик [1,countRecordAndRows] мухах
     const int countRecordAndRows=998; //макс число записей
     //bool improvisanalCurrentCellChanged=0; //выход из режима редактирования
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования

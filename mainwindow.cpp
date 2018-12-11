@@ -5,6 +5,7 @@
 
 #include <QMessageBox>
 #include <algorithm>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -57,34 +58,12 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 void MainWindow::on_filling_clicked()
 {
 
-    if ( countRecordAndRows-ui->spisok->rowCount() <= 11 ) {
-         QMessageBox::warning(nullptr,"Alert", "Превышено максимальное число записей");
-         return;
-    }
 
-    for (int i = 0; i < 10; i++) {
-        record[numberOfRecords+i] =  fotobase::randomix();
-    }
-
-    for (int i=0; i < 10; i++)
-        initializationTable(numberOfRecords+i+1);
-
-    numberOfRecords += 10;
-
-    sorting();
-    fillingTable(numberOfRecords);
 }
 
 void MainWindow::fillingTable(int rows) {
 
-    for ( int rowsCount=0; rowsCount<rows; rowsCount++)
-    {
-        QTableWidgetItem *item = new QTableWidgetItem(record[rowsCount].getNameOfModel());
-        ui->spisok->setItem(rowsCount, 0, item);
 
-        item = new QTableWidgetItem(QString::number(record[rowsCount].getCost()));
-        ui->spisok->setItem(rowsCount, 1, item);
-     }
 
 }
 
@@ -124,43 +103,24 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
         QMessageBox::warning(nullptr,"Alert", "Название не задано");
         return;
     }
-    record[indexOfRecord] = createRecord(); //запишем в текущий record значения из ui
-    sorting();
-    fillingTable(numberOfRecords);
 
-    callEnableDisable=0;
-    loadRecord(fotobase());
-    ui->changeLens->setEnabled(false);
-    ui->matrixResolution->setEnabled(false);
-    editMode(false);
+    record.append(createRecord());
+    initializationTable(indexOfRecord);
+    indexOfRecord++;
+    numberOfRecords++;
 
-    nonCreating=0;
 }
 
 void MainWindow::sorting() {
-    std::sort(record, record+numberOfRecords);
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
 }
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
-    callEnableDisable=0;
-    loadRecord(fotobase());
-    ui->changeLens->setEnabled(false);
-    ui->matrixResolution->setEnabled(false);
+    record.removeLast();
+    initializationTable(numberOfRecords);
+
     editMode(false);
-    loadRecord(record[indexOfRecord]);
-
-    ///////////
-    /// \brief deleting
-
-    nonCreating=0;
-
-    qDebug() << edit;
-    if (edit == 0) {
-        deleting();
-    }
-
 }
 
 void MainWindow::enableDisableEdit(bool arg) {
@@ -182,10 +142,7 @@ void MainWindow::enableDisableEdit(bool arg) {
     ui->createBtn->setEnabled(!arg);
     ui->editBtn->setEnabled(!arg);
 
-    if (numberOfRecords==0) {
-    ui->editBtn->setEnabled(false);
-    ui->deleteBtn->setEnabled(false);
-    }
+
 
 }
 
@@ -214,23 +171,9 @@ void MainWindow::on_createBtn_clicked()
          QMessageBox::warning(nullptr,"Achive completed", "Превышено максимальное число записей");
          return;
     }
-    initializationTable(numberOfRecords+1);
-    record[numberOfRecords] = fotobase();
-
-    QTableWidgetItem *item = new QTableWidgetItem(record[numberOfRecords].getNameOfModel());
-    QTableWidgetItem *item2 = new QTableWidgetItem(record[numberOfRecords].getCost());
-    ui->spisok->setItem(numberOfRecords, 0, item);
-    ui->spisok->setItem(numberOfRecords, 1, item2);
-    ui->spisok->setCurrentItem(item);
-    callEnableDisable=1;
-    numberOfRecords++;
     editMode(true);
 
 
-    loadRecord(fotobase());
-
-    edit=0; //нажатие на кнопку отмену было после крейт -> удалить запись
-    nonCreating=1; //строка создана, а запись еще нет
 }
 
 
@@ -246,45 +189,14 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-    deleting();
-    iteration=1;
+    record.removeAt(indexOfRecord);
+    indexOfRecord--;
+    numberOfRecords--;
 }
 
 
 
 int MainWindow::deleting() {
-
-    if (ui->spisok->rowCount() <= 1 ) {
-        qDebug("мы на первой и единственной строчке");
-        QMessageBox::information(nullptr,"Alert", "Вылетаем");
-
-        try {
-            if (ui->spisok->rowCount() <= 1  ) {
-                ui->spisok->clearContents();
-                //ui->spisok->setRowCount(0);
-                indexOfRecord=0;
-                numberOfRecords=0;
-                throw 1;
-            }
-
-        } catch (int i) {
-
-            qDebug() << "exception " << i;
-        }
-
-        return -1;
-    }
-
-
-    QTableWidgetItem *ditem  = ui->spisok->takeItem(indexOfRecord, 0);
-    QTableWidgetItem *ditem2 = ui->spisok->takeItem(indexOfRecord, 1);
-    delete ditem;
-    delete ditem2;
-    ui->spisok->removeRow(indexOfRecord);
-    indexOfRecord--;
-
-
-    numberOfRecords--;
 
     return 0;
 }
@@ -292,23 +204,32 @@ int MainWindow::deleting() {
 
 void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
-    indexOfRecord = currentRow;
-    loadRecord( record[indexOfRecord]);
-    editMode(false);
-
-    iteration=0;
-    if (nonCreating==1) {
-        qDebug() << "Тут должен быть костыль: "<< nonCreating;
-//        int resOfDeleting = deleting();
-//        if (resOfDeleting == -1)
-//            qDebug() << "Исключение";
-        ui->spisok->removeRow(previousRow);
-        numberOfRecords--;
-        nonCreating=0;
-    }
-
+    indexOfRecord=currentRow;
 
 }
+
+void MainWindow::createDatabase() {
+
+    QFile database("db");
+    if (database.isOpen()) {
+
+    }
+}
+
+void MainWindow::loadDatabase() {
+    QString database = QFileDialog::getOpenFileName(
+                this, QString("Открыть базу данных"),
+                QString(),QString("Текстовые файлы (*.txt,*.bat);;)"));
+}
+
+void MainWindow::saveDatabase() {
+
+}
+
+void MainWindow::saveDatabaseUs() {
+
+}
+
 
 void MainWindow::createWindow() {
 
@@ -330,14 +251,11 @@ void MainWindow::createWindow() {
     ui->weight->setSuffix(" гр.");
     setWindowTitle("Почти курсач");
 
-   loadRecord( record[indexOfRecord] ); //первая инициализация
-
    ui->saveBtn->hide();
    ui->denied->hide();
    ui->spinWriting->setDisabled(true);
 
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
-
 
 }
