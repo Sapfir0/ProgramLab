@@ -36,10 +36,6 @@ bool fotobase::operator !=(const fotobase &record) {
 }
 
 
-int fotobase::count() const {
-    return record.size();
-}
-
 int fotobase::compare(const fotobase& firstI, const fotobase& secondI)  {
     // Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
     if ( firstI.category != secondI.category )

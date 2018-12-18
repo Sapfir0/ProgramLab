@@ -9,6 +9,8 @@
 class fotobase
 {
 private:    
+
+
     QString nameOfModel; //Название модели
     QString category; //Категория
     bool analogOrNot; //Цифровой
@@ -24,8 +26,6 @@ private:
 public:
     fotobase();
 
-    QList<fotobase> record;
-
 
     static int compare(const fotobase&, const fotobase&);
     bool operator <(const fotobase&);
@@ -36,9 +36,6 @@ public:
     bool operator !=(const fotobase&);
    // void operator =(fotobase write);
 
-    int count() const;
-    int append(fotobase &record);
-    void remove(unsigned int id);
 
 
 

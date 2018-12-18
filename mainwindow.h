@@ -8,6 +8,7 @@
 #include "fotobase.h"
 #include <QStringList>
 #include <vector>
+#include "fotodatabase.h"
 
 #include <QList>
 
@@ -33,12 +34,8 @@ public:
     void fillingTable(int rows); //
     int deleting();
 
-    //4 lab
 
-    void createDatabase();
-    void loadDatabase();
-    void saveDatabase();
-    void saveDatabaseUs();
+
 
 
 
@@ -56,6 +53,7 @@ private slots:
     void on_createBtn_clicked();
     void on_editBtn_clicked();
     void on_deleteBtn_clicked();
+    void exit();
     void on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 
 private:

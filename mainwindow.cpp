@@ -129,6 +129,13 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
     editMode(false);
 
+//    if (!QFile::exists("db.txt")) {
+//        createDatabase();
+//        saveInDatabase();
+//    }
+//    else
+//        saveInDatabase();
+
 }
 
 void MainWindow::sorting() {
@@ -194,7 +201,7 @@ void MainWindow::on_editBtn_clicked()
 void MainWindow::on_createBtn_clicked()
 {
     if ( countRecordAndRows-ui->spisok->rowCount() <= 1 ) {
-         QMessageBox::warning(nullptr,"Achive completed", "Превышено максимальное число записей");
+         QMessageBox::warning(nullptr,"Achive 1 completed", "Превышено максимальное число записей");
          return;
     }
 
@@ -246,29 +253,15 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
 
 }
 
-void MainWindow::createDatabase() {
-
-    QFile database("db");
-    if (database.isOpen()) {
-
-    }
-}
-
-void MainWindow::loadDatabase() {
-    QString database = QFileDialog::getOpenFileName(
-                this, QString("Открыть базу данных"),
-                QString(),QString("Текстовые файлы (*.txt,*.bat);;)"));
-}
-
-void MainWindow::saveDatabase() {
-
+void MainWindow::exit() {
+//    QMessageBox msgBox;
+//    msgBox.setText("The document has been modified.");
+//    msgBox.setInformativeText("Do you want to save your changes?");
+//    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+//    msgBox.setDefaultButton(QMessageBox::Save);
+//    int ret = msgBox.exec();
 
 }
-
-void MainWindow::saveDatabaseUs() {
-
-}
-
 
 void MainWindow::createWindow() {
 
@@ -278,6 +271,7 @@ void MainWindow::createWindow() {
 
     connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
     connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
+ //   connect( this, SIGNAL(destroyed(QObject*)), this, SLOT(exit) );
 
     enableDisableEdit(false);
 
