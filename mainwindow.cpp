@@ -57,13 +57,28 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 
 void MainWindow::on_filling_clicked()
 {
+    for (int i=0; i<10; i++) {
+        record.append(fotobase::randomix());
+    }
+    for (int i=0; i < 10; i++)
+        initializationTable(numberOfRecords+i+1);
 
+    numberOfRecords+=10;
+
+    fillingTable(ui->spisok->rowCount());
 
 }
 
 void MainWindow::fillingTable(int rows) {
 
+    for ( int rowsCount=0; rowsCount<rows; rowsCount++)
+    {
+        QTableWidgetItem *item = new QTableWidgetItem(record.at(rowsCount).getNameOfModel());
+        ui->spisok->setItem(rowsCount, 0, item);
 
+        item = new QTableWidgetItem(QString::number(record.at(rowsCount).getCost()));
+        ui->spisok->setItem(rowsCount, 1, item);
+    }
 
 }
 
@@ -104,10 +119,15 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
         return;
     }
 
-    record.append(createRecord());
-    initializationTable(indexOfRecord);
+    callEnableDisable=0;
+    //loadRecord(fotobase());
+    //record.append(createRecord());
+
+
     indexOfRecord++;
     numberOfRecords++;
+
+    editMode(false);
 
 }
 
@@ -148,10 +168,16 @@ void MainWindow::enableDisableEdit(bool arg) {
 
 void MainWindow::on_editBtn_clicked()
 {
-    if ( callEnableDisable == 0)    {
+    if ( record.count() == 0)
+        return;
+
+    else if ( callEnableDisable == 0)    {
         editMode(true);
         callEnableDisable=1;
         loadRecord(record[indexOfRecord]);
+        //не уверен что нужно то что ниже
+        ui->changeLens->setEnabled(false);
+        ui->matrixResolution->setEnabled(false);
     }
     else if(callEnableDisable ==1) {
         editMode(false);
@@ -171,8 +197,15 @@ void MainWindow::on_createBtn_clicked()
          QMessageBox::warning(nullptr,"Achive completed", "Превышено максимальное число записей");
          return;
     }
-    editMode(true);
 
+    loadRecord(fotobase());
+   // initializationTable(numberOfRecords+1);
+
+    editMode(true);
+    record.append(createRecord());
+    initializationTable(numberOfRecords+1);
+    //numberOfRecords++;
+    fillingTable(ui->spisok->rowCount());
 
 }
 
@@ -190,6 +223,10 @@ void MainWindow::editMode(bool arg) {
 void MainWindow::on_deleteBtn_clicked()
 {
     record.removeAt(indexOfRecord);
+    if (ui->spisok->rowCount() == 1)
+        ui->spisok->reset();
+
+    ui->spisok->removeRow(indexOfRecord);
     indexOfRecord--;
     numberOfRecords--;
 }
@@ -205,6 +242,7 @@ int MainWindow::deleting() {
 void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
     indexOfRecord=currentRow;
+    loadRecord(record.at(indexOfRecord));
 
 }
 
@@ -223,6 +261,7 @@ void MainWindow::loadDatabase() {
 }
 
 void MainWindow::saveDatabase() {
+
 
 }
 

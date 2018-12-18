@@ -4,6 +4,7 @@
 #include <QString>
 #include <QDate>
 #include <QDebug>
+#include <QFile>
 
 class fotobase
 {
@@ -24,6 +25,7 @@ public:
     fotobase();
 
     QList<fotobase> record;
+
 
     static int compare(const fotobase&, const fotobase&);
     bool operator <(const fotobase&);
