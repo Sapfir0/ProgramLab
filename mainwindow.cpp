@@ -120,21 +120,13 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     }
 
     callEnableDisable=0;
-    //loadRecord(fotobase());
-    //record.append(createRecord());
-
 
     indexOfRecord++;
     numberOfRecords++;
 
+
     editMode(false);
 
-//    if (!QFile::exists("db.txt")) {
-//        createDatabase();
-//        saveInDatabase();
-//    }
-//    else
-//        saveInDatabase();
 
 }
 
@@ -205,13 +197,9 @@ void MainWindow::on_createBtn_clicked()
          return;
     }
 
-    loadRecord(fotobase());
-   // initializationTable(numberOfRecords+1);
-
     editMode(true);
-    record.append(createRecord());
+
     initializationTable(numberOfRecords+1);
-    //numberOfRecords++;
     fillingTable(ui->spisok->rowCount());
 
 }

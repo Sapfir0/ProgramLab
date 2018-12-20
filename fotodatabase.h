@@ -6,12 +6,14 @@
 
 class fotoDatabase
 {
+private:
+   QList<fotobase> record;
+
 public:
     fotoDatabase();
 
     //4 lab
 
-    QList<fotobase> record;
 
     void createDatabase();
     void loadDatabase();
@@ -29,6 +31,10 @@ public:
     bool load(QString filename);
     void clear();
     bool isModified() const;
+
+    bool isUniqueId(unsigned int id) const;
+    unsigned int get_uniqueId() const;
+    unsigned int append(const fotobase &writing);
 };
 
 #endif // FOTODATABASE_H

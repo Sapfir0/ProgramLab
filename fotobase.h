@@ -26,6 +26,7 @@ private:
 public:
     fotobase();
 
+    unsigned int id;
 
     static int compare(const fotobase&, const fotobase&);
     bool operator <(const fotobase&);
