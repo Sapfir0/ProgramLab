@@ -18,8 +18,8 @@ void fotoDatabase::createDatabase() {
     }
 }
 
-unsigned int fotoDatabase::append(const fotobase &writing) {
-    //аргумент не приклеивается
+unsigned int fotoDatabase::appender(const fotobase &writing) {
+    //аргумент не возвращается
     unsigned int tem = get_uniqueId();
     record.insert(tem, writing);
     record[tem].id = tem;

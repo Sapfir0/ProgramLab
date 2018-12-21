@@ -37,6 +37,11 @@ void MainWindow::setCheckPolProf() {
     }
 }
 
+void MainWindow::addRecordToDatabase(const fotobase &data) {
+    unsigned int t = record.appender(data);
+
+}
+
 fotobase MainWindow::createRecord() //из ui в экземпляр класса
 {
     fotobase write;

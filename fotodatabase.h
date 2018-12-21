@@ -34,7 +34,7 @@ public:
 
     bool isUniqueId(unsigned int id) const;
     unsigned int get_uniqueId() const;
-    unsigned int append(const fotobase &writing);
+    unsigned int appender(const fotobase &writing);
 };
 
 #endif // FOTODATABASE_H

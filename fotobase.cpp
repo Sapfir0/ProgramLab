@@ -91,7 +91,6 @@ void fotobase::setNameOfModel(QString nameofModelclass){
     nameOfModel = nameofModelclass;
 }
 QString fotobase::getNameOfModel() const{
-    //qDebug() << "Имя модели: " << nameOfModel;
     return nameOfModel;
 }
 
@@ -99,7 +98,6 @@ void fotobase::setCategory(QString categoryclass){
     category = categoryclass;
 }
 QString fotobase::getGategory() const{
-    //qDebug() << "Категория: " << category;
     return category;
 }
 
@@ -107,7 +105,6 @@ void fotobase::setAnalogOrNot(int analogOrNotclass){
     analogOrNot = analogOrNotclass;
 }
 bool fotobase::getAnalogOrNot() const{
-    //qDebug() << "Цифровой?: " << analogOrNot;
     return analogOrNot;
 }
 
@@ -115,7 +112,6 @@ void fotobase::setProducer(QString producerclass){
     producer = producerclass;
 }
 QString fotobase::getProducer() const{
-    //qDebug() << "Производитель: " <<  producer;
     return producer;
 }
 
@@ -123,7 +119,6 @@ void fotobase::setMatrRes(double matrixResolutionclass){
     matrixRes = matrixResolutionclass;
 }
 double fotobase::getMatrRes() const{
-    //qDebug() << "Разрешение матрицы: " <<  matrixRes;
     return matrixRes;
 }
 
@@ -131,7 +126,6 @@ void fotobase::setChangeLense(bool changeLenseclass){
      changeLens = changeLenseclass;
 }
 bool fotobase::getChangeLense() const {
-    //qDebug() << "Смена линзы: " << changeLens;
     return changeLens;
 }
 
@@ -139,15 +133,13 @@ void fotobase::setSize(QString sizeclass){
       size = sizeclass;
 }
 QString fotobase::getSize() const{
-    //qDebug() << "Размер: " << size;
     return size;
 }
-//  int weight;
+
 void fotobase::setWeight(int weightclass){
       weight = weightclass;
 }
 int fotobase::getWeight() const{
-    //qDebug() << "Вес: " << weight;
     return weight;
 }
 
@@ -155,7 +147,6 @@ void fotobase::setCost(int costclass){
       cost = costclass;
 }
 int fotobase::getCost() const{
-    //qDebug() << "Цена: " << cost;
     return cost;
 }
 
@@ -163,9 +154,10 @@ void fotobase::setmyDate(QDate dateclass){
       date = dateclass;
 }
 QDate fotobase::getmyDate() const{
-   // qDebug() << "Дата: " << date;
     return  date;
 }
+
+
 
 
 fotobase fotobase::randomix( ) {
