@@ -14,7 +14,26 @@ fotobase::fotobase()
     weight = 100;
     cost = 0;
     date.setDate(2000, 1,1);
+    uint id;
 }
+
+fotobase::fotobase(const fotobase& f)
+{
+   //qDebug() << id;
+
+    nameOfModel = f.nameOfModel;
+    category = f.category;
+    analogOrNot = f.analogOrNot;
+    producer = f.producer;
+    matrixRes = f.matrixRes;
+    changeLens = f.changeLens;
+    size = f.size;
+    weight = f.weight;
+    cost = f.cost;
+
+    id = f.id;
+}
+
 
 bool fotobase::operator >(const fotobase &record) {
     return compare(*this, record) > 0;

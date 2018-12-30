@@ -25,6 +25,7 @@ private:
 
 public:
     fotobase();
+    fotobase(const fotobase& f);
 
     unsigned int id;
 

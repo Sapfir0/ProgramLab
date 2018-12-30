@@ -33,10 +33,9 @@ public:
     void initializationTable(int rows);
 
     void fillingTable(int rows); //
-    int deleting();
+   // int deleting();
 
-
-
+    void setToUi();
 
 
 
@@ -50,12 +49,17 @@ private slots:
     void editMode(bool); //режим редактирования
     void enableDisableEdit(bool); //включение/выключение интерфейса
 
+
     void on_filling_clicked();
     void on_createBtn_clicked();
     void on_editBtn_clicked();
     void on_deleteBtn_clicked();
     void exit();
     void on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+
+    void on_saveUsBtn_clicked();
+
+    void on_loadBtn_clicked();
 
 private:
     Ui::MainWindow *ui;

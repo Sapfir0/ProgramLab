@@ -8,9 +8,12 @@ class fotoDatabase
 {
 private:
    QList<fotobase> record;
+   //unsigned int id;
+   QString nameOfFile;
 
 public:
     fotoDatabase();
+
 
     //4 lab
 

@@ -34,11 +34,6 @@ int workingRandom(int MinValue, int MaxValue) {
 }
 
 
-/*int workingRandom(int MinValue, int MaxValue) {
-    return ((int)(qrand())%RAND_MAX)%(MaxValue - MinValue) + MinValue;
-}*/
-
-
 QDate randomDate(QDate data) {
 
     data.setDate(workingRandom(1755,2100),workingRandom(1,12),workingRandom(1,31));

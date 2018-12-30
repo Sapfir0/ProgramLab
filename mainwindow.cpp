@@ -38,7 +38,7 @@ void MainWindow::setCheckPolProf() {
 }
 
 void MainWindow::addRecordToDatabase(const fotobase &data) {
-    unsigned int t = record.appender(data);
+    //unsigned int t = record.appender(data);
 
 }
 
@@ -116,6 +116,24 @@ void MainWindow::initializationTable (int rows) {
 }
 
 
+void MainWindow::setToUi() {
+    QTableWidgetItem *item = new QTableWidgetItem(createRecord().getNameOfModel());
+    QTableWidgetItem *item2 = new QTableWidgetItem(QString::number( createRecord().getCost()));
+    //qDebug() << createRecord().getNameOfModel();
+
+    if ( edit == 0) {
+    ui->spisok->setItem(numberOfRecords,0,item);
+    ui->spisok->setItem(numberOfRecords,1,item2);
+    }
+    if (edit == 1)
+    {
+        ui->spisok->setItem(indexOfRecord,0,item);
+        ui->spisok->setItem(indexOfRecord,1,item2);
+        edit = 0;
+    }
+}
+
+
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
 
@@ -126,12 +144,21 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
     callEnableDisable=0;
 
-    indexOfRecord++;
-    numberOfRecords++;
+    record.insert(numberOfRecords, createRecord());
 
+    setToUi();
 
+    if (edit != 1) {
+        indexOfRecord++;
+    }
+    numberOfRecords = ui->spisok->rowCount();
+
+    //loadRecord( fotobase() );
     editMode(false);
 
+    //запишем в файлик
+    fotoDatabase db = fotoDatabase();
+    db.save(QString("loh"));
 
 }
 
@@ -141,7 +168,6 @@ void MainWindow::sorting() {
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
-    record.removeLast();
     initializationTable(numberOfRecords);
 
     editMode(false);
@@ -171,25 +197,27 @@ void MainWindow::enableDisableEdit(bool arg) {
 }
 
 void MainWindow::on_editBtn_clicked()
-{
+{//нужно еще заливать изменения в список
     if ( record.count() == 0)
         return;
 
     else if ( callEnableDisable == 0)    {
-        editMode(true);
-        callEnableDisable=1;
+        editMode(true);//записать запись исходя из тго что в форме
+record.replace(indexOfRecord, createRecord() );
+setToUi();
         loadRecord(record[indexOfRecord]);
+        qDebug() << "callEnableDisable == 0";
         //не уверен что нужно то что ниже
-        ui->changeLens->setEnabled(false);
-        ui->matrixResolution->setEnabled(false);
+        callEnableDisable=1;
     }
     else if(callEnableDisable ==1) {
         editMode(false);
-        ui->changeLens->setEnabled(false);
-        ui->matrixResolution->setEnabled(false);
+        qDebug() << "callEnableDisable == 1";
         loadRecord(fotobase());
         callEnableDisable=0;
     }
+    ui->matrixResolution->setEnabled(false);
+    ui->changeLens->setEnabled(false);
     edit=1;
 
 }
@@ -203,9 +231,9 @@ void MainWindow::on_createBtn_clicked()
     }
 
     editMode(true);
-
     initializationTable(numberOfRecords+1);
-    fillingTable(ui->spisok->rowCount());
+
+    loadRecord( fotobase() );
 
 }
 
@@ -222,20 +250,25 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-    record.removeAt(indexOfRecord);
+
+    record.removeAt(indexOfRecord);//можно смухлевать и не удалять из списка //вылета не будет
+    if (indexOfRecord == ui->spisok->rowCount()-2)
+    {
+        qDebug() << "мусор в плюсах - это ты";
+
+    }
+
+    qDebug() << indexOfRecord;
+
+
     if (ui->spisok->rowCount() == 1)
         ui->spisok->reset();
 
     ui->spisok->removeRow(indexOfRecord);
     indexOfRecord--;
-    numberOfRecords--;
-}
 
+    numberOfRecords = ui->spisok->rowCount();
 
-
-int MainWindow::deleting() {
-
-    return 0;
 }
 
 
@@ -246,15 +279,6 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn,
 
 }
 
-void MainWindow::exit() {
-//    QMessageBox msgBox;
-//    msgBox.setText("The document has been modified.");
-//    msgBox.setInformativeText("Do you want to save your changes?");
-//    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-//    msgBox.setDefaultButton(QMessageBox::Save);
-//    int ret = msgBox.exec();
-
-}
 
 void MainWindow::createWindow() {
 
@@ -264,7 +288,6 @@ void MainWindow::createWindow() {
 
     connect( ui->analogOrNot, SIGNAL(clicked(bool)), this, SLOT(setCheckRes()) );
     connect( ui->category, SIGNAL(currentIndexChanged(int)), this, SLOT(setCheckPolProf()) );
- //   connect( this, SIGNAL(destroyed(QObject*)), this, SLOT(exit) );
 
     enableDisableEdit(false);
 
@@ -284,4 +307,16 @@ void MainWindow::createWindow() {
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
 
+}
+
+void MainWindow::on_saveUsBtn_clicked()
+{
+    fotoDatabase db = fotoDatabase();
+    db.saveDatabaseUs();
+}
+
+void MainWindow::on_loadBtn_clicked()
+{
+    fotoDatabase db = fotoDatabase();
+    db.loadDatabase();
 }
