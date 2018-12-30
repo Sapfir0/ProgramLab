@@ -17,7 +17,6 @@ public:
 
     //4 lab
 
-
     void createDatabase();
     void loadDatabase();
     void saveInDatabase();

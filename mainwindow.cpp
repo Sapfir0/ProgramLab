@@ -169,7 +169,8 @@ void MainWindow::sorting() {
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
     initializationTable(numberOfRecords);
-
+    edit =0;
+    callEnableDisable=0;
     editMode(false);
 }
 
@@ -213,7 +214,7 @@ setToUi();
     else if(callEnableDisable ==1) {
         editMode(false);
         qDebug() << "callEnableDisable == 1";
-        loadRecord(fotobase());
+        //loadRecord(fotobase());
         callEnableDisable=0;
     }
     ui->matrixResolution->setEnabled(false);

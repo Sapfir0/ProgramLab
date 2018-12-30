@@ -76,6 +76,7 @@ bool fotoDatabase::save(QString filename) const {
         strem << temp.getCost() << "\n";
         strem << temp.getmyDate() << "\n" << "\n";
     }
+
     qDebug() << "я не записал ничего кек";
     return true;
 }
@@ -86,7 +87,9 @@ bool fotoDatabase::load(QString filename) {
         return false;
     }
     QDataStream strem(&database);
+
     while (!strem.atEnd()) {
+
         fotobase temporaryClass;
         QString tempString;
         int tempInt;
@@ -125,7 +128,7 @@ bool fotoDatabase::load(QString filename) {
         strem << temp.getmyDate() << "\n" << "\n";*/
 
     }
-
+    return true;
 }
 
 int fotoDatabase::count() const {
@@ -141,8 +144,21 @@ void fotoDatabase::clear() {
     record.clear();
 }
 
+unsigned int fotoDatabase::get_uniqueId() const {
+    unsigned int id = qrand();
+    while (isUniqueId(id)) {
+        id = qrand();
+    }
+    qDebug() << id;
+    return id;
+}
 
-
+bool fotoDatabase::isUniqueId(unsigned int id) const {
+    if (id ==0)
+        return false;
+    //return record.contains(id);
+    return true;
+}
 
 
 
