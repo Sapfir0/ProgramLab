@@ -24,6 +24,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void closeEvent(QCloseEvent *cEvent);
+
+
     void addRecordToDatabase(const fotobase &data);
     fotobase createRecord();//из ui в экземпляр класса
     void loadRecord(fotobase value); //выводит на ui данные из экземпляра класса

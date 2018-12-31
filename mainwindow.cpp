@@ -119,7 +119,6 @@ void MainWindow::initializationTable (int rows) {
 void MainWindow::setToUi() {
     QTableWidgetItem *item = new QTableWidgetItem(createRecord().getNameOfModel());
     QTableWidgetItem *item2 = new QTableWidgetItem(QString::number( createRecord().getCost()));
-    //qDebug() << createRecord().getNameOfModel();
 
     if ( edit == 0) {
     ui->spisok->setItem(numberOfRecords,0,item);
@@ -143,22 +142,18 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     }
 
     callEnableDisable=0;
-
     record.insert(numberOfRecords, createRecord());
-
     setToUi();
 
     if (edit != 1) {
         indexOfRecord++;
     }
     numberOfRecords = ui->spisok->rowCount();
-
-    //loadRecord( fotobase() );
     editMode(false);
 
     //запишем в файлик
     fotoDatabase db = fotoDatabase();
-    db.save(QString("loh"));
+    //db.save(QString("loh"));
 
 }
 
@@ -204,8 +199,8 @@ void MainWindow::on_editBtn_clicked()
 
     else if ( callEnableDisable == 0)    {
         editMode(true);//записать запись исходя из тго что в форме
-record.replace(indexOfRecord, createRecord() );
-setToUi();
+        record.replace(indexOfRecord, createRecord() ); //спорная строчка
+        setToUi();
         loadRecord(record[indexOfRecord]);
         qDebug() << "callEnableDisable == 0";
         //не уверен что нужно то что ниже
@@ -251,17 +246,12 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-
     record.removeAt(indexOfRecord);//можно смухлевать и не удалять из списка //вылета не будет
-    if (indexOfRecord == ui->spisok->rowCount()-2)
-    {
+
+    if (indexOfRecord == ui->spisok->rowCount()-2) {
         qDebug() << "мусор в плюсах - это ты";
-
     }
-
-    qDebug() << indexOfRecord;
-
-
+    //qDebug() << indexOfRecord;
     if (ui->spisok->rowCount() == 1)
         ui->spisok->reset();
 
@@ -320,4 +310,22 @@ void MainWindow::on_loadBtn_clicked()
 {
     fotoDatabase db = fotoDatabase();
     db.loadDatabase();
+    ui->spisok->clear();
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *cEvent){
+//    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
+//    if (wquit == QMessageBox::Yes) {
+//        cEvent->accept();
+//        if (records.isModidfied()) {
+//            QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
+//            if (wsave == QMessageBox::Yes) {
+//                if (filename.isEmpty())
+//                    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Tyrist Manual Data Base", QDir::homePath() , "Tyrist Manual Data Base (*.tm)"); // получение названия файла
+//                if (!filename.isEmpty()) records.save(filename);
+//            }
+//        }
+//    }
+//    else cEvent->ignore();
 }

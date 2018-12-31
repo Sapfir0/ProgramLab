@@ -20,7 +20,6 @@ fotobase::fotobase()
 fotobase::fotobase(const fotobase& f)
 {
    //qDebug() << id;
-
     nameOfModel = f.nameOfModel;
     category = f.category;
     analogOrNot = f.analogOrNot;

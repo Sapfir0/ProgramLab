@@ -28,17 +28,24 @@ unsigned int fotoDatabase::appender(const fotobase &writing) {
 }
 
 void fotoDatabase::loadDatabase() {
-    nameOfFile = QFileDialog::getOpenFileName(
-                0, QString("Открыть базу данных"),
-                QString(),QString("Текстовые файлы (*.txt,*.ini);;)"));
 
-    qDebug() << nameOfFile;
+    nameOfFile = QFileDialog::getOpenFileName(0 , "Открыть файл ", QDir::homePath() , "Текст (*.txt)"); // получение названия файла
 
+// если в контейнере что-то есть, то список заполнется
+//    QVector <fotobase> temp = records.records();
+//    QVectorIterator <tyristManual> it(temp_vector);
+//    while (it.hasNext()) {
+//        id_type id = it.next().id;
+//        addRecordToUi(id);
+//    }
+//    updateBrowserRecords();
 }
 
 void fotoDatabase::saveDatabaseUs() {
-    QFileDialog::getSaveFileName(0, "Сохранить как",
-                                 QString(), QString(".txt, .ini"));
+
+    nameOfFile = QFileDialog::getSaveFileName(0 , "Сохранить файл ", QDir::homePath() , "Text (*.txt)"); // получение названия файла
+//    if(!nameOfFile.isEmpty())
+//        record.save(nameOfFile);
 }
 
 void fotoDatabase::saveInDatabase() {
@@ -55,6 +62,7 @@ void fotoDatabase::saveInDatabase() {
 
 bool fotoDatabase::save(QString filename) const {
     QFile database(filename);
+
     if ( !database.open(QIODevice::WriteOnly) ) {
         return false;
     }
@@ -64,7 +72,7 @@ bool fotoDatabase::save(QString filename) const {
 
     for (it = record.begin(); it < record.end(); it++ )
     {
-        fotobase temp; //тут вроде надо приравнять к значению данного итератора
+        fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
         strem << temp.getNameOfModel() << "\n";
         strem << temp.getGategory() << "\n";
         strem << temp.getAnalogOrNot()<< "\n";
@@ -75,6 +83,7 @@ bool fotoDatabase::save(QString filename) const {
         strem << temp.getWeight() << "\n";
         strem << temp.getCost() << "\n";
         strem << temp.getmyDate() << "\n" << "\n";
+        qDebug() << temp.getNameOfModel();
     }
 
     qDebug() << "я не записал ничего кек";
@@ -95,6 +104,7 @@ bool fotoDatabase::load(QString filename) {
         int tempInt;
         bool tempBool;
         double tempDouble;
+
 
         strem >> tempString;
         temporaryClass.setNameOfModel(tempString);
@@ -124,8 +134,8 @@ bool fotoDatabase::load(QString filename) {
         temporaryClass.setCost(tempInt);
 
         //тут должна быть дата ыы
-        /*
-        strem << temp.getmyDate() << "\n" << "\n";*/
+//        strem >> tempString;
+//        temporaryClass.setmyDate(QString::to(tempString) );
 
     }
     return true;
@@ -156,6 +166,7 @@ unsigned int fotoDatabase::get_uniqueId() const {
 bool fotoDatabase::isUniqueId(unsigned int id) const {
     if (id ==0)
         return false;
+
     //return record.contains(id);
     return true;
 }
