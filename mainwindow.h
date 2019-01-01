@@ -4,13 +4,11 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QValidator>
-#include <QDate>
-#include "fotobase.h"
 #include <QStringList>
-#include <vector>
+
+#include "fotobase.h"
 #include "fotodatabase.h"
 
-#include <QList>
 
 namespace Ui {
 class MainWindow;

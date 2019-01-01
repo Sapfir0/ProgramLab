@@ -4,7 +4,6 @@
 #include <QString>
 #include <QDate>
 #include <QDebug>
-#include <QFile>
 
 class fotobase
 {

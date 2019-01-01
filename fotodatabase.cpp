@@ -2,8 +2,6 @@
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
-#include <QFileDialog>
-//#include "fotobase.h"
 
 fotoDatabase::fotoDatabase()
 {
@@ -31,7 +29,9 @@ bool fotoDatabase::save(QString filename) const {
 
     for (auto it = record.begin(); it < record.end(); it++ )
     {
-        fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
+        if (it != record.begin()) srem << "\n";
+
+		fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
         srem << temp.getNameOfModel() << "\n";
         srem << temp.getGategory() << "\n";
         srem << temp.getAnalogOrNot()<< "\n";
@@ -41,7 +41,8 @@ bool fotoDatabase::save(QString filename) const {
         srem << temp.getSize() << "\n";
         srem << temp.getWeight() << "\n";
         srem << temp.getCost() << "\n";
-        srem << temp.getmyDate() << "\n" << "\n";
+        srem << temp.getmyDate();
+
         qDebug() << temp.getNameOfModel();
     }
 
@@ -64,6 +65,7 @@ bool fotoDatabase::load(QString filename) {
         int tempInt;
         bool tempBool;
         double tempDouble;
+		QDate tempDate;
 
 
         srem >> tempString;
@@ -94,8 +96,8 @@ bool fotoDatabase::load(QString filename) {
         temporaryClass.setCost(tempInt);
 
         //тут должна быть дата ыы
-//        srem >> tempString;
-//        temporaryClass.setmyDate(QString::to(tempString) );
+        srem >> tempDate;
+        temporaryClass.setmyDate( tempDate );
 
     }
     return true;
