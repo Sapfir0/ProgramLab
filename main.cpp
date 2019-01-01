@@ -5,6 +5,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    qsrand( QTime::currentTime().msec() ); //угадай что это такое
+
     MainWindow w;
     w.show();
 

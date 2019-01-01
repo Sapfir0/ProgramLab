@@ -21,24 +21,24 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+		explicit MainWindow(QWidget *parent = nullptr);
+		~MainWindow();
 
-    void closeEvent(QCloseEvent *cEvent);
+		void closeEvent(QCloseEvent *cEvent);
 
 
-    void addRecordToDatabase(const fotobase &data);
-    fotobase createRecord();//из ui в экземпляр класса
-    void loadRecord(fotobase value); //выводит на ui данные из экземпляра класса
-    void createWindow(); //здесь конструктор класса(хех)
-    //void createRandomWrite(fotobase write);
-    void sorting();
-    void initializationTable(int rows);
+		void addRecordToDatabase(const fotobase &data);
+		fotobase createRecord();//из ui в экземпляр класса
+		void loadRecord(fotobase value); //выводит на ui данные из экземпляра класса
+		void createWindow(); //здесь конструктор класса(хех)
+		//void createRandomWrite(fotobase write);
+		void sorting();
+		void initializationTable(int rows);
 
-    void fillingTable(int rows); //
-   // int deleting();
+		void fillingTable(int rows); //
+		// int deleting();
 
-    void setToUi();
+		void setToUi();
 
 
 
@@ -57,7 +57,7 @@ private slots:
     void on_createBtn_clicked();
     void on_editBtn_clicked();
     void on_deleteBtn_clicked();
-    void exit();
+
     void on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 
     void on_saveUsBtn_clicked();
@@ -66,6 +66,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+	fotoDatabase db;
     QList<fotobase> record; //записи тут
     int numberOfRecords = 0;
     int indexOfRecord = 1; //это счетчик [1,countRecordAndRows] мухах

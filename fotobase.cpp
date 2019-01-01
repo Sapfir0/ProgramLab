@@ -180,13 +180,10 @@ QDate fotobase::getmyDate() const{
 
 fotobase fotobase::randomix( ) {
 
-    fotobase write;
     QStringList categoryList = { "Профессиональный", "Любительский", "Полупрофессиональный"};
     QStringList producerList = { "Nikon", "Panasonic", "Sony", "Canon", "Olympus", "Зенит" }; //самодокуентирующийся код
     QStringList nameOfModelList = { "GH-4", "TY-3", "Cyber-shot DSC-RX100", "Revolution", "X-A5", "EOS 77D", "TG-5", "Pen E-PL9" };
     QVector<double> resolution = { 2.45, 5.67, 16,73, 12.6, 11.23, 32.12};
-    QTime now = QTime::currentTime();
-    qsrand( now.msec() ); //угадай что это такое
 
     QString strCategory = categoryList.at(rand()%categoryList.size());
     bool changeLens;
@@ -207,16 +204,18 @@ fotobase fotobase::randomix( ) {
     QDate mydata;
     mydata = randomDate(mydata);
 
-    write.setNameOfModel( nameOfModelList.at( rand() % nameOfModelList.size()) );
-    write.setCategory ( strCategory);
-    write.setAnalogOrNot ( analogOrNot);
+	fotobase write;
+
+    write.setNameOfModel( nameOfModelList.at( rand() % nameOfModelList.size() ) );
+    write.setCategory ( strCategory );
+    write.setAnalogOrNot ( analogOrNot );
     write.setProducer ( producerList.at(rand() % producerList.size() ) );
     write.setMatrRes ( whatismatrres );
     write.setChangeLense ( changeLens );
     write.setSize ( randSize() );
-    write.setWeight ( qrand() % 8000 + 100);
+    write.setWeight ( qrand() % 8000 + 100 );
     write.setCost ( qrand() % 150000  + 1000  );
-    write.setmyDate ( mydata);
+    write.setmyDate ( mydata );
 
     return write;
 }

@@ -63,7 +63,9 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 void MainWindow::on_filling_clicked()
 {
     for (int i=0; i<10; i++) {
-        record.append(fotobase::randomix());
+		auto random = fotobase::randomix();
+        record.append(random);
+		db.append(random);
     }
     for (int i=0; i < 10; i++)
         initializationTable(numberOfRecords+i+1);
@@ -302,14 +304,16 @@ void MainWindow::createWindow() {
 
 void MainWindow::on_saveUsBtn_clicked()
 {
-    fotoDatabase db = fotoDatabase();
-    db.saveDatabaseUs();
+    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+	if (!filename.isEmpty())
+		db.save(filename);
 }
 
 void MainWindow::on_loadBtn_clicked()
 {
-    fotoDatabase db = fotoDatabase();
-    db.loadDatabase();
+    QString filename = QFileDialog::getSaveFileName(this , "Открыть файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+	if (!filename.isEmpty())
+		db.load(filename);
     ui->spisok->clear();
 }
 

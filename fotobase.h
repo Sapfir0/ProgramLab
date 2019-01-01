@@ -8,7 +8,7 @@
 
 class fotobase
 {
-private:    
+private:
 
 
     QString nameOfModel; //Название модели
@@ -42,7 +42,7 @@ public:
 
 
 
-    static fotobase randomix( );
+    static fotobase randomix();
 
     void setNameOfModel(QString nameofModelclass);
     QString getNameOfModel() const;
