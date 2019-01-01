@@ -1,9 +1,4 @@
 #include "fotodatabase.h"
-#include <QFile>
-#include <QDebug>
-#include <QTextStream>
-#include <QFileDialog>
-//#include "fotobase.h"
 
 fotoDatabase::fotoDatabase()
 {
@@ -26,26 +21,27 @@ bool fotoDatabase::save(QString filename) const {
         return false;
     }
 
-    QDataStream srem(&database);
-    //QList<fotobase>::const_iterator it ; //const не лучше, но так робит
+    QDataStream stream(&database);
 
-    for (auto it = record.begin(); it < record.end(); it++ )
+    for (QList<fotobase>::const_iterator it = record.begin(); it < record.end(); it++ )
     {
         fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
-        srem << temp.getNameOfModel() << "\n";
-        srem << temp.getGategory() << "\n";
-        srem << temp.getAnalogOrNot()<< "\n";
-        srem << temp.getProducer() << "\n";
-        srem << temp.getMatrRes() << "\n";
-        srem << temp.getChangeLense() << "\n";
-        srem << temp.getSize() << "\n";
-        srem << temp.getWeight() << "\n";
-        srem << temp.getCost() << "\n";
-        srem << temp.getmyDate() << "\n" << "\n";
+
+        stream << temp.getNameOfModel() << "\n";
+        stream << temp.getGategory() << "\n";
+        stream << temp.getAnalogOrNot()<< "\n";
+        stream << temp.getProducer() << "\n";
+        stream << temp.getMatrRes() << "\n";
+        stream << temp.getChangeLense() << "\n";
+        stream << temp.getSize() << "\n";
+        stream << temp.getWeight() << "\n";
+        stream << temp.getCost() << "\n";
+        stream << temp.getmyDate() << "\n" << "\n";
         qDebug() << temp.getNameOfModel();
     }
 
-    if (record.empty()) qDebug() << "я не записал ничего кек";
+    if (record.empty())
+        qDebug() << "я не записал ничего кек";
 
     return true;
 }
@@ -55,9 +51,9 @@ bool fotoDatabase::load(QString filename) {
     if (!database.open(QIODevice::ReadOnly)) {
         return false;
     }
-    QDataStream srem(&database);
+    QDataStream stream(&database);
 
-    while (!srem.atEnd()) {
+    while (!stream.atEnd()) {
 
         fotobase temporaryClass;
         QString tempString;
@@ -66,35 +62,35 @@ bool fotoDatabase::load(QString filename) {
         double tempDouble;
 
 
-        srem >> tempString;
+        stream >> tempString;
         temporaryClass.setNameOfModel(tempString);
 
-        srem >> tempString;
+        stream >> tempString;
         temporaryClass.setCategory(tempString);
 
-        srem >> tempBool;
+        stream >> tempBool;
         temporaryClass.setAnalogOrNot(tempBool);
 
-        srem >> tempString;
+        stream >> tempString;
         temporaryClass.setProducer(tempString);
 
-        srem >> tempDouble;
+        stream >> tempDouble;
         temporaryClass.setMatrRes(tempDouble);
 
-        srem >> tempBool;
+        stream >> tempBool;
         temporaryClass.setChangeLense(tempBool);
 
-        srem >> tempString;
+        stream >> tempString;
         temporaryClass.setSize(tempString);
 
-        srem >> tempInt;
+        stream >> tempInt;
         temporaryClass.setWeight(tempInt);
 
-        srem >> tempString;
+        stream >> tempString;
         temporaryClass.setCost(tempInt);
 
         //тут должна быть дата ыы
-//        srem >> tempString;
+//        stream >> tempString;
 //        temporaryClass.setmyDate(QString::to(tempString) );
 
     }

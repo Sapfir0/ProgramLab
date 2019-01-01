@@ -1,5 +1,4 @@
 #include "fotobase.h"
-#include  <QDate>
 #include "randomfunctions.h"
 
 fotobase::fotobase()

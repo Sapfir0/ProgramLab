@@ -1,16 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include <QMainWindow>
-#include <QDebug>
-#include <QValidator>
-#include <QDate>
+#include <QtCore>
+#include <QFileDialog>
+#include <QMessageBox>
+
 #include "fotobase.h"
-#include <QStringList>
-#include <vector>
 #include "fotodatabase.h"
 
-#include <QList>
 
 namespace Ui {
 class MainWindow;
@@ -70,14 +69,10 @@ private:
     QList<fotobase> record; //записи тут
     int numberOfRecords = 0;
     int indexOfRecord = 1; //это счетчик [1,countRecordAndRows] мухах
-    const int countRecordAndRows=998; //макс число записей
-    //bool improvisanalCurrentCellChanged=0; //выход из режима редактирования
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
 
     bool edit=0; //нажатие на кнопку отмену было после create -> удалить запись
     bool nonCreating=0;//строка создана, а запись еще нет
-
-    int iteration=0; //для корректного удаления
 
 
 };
