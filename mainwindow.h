@@ -1,11 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
 #include <QMainWindow>
 #include <QtCore>
 #include <QFileDialog>
 #include <QMessageBox>
+
 
 #include "fotobase.h"
 #include "fotodatabase.h"

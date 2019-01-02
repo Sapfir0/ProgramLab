@@ -2,6 +2,8 @@
 #define FOTOBASE_H
 
 #include <QDate>
+#include <QDebug>
+
 
 class fotobase
 {

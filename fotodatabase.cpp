@@ -9,40 +9,40 @@ unsigned int fotoDatabase::append(fotobase writing) {
     //аргумент не возвращается
 	unsigned int tem = get_uniqueId();
 	writing.id = tem;
-	record.append(writing);
+	database.append(writing);
 	return tem;
 
 }
 
 bool fotoDatabase::save(QString filename) const {
-    QFile database(filename);
+    QFile record(filename);
 
-    if ( !database.open(QIODevice::WriteOnly) ) {
+    if ( !record.open(QIODevice::WriteOnly) ) {
         return false;
     }
 
-    QDataStream stream(&database);
-
-    for (QList<fotobase>::const_iterator it = record.begin(); it < record.end(); it++ )
+    QDataStream stream (&record);
+  
+    for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
     {
-        fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
+        if (it != database.begin()) stream << "\n";
 
-        stream << temp.getNameOfModel() << "\n";
-        stream << temp.getGategory() << "\n";
-        stream << temp.getAnalogOrNot()<< "\n";
-        stream << temp.getProducer() << "\n";
+		    fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
+        stream  << temp.getNameOfModel() << "\n";
+        stream  << temp.getGategory() << "\n";
+        stream  << temp.getAnalogOrNot()<< "\n";
+        stream  << temp.getProducer() << "\n";
         stream << temp.getMatrRes() << "\n";
         stream << temp.getChangeLense() << "\n";
         stream << temp.getSize() << "\n";
         stream << temp.getWeight() << "\n";
         stream << temp.getCost() << "\n";
-        stream << temp.getmyDate() << "\n" << "\n";
-        qDebug() << temp.getNameOfModel();
+        stream  << temp.getmyDate();
+
     }
 
-    if (record.empty())
-        qDebug() << "я не записал ничего кек";
-
+    if (database.empty()) qDebug() << "я не записал ничего кек";
+	else qDebug() << "запись прошла успешно";
     return true;
 }
 
@@ -60,6 +60,7 @@ bool fotoDatabase::load(QString filename) {
         int tempInt;
         bool tempBool;
         double tempDouble;
+		QDate tempDate;
 
 
         stream >> tempString;
@@ -90,25 +91,39 @@ bool fotoDatabase::load(QString filename) {
         temporaryClass.setCost(tempInt);
 
         //тут должна быть дата ыы
-//        stream >> tempString;
-//        temporaryClass.setmyDate(QString::to(tempString) );
+        srem >> tempDate;
+        temporaryClass.setmyDate( tempDate );
+
 
     }
     return true;
 }
 
+fotobase& fotoDatabase::record(uint id) {
+	for (auto& it : database) {
+		if (it.id == id) return it;
+	}
+	throw 0;
+}
+
+QVector<fotobase> fotoDatabase::records() const {
+	QVector<fotobase> t;
+	std::for_each(database.begin(), database.end(), [&t](const fotobase& i){t.push_back(i);});
+	return t;
+}
+
 int fotoDatabase::count() const {
-    return record.size();
+    return database.size();
 }
 
 void fotoDatabase::remove(unsigned int id) {
     //удалить из базы данных запись c заданным идентификатором
-	for (auto it = record.end(); it-- != record.end() && it->id != id;)
-    if (it != record.end()) record.erase(it);
+	for (auto it = database.end(); it-- != database.end() && it->id != id;)
+    if (it != database.end()) database.erase(it);
 }
 
 void fotoDatabase::clear() {
-    record.clear();
+    database.clear();
 }
 
 unsigned int fotoDatabase::get_uniqueId() const {
@@ -124,7 +139,7 @@ bool fotoDatabase::isUniqueId(unsigned int id) const {
     if (id ==0)
         return false;
 
-	for (auto it : record) {
+	for (auto it : database) {
 		if (it.id == id) return false;
 	}
     return true;
