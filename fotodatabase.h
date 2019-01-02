@@ -7,7 +7,7 @@
 class fotoDatabase
 {
 	private:
-		QList<fotobase> record;
+		QList<fotobase> database;
 
 	public:
 		fotoDatabase();
@@ -24,8 +24,8 @@ class fotoDatabase
 		unsigned int append(fotobase record);
 		void remove(unsigned int id);
 		int update(unsigned int id, const QString &name, const QString &value);//вроде это//не то
-		fotobase& record(uint id) const;
-		const QVector<const fotobase> records() const;
+		fotobase& record(uint id);
+		QVector<fotobase> records() const;
 		bool save(QString filename) const;
 		bool load(QString filename);
 		void clear();

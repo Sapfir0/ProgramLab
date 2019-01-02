@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
+#include <algorithm>
 
 fotoDatabase::fotoDatabase()
 {
@@ -12,24 +13,24 @@ unsigned int fotoDatabase::append(fotobase writing) {
     //аргумент не возвращается
 	unsigned int tem = get_uniqueId();
 	writing.id = tem;
-	record.append(writing);
+	database.append(writing);
 	return tem;
 
 }
 
 bool fotoDatabase::save(QString filename) const {
-    QFile database(filename);
+    QFile record(filename);
 
-    if ( !database.open(QIODevice::WriteOnly) ) {
+    if ( !record.open(QIODevice::WriteOnly) ) {
         return false;
     }
 
-    QDataStream srem(&database);
+    QDataStream srem(&record);
     //QList<fotobase>::const_iterator it ; //const не лучше, но так робит
 
-    for (auto it = record.begin(); it < record.end(); it++ )
+    for (auto it = database.begin(); it < database.end(); it++ )
     {
-        if (it != record.begin()) srem << "\n";
+        if (it != database.begin()) srem << "\n";
 
 		fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
         srem << temp.getNameOfModel() << "\n";
@@ -45,7 +46,7 @@ bool fotoDatabase::save(QString filename) const {
 
     }
 
-    if (record.empty()) qDebug() << "я не записал ничего кек";
+    if (database.empty()) qDebug() << "я не записал ничего кек";
 	else qDebug() << "запись прошла успешно";
     return true;
 }
@@ -102,30 +103,31 @@ bool fotoDatabase::load(QString filename) {
     return true;
 }
 
-fotobase& record(uint id) const {
-	for (auto it : record) {
+fotobase& fotoDatabase::record(uint id) {
+	for (auto& it : database) {
 		if (it.id == id) return it;
 	}
 	throw 0;
 }
 
-const QVector<const fotobase> records() const {
-	QVector<const fotobase> t;
-	for_each(record.begin(), record.end(), [&t](fotobase& i){t.push_back(i);});
+QVector<fotobase> fotoDatabase::records() const {
+	QVector<fotobase> t;
+	std::for_each(database.begin(), database.end(), [&t](const fotobase& i){t.push_back(i);});
+	return t;
 }
 
 int fotoDatabase::count() const {
-    return record.size();
+    return database.size();
 }
 
 void fotoDatabase::remove(unsigned int id) {
     //удалить из базы данных запись c заданным идентификатором
-	for (auto it = record.end(); it-- != record.end() && it->id != id;)
-    if (it != record.end()) record.erase(it);
+	for (auto it = database.end(); it-- != database.end() && it->id != id;)
+    if (it != database.end()) database.erase(it);
 }
 
 void fotoDatabase::clear() {
-    record.clear();
+    database.clear();
 }
 
 unsigned int fotoDatabase::get_uniqueId() const {
@@ -141,7 +143,7 @@ bool fotoDatabase::isUniqueId(unsigned int id) const {
     if (id ==0)
         return false;
 
-	for (auto it : record) {
+	for (auto it : database) {
 		if (it.id == id) return false;
 	}
     return true;
