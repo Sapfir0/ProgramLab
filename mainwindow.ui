@@ -26,6 +26,12 @@
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
            <widget class="QTableWidget" name="spisok">
+            <property name="minimumSize">
+             <size>
+              <width>200</width>
+              <height>200</height>
+             </size>
+            </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>

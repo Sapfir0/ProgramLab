@@ -311,10 +311,11 @@ void MainWindow::on_saveUsBtn_clicked()
 
 void MainWindow::on_loadBtn_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName(this , "Открыть файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+	db.clear();
+	ui->spisok->clear();
 	if (!filename.isEmpty())
 		db.load(filename);
-    ui->spisok->clear();
 }
 
 

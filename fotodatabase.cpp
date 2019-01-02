@@ -43,11 +43,10 @@ bool fotoDatabase::save(QString filename) const {
         srem << temp.getCost() << "\n";
         srem << temp.getmyDate();
 
-        qDebug() << temp.getNameOfModel();
     }
 
     if (record.empty()) qDebug() << "я не записал ничего кек";
-
+	else qDebug() << "запись прошла успешно";
     return true;
 }
 
@@ -101,6 +100,18 @@ bool fotoDatabase::load(QString filename) {
 
     }
     return true;
+}
+
+fotobase& record(uint id) const {
+	for (auto it : record) {
+		if (it.id == id) return it;
+	}
+	throw 0;
+}
+
+const QVector<const fotobase> records() const {
+	QVector<const fotobase> t;
+	for_each(record.begin(), record.end(), [&t](fotobase& i){t.push_back(i);});
 }
 
 int fotoDatabase::count() const {
