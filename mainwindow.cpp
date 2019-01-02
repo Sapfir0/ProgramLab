@@ -216,7 +216,7 @@ void MainWindow::on_createBtn_clicked()
     loadRecord( fotobase() );
 
 
-    ui->spisok->item(indexOfRecord, 0)->setData(Qt::UserRole, fotobase::id);
+    //ui->spisok->item(indexOfRecord, 0)->setData(Qt::UserRole, fotobase::id);
     //надо бы написать еще чтения айди
 
 }

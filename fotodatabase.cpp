@@ -14,6 +14,8 @@ unsigned int fotoDatabase::append(fotobase writing) {
 
 }
 
+
+//сохранить данные в заданный файл, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::save(QString filename) const {
     QFile record(filename);
 
@@ -27,7 +29,7 @@ bool fotoDatabase::save(QString filename) const {
     {
         if (it != database.begin()) stream << "\n";
 
-		    fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
+        fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
         stream  << temp.getNameOfModel() << "\n";
         stream  << temp.getGategory() << "\n";
         stream  << temp.getAnalogOrNot()<< "\n";
@@ -41,11 +43,16 @@ bool fotoDatabase::save(QString filename) const {
 
     }
 
-    if (database.empty()) qDebug() << "я не записал ничего кек";
-	else qDebug() << "запись прошла успешно";
+    if (database.empty())
+        qDebug() << "я не записал ничего кек";
+    else
+        qDebug() << "запись прошла успешно";
+
     return true;
 }
 
+
+//загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
     QFile database(filename);
     if (!database.open(QIODevice::ReadOnly)) {
@@ -91,7 +98,7 @@ bool fotoDatabase::load(QString filename) {
         temporaryClass.setCost(tempInt);
 
         //тут должна быть дата ыы
-        srem >> tempDate;
+        stream >> tempDate;
         temporaryClass.setmyDate( tempDate );
 
 
@@ -99,35 +106,58 @@ bool fotoDatabase::load(QString filename) {
     return true;
 }
 
-fotobase& fotoDatabase::record(uint id) {
-	for (auto& it : database) {
-		if (it.id == id) return it;
-	}
-	throw 0;
+fotobase& fotoDatabase::record(unsigned int id) {//идея в том что ссылку можно читать
+
+    for ( QList<fotobase>::const_iterator& it  = database.begin(); it != database.end(); ++it)
+    {
+        if (it.id == id)
+            return it;
+    }
+
+    return 0;
 }
 
+
+/*возвратить вектор записей, которые должны отображается в браузере,
+где fotobase — структура, соответствующая строке браузера
+(поля структуры совпадают с колонками барузера, также структура содержат идентификатор записи);*/
 QVector<fotobase> fotoDatabase::records() const {
-	QVector<fotobase> t;
-	std::for_each(database.begin(), database.end(), [&t](const fotobase& i){t.push_back(i);});
-	return t;
+
+//    std::for_each(database.begin(), database.end(), [&currentRowInBrowser](const fotobase& i){
+//        currentRowInBrowser.push_back(i);
+//    });
+
+    //return currentRowInBrowser;
+    return QVector<fotobase> (database.begin(), database.end());
 }
+
 
 int fotoDatabase::count() const {
     return database.size();
 }
 
+
+//удалить из базы данных запись c заданным идентификатором
 void fotoDatabase::remove(unsigned int id) {
-    //удалить из базы данных запись c заданным идентификатором
-	for (auto it = database.end(); it-- != database.end() && it->id != id;)
-    if (it != database.end()) database.erase(it);
+
+    for (auto it = database.end(); it-- != database.end() && it->id != id; ) {
+
+    if (it != database.end())
+        database.erase(it);
+    }
 }
 
+
+//уничтожает все данные
 void fotoDatabase::clear() {
     database.clear();
 }
 
+
 unsigned int fotoDatabase::get_uniqueId() const {
+
     unsigned int id = qrand();
+
     while (!isUniqueId(id)) {
         id = qrand();
     }
@@ -135,13 +165,21 @@ unsigned int fotoDatabase::get_uniqueId() const {
     return id;
 }
 
+
 bool fotoDatabase::isUniqueId(unsigned int id) const {
+
     if (id ==0)
         return false;
 
-	for (auto it : database) {
-		if (it.id == id) return false;
-	}
+//    for (auto it = database.begin(); it != database.end(); ++it) {
+//        if (*it.id == id) return false;
+
+//	}
+
+    for (QList<fotobase>::const_iterator it = database.begin(); it != database.end(); ++it) {
+        if (it.id == id) return false;
+}
+
     return true;
 }
 
