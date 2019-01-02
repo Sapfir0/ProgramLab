@@ -1,9 +1,9 @@
 #ifndef FOTOBASE_H
 #define FOTOBASE_H
 
-#include <QString>
 #include <QDate>
 #include <QDebug>
+
 
 class fotobase
 {

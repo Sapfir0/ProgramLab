@@ -1,11 +1,5 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QRegExp>
-#include <QDate>
-
-#include <QMessageBox>
-#include <algorithm>
-#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     createWindow();
 }
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -37,11 +32,6 @@ void MainWindow::setCheckPolProf() {
     }
 }
 
-void MainWindow::addRecordToDatabase(const fotobase &data) {
-    //unsigned int t = record.appender(data);
-
-}
-
 fotobase MainWindow::createRecord() //из ui в экземпляр класса
 {
     fotobase write;
@@ -63,7 +53,7 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 void MainWindow::on_filling_clicked()
 {
     for (int i=0; i<10; i++) {
-		auto random = fotobase::randomix();
+        fotobase random = fotobase::randomix();
         record.append(random);
 		db.append(random);
     }
@@ -137,7 +127,6 @@ void MainWindow::setToUi() {
 
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
-
     if (ui->nameOfModel->text() == nullptr ) {//пустая строка
         QMessageBox::warning(nullptr,"Alert", "Название не задано");
         return;
@@ -154,8 +143,6 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     editMode(false);
 
     //запишем в файлик
-    fotoDatabase db = fotoDatabase();
-    //db.save(QString("loh"));
 
 }
 
@@ -223,15 +210,14 @@ void MainWindow::on_editBtn_clicked()
 
 void MainWindow::on_createBtn_clicked()
 {
-    if ( countRecordAndRows-ui->spisok->rowCount() <= 1 ) {
-         QMessageBox::warning(nullptr,"Achive 1 completed", "Превышено максимальное число записей");
-         return;
-    }
-
     editMode(true);
     initializationTable(numberOfRecords+1);
 
     loadRecord( fotobase() );
+
+
+    ui->spisok->item(indexOfRecord, 0)->setData(Qt::UserRole, fotobase::id);
+    //надо бы написать еще чтения айди
 
 }
 
@@ -253,7 +239,7 @@ void MainWindow::on_deleteBtn_clicked()
     if (indexOfRecord == ui->spisok->rowCount()-2) {
         qDebug() << "мусор в плюсах - это ты";
     }
-    //qDebug() << indexOfRecord;
+
     if (ui->spisok->rowCount() == 1)
         ui->spisok->reset();
 
@@ -304,16 +290,19 @@ void MainWindow::createWindow() {
 
 void MainWindow::on_saveUsBtn_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.txt)"); // получение названия файла
 	if (!filename.isEmpty())
 		db.save(filename);
 }
 
 void MainWindow::on_loadBtn_clicked()
 {
+
     QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
 	db.clear();
 	ui->spisok->clear();
+
+
 	if (!filename.isEmpty())
 		db.load(filename);
 }

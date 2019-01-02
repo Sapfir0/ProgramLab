@@ -2,6 +2,7 @@
 #define FOTODATABASE_H
 
 #include <QList>
+#include <QDebug>
 #include "fotobase.h"
 
 class fotoDatabase
