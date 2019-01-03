@@ -1,6 +1,8 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "fotobasetablewidgetitem.h"
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -67,7 +69,7 @@ void MainWindow::on_filling_clicked()
 }
 
 void MainWindow::fillingTable(int rows) {
-
+	ui->spisok->setSortingEnabled(false);
     for ( int rowsCount=0; rowsCount<rows; rowsCount++)
     {
         QTableWidgetItem *item = new QTableWidgetItem(record.at(rowsCount).getNameOfModel());
@@ -76,7 +78,7 @@ void MainWindow::fillingTable(int rows) {
         item = new QTableWidgetItem(QString::number(record.at(rowsCount).getCost()));
         ui->spisok->setItem(rowsCount, 1, item);
     }
-
+	ui->spisok->setSortingEnabled(true);
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
@@ -109,19 +111,17 @@ void MainWindow::initializationTable (int rows) {
 
 
 void MainWindow::setToUi() {
+	ui->spisok->setSortingEnabled(false);
+
     QTableWidgetItem *item = new QTableWidgetItem(createRecord().getNameOfModel());
     QTableWidgetItem *item2 = new QTableWidgetItem(QString::number( createRecord().getCost()));
 
-    if ( edit == 0) {
     ui->spisok->setItem(numberOfRecords,0,item);
     ui->spisok->setItem(numberOfRecords,1,item2);
-    }
-    if (edit == 1)
-    {
-        ui->spisok->setItem(indexOfRecord,0,item);
-        ui->spisok->setItem(indexOfRecord,1,item2);
-        edit = 0;
-    }
+
+	ui->spisok->setSortingEnabled(true);
+
+	edit = 0;
 }
 
 
@@ -291,6 +291,8 @@ void MainWindow::createWindow() {
 
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
+
+   ui->spisok->setSortingEnabled(true);
 
 }
 

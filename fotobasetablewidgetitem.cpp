@@ -1,0 +1,2 @@
+#include "fotobasetablewidgetitem.h"
+
