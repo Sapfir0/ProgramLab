@@ -24,7 +24,7 @@ class fotoDatabase
 		int count() const;
 		unsigned int append(fotobase record);
 		void remove(unsigned int id);
-		int update(unsigned int id, const QString &name, const QString &value);//вроде это//не то
+		void update(unsigned int id, fotobase record);//вроде это//не то
 		fotobase& record(uint id);
 		QVector<fotobase> records() const;
 		bool save(QString filename) const;

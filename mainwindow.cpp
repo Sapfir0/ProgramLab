@@ -54,31 +54,17 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 
 void MainWindow::on_filling_clicked()
 {
+	initializationTable(numberOfRecords+10);
     for (int i=0; i<10; i++) {
         fotobase random = fotobase::randomix();
         record.append(random);
-		db.append(random);
+		setToUi(db.append(random), numberOfRecords+i);
     }
-    for (int i=0; i < 10; i++)
-        initializationTable(numberOfRecords+i+1);
 
     numberOfRecords+=10;
 
-    fillingTable(ui->spisok->rowCount());
+    //fillingTable(ui->spisok->rowCount());
 
-}
-
-void MainWindow::fillingTable(int rows) {
-	ui->spisok->setSortingEnabled(false);
-    for ( int rowsCount=0; rowsCount<rows; rowsCount++)
-    {
-        QTableWidgetItem *item = new QTableWidgetItem(record.at(rowsCount).getNameOfModel());
-        ui->spisok->setItem(rowsCount, 0, item);
-
-        item = new QTableWidgetItem(QString::number(record.at(rowsCount).getCost()));
-        ui->spisok->setItem(rowsCount, 1, item);
-    }
-	ui->spisok->setSortingEnabled(true);
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
@@ -110,16 +96,16 @@ void MainWindow::initializationTable (int rows) {
 }
 
 
-void MainWindow::setToUi() {
-	ui->spisok->setSortingEnabled(false);
+void MainWindow::setToUi(uint id, int index) {
+	//ui->spisok->setSortingEnabled(false);
 
-    QTableWidgetItem *item = new QTableWidgetItem(createRecord().getNameOfModel());
-    QTableWidgetItem *item2 = new QTableWidgetItem(QString::number( createRecord().getCost()));
+    QTableWidgetItem *item = new fotobaseTableWidgetItem(id, &db, 0);
+    QTableWidgetItem *item2 = new fotobaseTableWidgetItem(id, &db, 1);
 
-    ui->spisok->setItem(numberOfRecords,0,item);
-    ui->spisok->setItem(numberOfRecords,1,item2);
+    ui->spisok->setItem(index,0,item);
+    ui->spisok->setItem(index,1,item2);
 
-	ui->spisok->setSortingEnabled(true);
+	//ui->spisok->setSortingEnabled(true);
 
 	edit = 0;
 }
@@ -133,8 +119,12 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     }
 
     callEnableDisable=0;
-    record.insert(numberOfRecords, createRecord());
-    setToUi();
+    //record.insert(numberOfRecords, createRecord());
+	auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
+	auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
+	db.update(t0->get_id(), createRecord());
+	t0->update_text();
+	t1->update_text();
 
     if (edit != 1) {
         indexOfRecord++;
@@ -189,7 +179,7 @@ void MainWindow::on_editBtn_clicked()
     else if ( callEnableDisable == 0)    {
         editMode(true);//записать запись исходя из тго что в форме
         record.replace(indexOfRecord, createRecord() ); //спорная строчка
-        setToUi();
+        //setToUi();
         loadRecord(record[indexOfRecord]);
         qDebug() << "callEnableDisable == 0";
         //не уверен что нужно то что ниже
@@ -292,7 +282,7 @@ void MainWindow::createWindow() {
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
 
-   ui->spisok->setSortingEnabled(true);
+   //ui->spisok->setSortingEnabled(true);
 
 }
 
