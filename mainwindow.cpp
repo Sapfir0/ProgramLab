@@ -240,11 +240,17 @@ void MainWindow::on_deleteBtn_clicked()
         qDebug() << "мусор в плюсах - это ты";
     }
 
-    if (ui->spisok->rowCount() == 1)
+	if (ui->spisok->rowCount() == 1 || ui->spisok->rowCount()-2 == indexOfRecord) {
         ui->spisok->reset();
+	}
 
     ui->spisok->removeRow(indexOfRecord);
     indexOfRecord--;
+	if (indexOfRecord < 0 && ui->spisok->rowCount() > 0) indexOfRecord++;//хз почему но куте тейбл с этой херней лучше работает
+
+	//qDebug() << "now index of record" << indexOfRecord;
+
+	ui->spisok->setCurrentCell(indexOfRecord, 0);
 
     numberOfRecords = ui->spisok->rowCount();
 

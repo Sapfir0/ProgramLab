@@ -1,4 +1,5 @@
 #include "fotodatabase.h"
+#include <QFile>
 
 fotoDatabase::fotoDatabase()
 {
@@ -24,7 +25,7 @@ bool fotoDatabase::save(QString filename) const {
     }
 
     QDataStream stream (&record);
-  
+
     for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
     {
         if (it != database.begin()) stream << "\n";
@@ -108,13 +109,13 @@ bool fotoDatabase::load(QString filename) {
 
 fotobase& fotoDatabase::record(unsigned int id) {//идея в том что ссылку можно читать
 
-    for ( QList<fotobase>::const_iterator& it  = database.begin(); it != database.end(); ++it)
+    for ( auto& it : database)
     {
         if (it.id == id)
             return it;
     }
 
-    return 0;
+    throw 0;//мы кидаем исключение тк такого объекта у нас нет
 }
 
 
@@ -122,13 +123,14 @@ fotobase& fotoDatabase::record(unsigned int id) {//идея в том что с�
 где fotobase — структура, соответствующая строке браузера
 (поля структуры совпадают с колонками барузера, также структура содержат идентификатор записи);*/
 QVector<fotobase> fotoDatabase::records() const {
+	QVector<fotobase> temp;
 
-//    std::for_each(database.begin(), database.end(), [&currentRowInBrowser](const fotobase& i){
-//        currentRowInBrowser.push_back(i);
-//    });
+    for (auto& i : database) {
+        temp.push_back(i);
+    };
 
-    //return currentRowInBrowser;
-    return QVector<fotobase> (database.begin(), database.end());
+    return temp;
+    //return QVector<fotobase> (database.begin(), database.end());//сосамба куте не могет в стл стайл
 }
 
 
@@ -171,14 +173,12 @@ bool fotoDatabase::isUniqueId(unsigned int id) const {
     if (id ==0)
         return false;
 
-//    for (auto it = database.begin(); it != database.end(); ++it) {
-//        if (*it.id == id) return false;
+    for (auto it = database.begin(); it != database.end(); ++it) {
+        if (it->id == id) return false;
 
-//	}
+	}
 
-    for (QList<fotobase>::const_iterator it = database.begin(); it != database.end(); ++it) {
-        if (it.id == id) return false;
-}
+
 
     return true;
 }
