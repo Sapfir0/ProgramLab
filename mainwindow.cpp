@@ -307,17 +307,17 @@ void MainWindow::on_loadBtn_clicked()
 
 
 void MainWindow::closeEvent(QCloseEvent *cEvent){
-//    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
-//    if (wquit == QMessageBox::Yes) {
-//        cEvent->accept();
-//        if (records.isModidfied()) {
-//            QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
-//            if (wsave == QMessageBox::Yes) {
-//                if (filename.isEmpty())
-//                    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Tyrist Manual Data Base", QDir::homePath() , "Tyrist Manual Data Base (*.tm)"); // получение названия файла
-//                if (!filename.isEmpty()) records.save(filename);
-//            }
-//        }
-//    }
-//    else cEvent->ignore();
+    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
+    if (wquit == QMessageBox::Yes) {
+        cEvent->accept();
+        /*if (db.isModidfied()) {
+            QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
+            if (wsave == QMessageBox::Yes) {
+                if (filename.isEmpty())
+                    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Tyrist Manual Data Base", QDir::homePath() , "Tyrist Manual Data Base (*.tm)"); // получение названия файла
+                if (!filename.isEmpty()) db.save(filename);
+            }
+        }*/
+    }
+    else cEvent->ignore();
 }
