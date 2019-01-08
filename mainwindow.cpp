@@ -116,12 +116,18 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
     callEnableDisable=0;
     //db.database.insert(numberOfRecords, createRecord());
-	auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
-	auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
-	db.update(t0->get_id(), createRecord());
-	t0->update_text();
-	t1->update_text();
+	if (createClicked) {
+		initializationTable(db.count()+1);
+		fotobase temp = createRecord();
+		setToUi(db.append(temp), db.count());
 
+	} else {
+		auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
+		auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
+		db.update(t0->get_id(), createRecord());
+		t0->update_text();
+		t1->update_text();
+	}
 //    QTableWidgetItem *item = new QTableWidgetItem(db.database.value(indexOfRecord).getNameOfModel());
 //    QTableWidgetItem *item2 = new QTableWidgetItem(db.database.value(indexOfRecord).getCost());
 //    ui->spisok->setItem(numberOfRecords,0,item);
@@ -133,7 +139,7 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     if (edit != 1) {
         indexOfRecord++;
     }
-
+//добавь сдвиг текущего элемента
     editMode(false);
 
     //запишем в файлик
@@ -152,7 +158,9 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     edit =0;
     callEnableDisable=0;
     editMode(false);
-	on_spisok_currentCellChanged(indexOfRecord);
+
+	if (!createClicked && db.count() != 0)
+		on_spisok_currentCellChanged(indexOfRecord);
 }
 
 void MainWindow::enableDisableEdit(bool arg) {
@@ -206,8 +214,10 @@ void MainWindow::on_editBtn_clicked()
 void MainWindow::on_createBtn_clicked()
 {
     editMode(true);
-
+	createClicked = true;
     loadRecord( fotobase() );
+
+
 
     //ui->spisok->item(indexOfRecord, 0)->setData(Qt::UserRole, fotobase::id);
     //надо бы написать еще чтения айди
@@ -217,7 +227,7 @@ void MainWindow::on_createBtn_clicked()
 
 void MainWindow::editMode(bool arg) {
 
-    if ( arg)
+    if (arg)
         ui->statusBar->showMessage("Режим редактирования");
     else
         ui->statusBar->showMessage(" ");

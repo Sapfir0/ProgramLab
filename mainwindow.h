@@ -69,6 +69,7 @@ private:
 	uint currentId = 0;
     int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
+	bool createClicked;
 
     bool edit=0; //нажатие на кнопку отмену было после create -> удалить запись
     bool nonCreating=0;//строка создана, а запись еще нет
