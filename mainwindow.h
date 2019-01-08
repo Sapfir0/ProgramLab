@@ -63,6 +63,8 @@ private slots:
 
     void on_loadBtn_clicked();
 
+    void on_sortBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
 	fotoDatabase db;

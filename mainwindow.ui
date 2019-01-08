@@ -48,12 +48,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinWriting">
-            <property name="minimum">
-             <number>1</number>
-            </property>
-            <property name="maximum">
-             <number>10</number>
+           <widget class="QPushButton" name="sortBtn">
+            <property name="text">
+             <string>Сортировать</string>
             </property>
            </widget>
           </item>

@@ -132,20 +132,20 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 //    QTableWidgetItem *item2 = new QTableWidgetItem(db.database.value(indexOfRecord).getCost());
 //    ui->spisok->setItem(numberOfRecords,0,item);
 //    ui->spisok->setItem(numberOfRecords,1,item2);
-    qDebug() << db.database.value(indexOfRecord).getNameOfModel() << db.database.value(indexOfRecord).getCost() ;
 
+    if (db.database.value(indexOfRecord).getNameOfModel().isEmpty() or db.database.value(indexOfRecord).getCost()==0)
+        qDebug() << "Пустота";
 
     if (edit != 1) {
         indexOfRecord++;
     }
+
     numberOfRecords = ui->spisok->rowCount();
     editMode(false);
 
     //запишем в файлик
 
 }
-
-
 
 
 
@@ -330,4 +330,9 @@ void MainWindow::closeEvent(QCloseEvent *cEvent){
         }*/
     }
     else cEvent->ignore();
+}
+
+void MainWindow::on_sortBtn_clicked()
+{
+
 }
