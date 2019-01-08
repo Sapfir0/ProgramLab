@@ -8,10 +8,10 @@
 class fotoDatabase
 {
 	private:
+		QList<fotobase> database;
 	public:
 
 		fotoDatabase();
-        QList<fotobase> database;
 
 
 		//4 lab

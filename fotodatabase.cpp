@@ -152,12 +152,13 @@ int fotoDatabase::count() const {
 
 //удалить из базы данных запись c заданным идентификатором
 void fotoDatabase::remove(unsigned int id) {
+	QList<fotobase>::iterator it;
 
-    for (auto it = database.end(); it-- != database.end() && it->id != id; ) {
+    for (it = database.begin(); it != database.end() && it->id != id; ++it);//так и должно быть
 
-    if (it != database.end())
-        database.erase(it);
-    }
+	if (it != database.end())
+		database.erase(it);
+
 }
 
 

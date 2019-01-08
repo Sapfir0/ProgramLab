@@ -57,19 +57,17 @@ private slots:
     void on_editBtn_clicked();
     void on_deleteBtn_clicked();
 
-    void on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+    void on_spisok_currentCellChanged(int currentRow);
 
     void on_saveUsBtn_clicked();
 
     void on_loadBtn_clicked();
 
-    void on_sortBtn_clicked();
-
 private:
     Ui::MainWindow *ui;
 	fotoDatabase db;
-    int numberOfRecords = 0;
-    int indexOfRecord = 1; //это счетчик [1,countRecordAndRows] мухах
+	uint currentId = 0;
+    int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
 
     bool edit=0; //нажатие на кнопку отмену было после create -> удалить запись

@@ -56,17 +56,11 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 
 void MainWindow::on_filling_clicked()
 {
-	initializationTable(numberOfRecords+10);
+	initializationTable(db.count()+10);
     for (int i=0; i<10; i++) {
         fotobase random = fotobase::randomix();
-        db.append(random);
-		setToUi(db.append(random), numberOfRecords+i);
+		setToUi(db.append(random), db.count());
     }
-
-    numberOfRecords+=10;
-
-    //fillingTable(ui->spisok->rowCount());
-
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
@@ -121,26 +115,25 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     }
 
     callEnableDisable=0;
-    db.database.insert(numberOfRecords, createRecord());
-//	auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
-//	auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
-//	db.update(t0->get_id(), createRecord());
-//	t0->update_text();
-//	t1->update_text();
+    //db.database.insert(numberOfRecords, createRecord());
+	auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
+	auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
+	db.update(t0->get_id(), createRecord());
+	t0->update_text();
+	t1->update_text();
 
 //    QTableWidgetItem *item = new QTableWidgetItem(db.database.value(indexOfRecord).getNameOfModel());
 //    QTableWidgetItem *item2 = new QTableWidgetItem(db.database.value(indexOfRecord).getCost());
 //    ui->spisok->setItem(numberOfRecords,0,item);
 //    ui->spisok->setItem(numberOfRecords,1,item2);
 
-    if (db.database.value(indexOfRecord).getNameOfModel().isEmpty() or db.database.value(indexOfRecord).getCost()==0)
-        qDebug() << "Пустота";
+    /*if (db.database.value(indexOfRecord).getNameOfModel().isEmpty() or db.database.value(indexOfRecord).getCost()==0)
+        qDebug() << "Пустота";*/
 
     if (edit != 1) {
         indexOfRecord++;
     }
 
-    numberOfRecords = ui->spisok->rowCount();
     editMode(false);
 
     //запишем в файлик
@@ -155,10 +148,10 @@ void MainWindow::sorting() {
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
-    initializationTable(numberOfRecords);
     edit =0;
     callEnableDisable=0;
     editMode(false);
+	on_spisok_currentCellChanged(indexOfRecord);
 }
 
 void MainWindow::enableDisableEdit(bool arg) {
@@ -189,9 +182,9 @@ void MainWindow::on_editBtn_clicked()
 
     if ( callEnableDisable == 0)    {
         editMode(true);//записать запись исходя из тго что в форме
-        db.database.replace(indexOfRecord, createRecord() );
+        //db.database.replace(indexOfRecord, createRecord() );
         //setToUi();
-        loadRecord(db.database.at(indexOfRecord));
+        //loadRecord(db.database.at(indexOfRecord));
         qDebug() << "callEnableDisable == 0";
         //не уверен что нужно то что ниже
         callEnableDisable=1;
@@ -212,10 +205,8 @@ void MainWindow::on_editBtn_clicked()
 void MainWindow::on_createBtn_clicked()
 {
     editMode(true);
-    initializationTable(numberOfRecords+1);
 
     loadRecord( fotobase() );
-
 
     //ui->spisok->item(indexOfRecord, 0)->setData(Qt::UserRole, fotobase::id);
     //надо бы написать еще чтения айди
@@ -235,7 +226,8 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-    db.database.removeAt(indexOfRecord);
+	db.remove(currentId);
+
     if (indexOfRecord == ui->spisok->rowCount()-2) {
         qDebug() << "мусор в плюсах - это ты";
     }
@@ -246,21 +238,34 @@ void MainWindow::on_deleteBtn_clicked()
 
     ui->spisok->removeRow(indexOfRecord);
     indexOfRecord--;
+
 	if (indexOfRecord < 0 && ui->spisok->rowCount() > 0) indexOfRecord++;//хз почему но куте тейбл с этой херней лучше работает
 
-	//qDebug() << "now index of record" << indexOfRecord;
 
 	ui->spisok->setCurrentCell(indexOfRecord, 0);
 
-    numberOfRecords = ui->spisok->rowCount();
-
+	qDebug() << "now index of record" << indexOfRecord;
 }
 
 
-void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+void MainWindow::on_spisok_currentCellChanged(int currentRow)
 {
-    indexOfRecord=currentRow;
-    loadRecord(db.database.at(indexOfRecord));
+    indexOfRecord = currentRow;
+
+	bool dataBaseIsEmpty = db.count() == 0;
+
+	ui->editBtn->setEnabled(!dataBaseIsEmpty);
+	ui->deleteBtn->setEnabled(!dataBaseIsEmpty);
+
+	qDebug() << "current cecord: " << indexOfRecord;
+	if (indexOfRecord != -1) {
+		currentId = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0))->get_id();
+		loadRecord(db.record(currentId));
+	}
+
+	if (dataBaseIsEmpty) {
+		loadRecord(fotobase());//кидаем пустые поля
+	}
 
 }
 
@@ -287,7 +292,7 @@ void MainWindow::createWindow() {
 
    ui->saveBtn->hide();
    ui->denied->hide();
-   ui->spinWriting->setDisabled(true);
+   //ui->spinWriting->setDisabled(true);
 
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
@@ -330,9 +335,4 @@ void MainWindow::closeEvent(QCloseEvent *cEvent){
         }*/
     }
     else cEvent->ignore();
-}
-
-void MainWindow::on_sortBtn_clicked()
-{
-
 }
