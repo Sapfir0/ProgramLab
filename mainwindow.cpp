@@ -61,6 +61,7 @@ void MainWindow::on_filling_clicked()
         fotobase random = fotobase::randomix();
 		setToUi(db.append(random), db.count());
     }
+	sorting();
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
@@ -88,7 +89,6 @@ void MainWindow::initializationTable (int rows) {
     ui->spisok->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     ui->spisok->setRowCount(rows);
-
 }
 
 
@@ -137,13 +137,14 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     editMode(false);
 
     //запишем в файлик
-
+	sorting();
 }
 
 
 
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
+	ui->spisok->sortItems(0);
 }
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
@@ -243,6 +244,7 @@ void MainWindow::on_deleteBtn_clicked()
 
 
 	ui->spisok->setCurrentCell(indexOfRecord, 0);
+	sorting();
 
 	qDebug() << "now index of record" << indexOfRecord;
 }
@@ -324,6 +326,7 @@ void MainWindow::on_loadBtn_clicked()
 			for (int i=0; i<buff.size(); i++) {
 				setToUi(buff[i].id, i);
 			}
+			sorting();
 		} else {
 			QMessageBox::warning(this, "Alert", "Ошибка, файл не загружен");
 		}
