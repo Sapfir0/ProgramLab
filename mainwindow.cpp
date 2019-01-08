@@ -59,7 +59,7 @@ void MainWindow::on_filling_clicked()
 	initializationTable(numberOfRecords+10);
     for (int i=0; i<10; i++) {
         fotobase random = fotobase::randomix();
-        record.append(random);
+        db.append(random);
 		setToUi(db.append(random), numberOfRecords+i);
     }
 
@@ -98,14 +98,14 @@ void MainWindow::initializationTable (int rows) {
 }
 
 
-void MainWindow::setToUi(uint id, int index) {
+void MainWindow::setToUi(uint id, int indORnumb) {
 	//ui->spisok->setSortingEnabled(false);
 
     QTableWidgetItem *item = new fotobaseTableWidgetItem(id, &db, 0);
     QTableWidgetItem *item2 = new fotobaseTableWidgetItem(id, &db, 1);
 
-    ui->spisok->setItem(index,0,item);
-    ui->spisok->setItem(index,1,item2);
+    ui->spisok->setItem(indORnumb,0,item);
+    ui->spisok->setItem(indORnumb,1,item2);
 
 	//ui->spisok->setSortingEnabled(true);
 
@@ -121,12 +121,19 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     }
 
     callEnableDisable=0;
-    //record.insert(numberOfRecords, createRecord());
-	auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
-	auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
-	db.update(t0->get_id(), createRecord());
-	t0->update_text();
-	t1->update_text();
+    db.database.insert(numberOfRecords, createRecord());
+//	auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
+//	auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
+//	db.update(t0->get_id(), createRecord());
+//	t0->update_text();
+//	t1->update_text();
+
+//    QTableWidgetItem *item = new QTableWidgetItem(db.database.value(indexOfRecord).getNameOfModel());
+//    QTableWidgetItem *item2 = new QTableWidgetItem(db.database.value(indexOfRecord).getCost());
+//    ui->spisok->setItem(numberOfRecords,0,item);
+//    ui->spisok->setItem(numberOfRecords,1,item2);
+    qDebug() << db.database.value(indexOfRecord).getNameOfModel() << db.database.value(indexOfRecord).getCost() ;
+
 
     if (edit != 1) {
         indexOfRecord++;
@@ -137,6 +144,10 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     //запишем в файлик
 
 }
+
+
+
+
 
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
@@ -175,14 +186,12 @@ void MainWindow::enableDisableEdit(bool arg) {
 
 void MainWindow::on_editBtn_clicked()
 {//нужно еще заливать изменения в список
-    if ( record.count() == 0)
-        return;
 
-    else if ( callEnableDisable == 0)    {
+    if ( callEnableDisable == 0)    {
         editMode(true);//записать запись исходя из тго что в форме
-        record.replace(indexOfRecord, createRecord() ); //спорная строчка
+        db.database.replace(indexOfRecord, createRecord() );
         //setToUi();
-        loadRecord(record[indexOfRecord]);
+        loadRecord(db.database.at(indexOfRecord));
         qDebug() << "callEnableDisable == 0";
         //не уверен что нужно то что ниже
         callEnableDisable=1;
@@ -226,8 +235,7 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-    record.removeAt(indexOfRecord);//можно смухлевать и не удалять из списка //вылета не будет
-
+    db.database.removeAt(indexOfRecord);
     if (indexOfRecord == ui->spisok->rowCount()-2) {
         qDebug() << "мусор в плюсах - это ты";
     }
@@ -252,7 +260,7 @@ void MainWindow::on_deleteBtn_clicked()
 void MainWindow::on_spisok_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
 {
     indexOfRecord=currentRow;
-    loadRecord(record.at(indexOfRecord));
+    loadRecord(db.database.at(indexOfRecord));
 
 }
 

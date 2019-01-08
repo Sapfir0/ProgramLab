@@ -66,7 +66,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 	fotoDatabase db;
-    QList<fotobase> record; //записи тут
     int numberOfRecords = 0;
     int indexOfRecord = 1; //это счетчик [1,countRecordAndRows] мухах
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
@@ -76,7 +75,6 @@ private:
 
 
 };
-
 
 
 
