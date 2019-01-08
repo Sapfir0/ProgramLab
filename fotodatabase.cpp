@@ -24,7 +24,7 @@ bool fotoDatabase::save(QString filename) const {
         return false;
     }
 
-    QDataStream stream (&record);
+    QTextStream stream (&record);
 
     for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
     {
@@ -40,7 +40,7 @@ bool fotoDatabase::save(QString filename) const {
         stream << temp.getSize() << "\n";
         stream << temp.getWeight() << "\n";
         stream << temp.getCost() << "\n";
-        stream  << temp.getmyDate();
+        stream  << temp.getmyDate().toString();
 
     }
 
@@ -59,7 +59,7 @@ bool fotoDatabase::load(QString filename) {
     if (!database.open(QIODevice::ReadOnly)) {
         return false;
     }
-    QDataStream stream(&database);
+    QTextStream stream(&database);
 
     while (!stream.atEnd()) {
 
@@ -68,7 +68,6 @@ bool fotoDatabase::load(QString filename) {
         int tempInt;
         bool tempBool;
         double tempDouble;
-		QDate tempDate;
 
 
         stream >> tempString;
@@ -77,7 +76,7 @@ bool fotoDatabase::load(QString filename) {
         stream >> tempString;
         temporaryClass.setCategory(tempString);
 
-        stream >> tempBool;
+        stream >> (int&)tempBool;
         temporaryClass.setAnalogOrNot(tempBool);
 
         stream >> tempString;
@@ -86,7 +85,7 @@ bool fotoDatabase::load(QString filename) {
         stream >> tempDouble;
         temporaryClass.setMatrRes(tempDouble);
 
-        stream >> tempBool;
+        stream >> (int&)tempBool;
         temporaryClass.setChangeLense(tempBool);
 
         stream >> tempString;
@@ -99,10 +98,10 @@ bool fotoDatabase::load(QString filename) {
         temporaryClass.setCost(tempInt);
 
         //тут должна быть дата ыы
-        stream >> tempDate;
-        temporaryClass.setmyDate( tempDate );
+        stream >> tempString;
+        temporaryClass.setmyDate( QDate::fromString(tempString) );
 
-
+		this->append(temporaryClass);
     }
     return true;
 }

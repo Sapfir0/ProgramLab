@@ -303,7 +303,7 @@ void MainWindow::createWindow() {
 
 void MainWindow::on_saveUsBtn_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.txt)"); // получение названия файла
+    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
 	if (!filename.isEmpty())
 		db.save(filename);
 }
@@ -313,11 +313,21 @@ void MainWindow::on_loadBtn_clicked()
 
     QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
 	db.clear();
-	ui->spisok->clear();
+	initializationTable(0);
 
 
-	if (!filename.isEmpty())
-		db.load(filename);
+	if (!filename.isEmpty()) {
+		if (db.load(filename)) {
+			auto buff = db.records();
+			initializationTable(buff.size());
+			qDebug() << buff.size() << db.count();
+			for (int i=0; i<buff.size(); i++) {
+				setToUi(buff[i].id, i);
+			}
+		} else {
+			QMessageBox::warning(this, "Alert", "Ошибка, файл не загружен");
+		}
+	}
 }
 
 
