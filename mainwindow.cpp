@@ -109,20 +109,25 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
         QMessageBox::warning(nullptr,"Alert", "Название не задано");
         return;
     }
-    qDebug() << "Кнопка save нажата после кнопочки edit";
 
 
-    if (createClicked) { //различаем нажатие: либо после кнопки создать(иф), либо после редактировать(елс)
+    if (edit==0) { //различаем нажатие: либо после кнопки создать(иф), либо после редактировать(елс)
         initializationTable(db.count()+1); //почти дефолтный метод
         fotobase temp = createRecord();
 		setToUi(db.append(temp), db.count());
+        qDebug() << "Кнопка save нажата после кнопочки create";
+
 
 	} else {
+        qDebug() << "Кнопка save нажата после кнопочки edit";
+
 		auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
 		auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
 		db.update(t0->get_id(), createRecord());
 		t0->update_text();
         t1->update_text();
+
+        edit=0;
 	}
 
 
@@ -194,17 +199,18 @@ void MainWindow::on_editBtn_clicked()
     ui->changeLens->setEnabled(false);
     edit=1;
 
+    callEnableDisable=0; //подумать над строчкой
 }
 
 
 void MainWindow::on_createBtn_clicked()
 {
-    qDebug() << "Кнопка create нажата" ;
     editMode(true);
     initializationTable(db.count()+1); //почти дефолтный метод
 
     createClicked = true;
     loadRecord( fotobase() );
+    nonCreating=1; //не переключай столбцы или накажу
 }
 
 
@@ -247,12 +253,22 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
 {
     indexOfRecord = currentRow;
 
+    if (nonCreating==1) {
+        qDebug() << "Переключена строчка. Создание записи отменено";
+
+        initializationTable(db.count()); //почти дефолтный метод
+//надо вызвать denied
+        editMode(false);
+        nonCreating=0;
+    }
+
+
 	bool dataBaseIsEmpty = db.count() == 0;
 
 	ui->editBtn->setEnabled(!dataBaseIsEmpty);
 	ui->deleteBtn->setEnabled(!dataBaseIsEmpty);
 
-	qDebug() << "current cecord: " << indexOfRecord;
+    qDebug() << "current record: " << indexOfRecord;
 	if (indexOfRecord != -1) {
 		currentId = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0))->get_id();
 		loadRecord(db.record(currentId));
