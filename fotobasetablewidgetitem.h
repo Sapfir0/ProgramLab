@@ -24,7 +24,7 @@ class fotobaseTableWidgetItem : public QTableWidgetItem //мы проходил�
             d->remove(id);
         }
 
-        bool operator < (const QTableWidgetItem &other) {
+        bool operator < (const QTableWidgetItem &other) const { //тут важен последний конст
 			const fotobaseTableWidgetItem& tmp = static_cast<const fotobaseTableWidgetItem&>(other);
 
             return  d->record(id) < tmp.d->record(tmp.id);
