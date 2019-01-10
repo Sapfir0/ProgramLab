@@ -56,7 +56,7 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 
 void MainWindow::on_filling_clicked()
 {
-	initializationTable(db.count()+10);
+    initializationTable(db.count()+10);
     for (int i=0; i<10; i++) {
         fotobase random = fotobase::randomix();
 		setToUi(db.append(random), db.count());
@@ -112,22 +112,23 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
 
     if (edit==0) { //различаем нажатие: либо после кнопки создать(иф), либо после редактировать(елс)
+        qDebug() << "Кнопка save нажата после кнопочки create";
+
         initializationTable(db.count()+1); //почти дефолтный метод
         fotobase temp = createRecord();
 		setToUi(db.append(temp), db.count());
-        qDebug() << "Кнопка save нажата после кнопочки create";
 
 
 	} else {
         qDebug() << "Кнопка save нажата после кнопочки edit";
 
-		auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
-		auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
-		db.update(t0->get_id(), createRecord());
-		t0->update_text();
-        t1->update_text();
+        auto nameOfModel = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0)); //кастуем заклинание
+        auto cost = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
+        db.update(nameOfModel->get_id(), createRecord());
+        nameOfModel->update_text();
+        cost->update_text();
 
-        edit=0;
+        edit=0; //Редактирование завершено
 	}
 
 
@@ -255,9 +256,8 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
 
     if (nonCreating==1) {
         qDebug() << "Переключена строчка. Создание записи отменено";
-
         initializationTable(db.count()); //почти дефолтный метод
-//надо вызвать denied
+        //надо вызвать denied
         editMode(false);
         nonCreating=0;
     }

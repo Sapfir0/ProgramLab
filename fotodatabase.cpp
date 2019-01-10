@@ -41,7 +41,6 @@ bool fotoDatabase::save(QString filename) const {
         stream << temp.getWeight() << "\n";
         stream << temp.getCost() << "\n";
         stream  << temp.getmyDate().toString();
-
     }
 
     if (database.empty())
@@ -101,7 +100,8 @@ bool fotoDatabase::load(QString filename) {
         stream >> tempString;
         temporaryClass.setmyDate( QDate::fromString(tempString) );
 
-		this->append(temporaryClass);
+
+        append(temporaryClass);
     }
     return true;
 }
@@ -117,13 +117,17 @@ fotobase& fotoDatabase::record(unsigned int id) {//идея в том что с�
     throw 0;//мы кидаем исключение тк такого объекта у нас нет
 }
 
+/*заменить запись в базе данных;
+возвращается новая позиция записи в соответствии с порядком сортировки:
+*/
 void fotoDatabase::update(unsigned int id, fotobase record) {
-	for ( auto& it : database)
+
+    for ( auto& it : database)
     {
 		if (it.id == id) {
-			uint tid = it.id;
+            uint newID = it.id;
 			it = record;
-			it.id = tid;
+            it.id = newID;
 		}
 	}
 }
@@ -166,7 +170,8 @@ void fotoDatabase::clear() {
     database.clear();
 }
 
-
+/*
+дает абсолютно уникальный айдишник итему в диапоазоне qrand*/
 unsigned int fotoDatabase::get_uniqueId() const {
 
     unsigned int id = qrand();
@@ -178,16 +183,21 @@ unsigned int fotoDatabase::get_uniqueId() const {
     return id;
 }
 
-
+/*проверяет уникальный ли айди хех*/
 bool fotoDatabase::isUniqueId(unsigned int id) const {
 
     if (id ==0)
         return false;
+//фор с диапазоном
+    for (auto it : database) {
+        if (it.id == id)
+            return false;
+    }
 
-    for (auto it = database.begin(); it != database.end(); ++it) {
-        if (it->id == id) return false;
-
-	}
+//    for (auto it = database.begin(); it != database.end(); ++it) {
+//        if (it->id == id)
+//            return false;
+//	}
 
 
 

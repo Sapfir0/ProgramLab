@@ -4,34 +4,43 @@
 #include <QTableWidgetItem>
 #include "fotodatabase.h"
 
-class fotobaseTableWidgetItem : public QTableWidgetItem
+class fotobaseTableWidgetItem : public QTableWidgetItem //мы проходили наследование вроде
 {
 	private:
 		unsigned int id;
-		fotoDatabase *d;
+        fotoDatabase *d; //указатель на бдшку
 		int column;
 
 	public:
-		fotobaseTableWidgetItem(unsigned int id, fotoDatabase* d, int column) {
-			this->id = id;
-			this->d = d;
-			this->column = column;
-			update_text();
+        fotobaseTableWidgetItem(unsigned int idF, fotoDatabase* f, int columnF) {
+            id = idF;
+            d = f;
+
+            column = columnF;
+            update_text();
 		}
-		fotobaseTableWidgetItem() {d->remove(id);}
-		bool operator < (const QTableWidgetItem &other) const {
+
+        fotobaseTableWidgetItem() {
+            d->remove(id);
+        }
+
+        bool operator < (const QTableWidgetItem &other) {
 			const fotobaseTableWidgetItem& tmp = static_cast<const fotobaseTableWidgetItem&>(other);
-			return d->record(id) < tmp.d->record(tmp.id);
+
+            return  d->record(id) < tmp.d->record(tmp.id);
 		}
-		uint get_id() {
+
+        uint get_id() {
 			return id;
 		}
-		fotobase get_record() {
+
+        fotobase get_record() { //возвращает запись
 			return d->record(id);
 		}
-		void update_text() {
+
+        void update_text() { // хех
 			switch (column) {
-				case 0: {
+                case 0: {
 					setText(d->record(id).getNameOfModel());
 					break;
 				}
