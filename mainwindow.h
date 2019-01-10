@@ -30,12 +30,10 @@ public:
 		fotobase createRecord();//из ui в экземпляр класса
 		void loadRecord(fotobase value); //выводит на ui данные из экземпляра класса
 		void createWindow(); //здесь конструктор класса(хех)
-		//void createRandomWrite(fotobase write);
 		void sorting();
 		void initializationTable(int rows);
 
 		void fillingTable(int rows); //
-		// int deleting();
 
 		void setToUi(uint id, int index);
 
@@ -63,13 +61,16 @@ private slots:
 
     void on_loadBtn_clicked();
 
+    void on_sortBtn_clicked();
+
+
 private:
     Ui::MainWindow *ui;
 	fotoDatabase db;
 	uint currentId = 0;
     int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
-	bool createClicked;
+    bool createClicked;
 
     bool edit=0; //нажатие на кнопку отмену было после create -> удалить запись
     bool nonCreating=0;//строка создана, а запись еще нет

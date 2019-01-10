@@ -61,7 +61,7 @@ void MainWindow::on_filling_clicked()
         fotobase random = fotobase::randomix();
 		setToUi(db.append(random), db.count());
     }
-	sorting();
+    //sorting();
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
@@ -93,7 +93,6 @@ void MainWindow::initializationTable (int rows) {
 
 
 void MainWindow::setToUi(uint id, int indORnumb) {
-	//ui->spisok->setSortingEnabled(false);
 
     QTableWidgetItem *item = new fotobaseTableWidgetItem(id, &db, 0);
     QTableWidgetItem *item2 = new fotobaseTableWidgetItem(id, &db, 1);
@@ -101,9 +100,6 @@ void MainWindow::setToUi(uint id, int indORnumb) {
     ui->spisok->setItem(indORnumb,0,item);
     ui->spisok->setItem(indORnumb,1,item2);
 
-	//ui->spisok->setSortingEnabled(true);
-
-	edit = 0;
 }
 
 
@@ -113,12 +109,12 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
         QMessageBox::warning(nullptr,"Alert", "Название не задано");
         return;
     }
+    qDebug() << "Кнопка save нажата после кнопочки edit";
 
-    callEnableDisable=0;
-    //db.database.insert(numberOfRecords, createRecord());
-	if (createClicked) {
-		initializationTable(db.count()+1);
-		fotobase temp = createRecord();
+
+    if (createClicked) { //различаем нажатие: либо после кнопки создать(иф), либо после редактировать(елс)
+        initializationTable(db.count()+1); //почти дефолтный метод
+        fotobase temp = createRecord();
 		setToUi(db.append(temp), db.count());
 
 	} else {
@@ -126,28 +122,20 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 		auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
 		db.update(t0->get_id(), createRecord());
 		t0->update_text();
-		t1->update_text();
+        t1->update_text();
 	}
-//    QTableWidgetItem *item = new QTableWidgetItem(db.database.value(indexOfRecord).getNameOfModel());
-//    QTableWidgetItem *item2 = new QTableWidgetItem(db.database.value(indexOfRecord).getCost());
-//    ui->spisok->setItem(numberOfRecords,0,item);
-//    ui->spisok->setItem(numberOfRecords,1,item2);
 
-    /*if (db.database.value(indexOfRecord).getNameOfModel().isEmpty() or db.database.value(indexOfRecord).getCost()==0)
-        qDebug() << "Пустота";*/
 
-    if (edit != 1) {
-        indexOfRecord++;
-    }
-//добавь сдвиг текущего элемента
     editMode(false);
 
-    //запишем в файлик
-	sorting();
+    //sorting();
 }
 
 
-
+/***
+ * void QTableWidget::sortItems(int column, Qt::SortOrder order = Qt::AscendingOrder)
+ * Sorts all the rows in the table widget based on column and order.
+ */
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
 	ui->spisok->sortItems(0);
@@ -155,12 +143,17 @@ void MainWindow::sorting() {
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
-    edit =0;
-    callEnableDisable=0;
-    editMode(false);
 
-	if (!createClicked && db.count() != 0)
-		on_spisok_currentCellChanged(indexOfRecord);
+    editMode(false);
+    if (createClicked==true) {
+        initializationTable(db.count()); //почти дефолтный метод
+        createClicked==false;
+    }
+    //то что ниже внимание
+    if (!createClicked && db.count() != 0)
+        on_spisok_currentCellChanged(indexOfRecord);
+
+
 }
 
 void MainWindow::enableDisableEdit(bool arg) {
@@ -182,8 +175,6 @@ void MainWindow::enableDisableEdit(bool arg) {
     ui->createBtn->setEnabled(!arg);
     ui->editBtn->setEnabled(!arg);
 
-
-
 }
 
 void MainWindow::on_editBtn_clicked()
@@ -191,17 +182,12 @@ void MainWindow::on_editBtn_clicked()
 
     if ( callEnableDisable == 0)    {
         editMode(true);//записать запись исходя из тго что в форме
-        //db.database.replace(indexOfRecord, createRecord() );
-        //setToUi();
-        //loadRecord(db.database.at(indexOfRecord));
         qDebug() << "callEnableDisable == 0";
-        //не уверен что нужно то что ниже
         callEnableDisable=1;
     }
     else if(callEnableDisable ==1) {
         editMode(false);
         qDebug() << "callEnableDisable == 1";
-        //loadRecord(fotobase());
         callEnableDisable=0;
     }
     ui->matrixResolution->setEnabled(false);
@@ -213,15 +199,12 @@ void MainWindow::on_editBtn_clicked()
 
 void MainWindow::on_createBtn_clicked()
 {
+    qDebug() << "Кнопка create нажата" ;
     editMode(true);
-	createClicked = true;
+    initializationTable(db.count()+1); //почти дефолтный метод
+
+    createClicked = true;
     loadRecord( fotobase() );
-
-
-
-    //ui->spisok->item(indexOfRecord, 0)->setData(Qt::UserRole, fotobase::id);
-    //надо бы написать еще чтения айди
-
 }
 
 
@@ -239,9 +222,9 @@ void MainWindow::on_deleteBtn_clicked()
 {
 	db.remove(currentId);
 
-    if (indexOfRecord == ui->spisok->rowCount()-2) {
-        qDebug() << "мусор в плюсах - это ты";
-    }
+//    if (indexOfRecord == ui->spisok->rowCount()-2) {
+//        qDebug() << "мусор в плюсах - это ты";
+//    }
 
 	if (ui->spisok->rowCount() == 1 || ui->spisok->rowCount()-2 == indexOfRecord) {
         ui->spisok->reset();
@@ -250,13 +233,13 @@ void MainWindow::on_deleteBtn_clicked()
     ui->spisok->removeRow(indexOfRecord);
     indexOfRecord--;
 
-	if (indexOfRecord < 0 && ui->spisok->rowCount() > 0) indexOfRecord++;//хз почему но куте тейбл с этой херней лучше работает
-
+//    if (indexOfRecord < 0 && ui->spisok->rowCount() > 0)
+//        indexOfRecord++;//хз почему но куте тейбл так работает
 
 	ui->spisok->setCurrentCell(indexOfRecord, 0);
-	sorting();
+    //sorting();
 
-	qDebug() << "now index of record" << indexOfRecord;
+    //qDebug() << "now index of record" << indexOfRecord;
 }
 
 
@@ -304,12 +287,9 @@ void MainWindow::createWindow() {
 
    ui->saveBtn->hide();
    ui->denied->hide();
-   //ui->spinWriting->setDisabled(true);
 
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
-
-   //ui->spisok->setSortingEnabled(true);
 
 }
 
@@ -336,7 +316,7 @@ void MainWindow::on_loadBtn_clicked()
 			for (int i=0; i<buff.size(); i++) {
 				setToUi(buff[i].id, i);
 			}
-			sorting();
+            //sorting();
 		} else {
 			QMessageBox::warning(this, "Alert", "Ошибка, файл не загружен");
 		}
@@ -358,4 +338,9 @@ void MainWindow::closeEvent(QCloseEvent *cEvent){
         }*/
     }
     else cEvent->ignore();
+}
+
+void MainWindow::on_sortBtn_clicked()
+{
+    sorting();
 }
