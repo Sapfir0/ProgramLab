@@ -24,22 +24,20 @@ bool fotoDatabase::save(QString filename) const {
         return false;
     }
 
-    QTextStream stream (&record);
+    QDataStream stream (&record);
 
     for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
     {
-        if (it != database.begin()) stream << "\n";
-
         fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
-        stream  << temp.getNameOfModel() << "\n";
-        stream  << temp.getGategory() << "\n";
-        stream  << temp.getAnalogOrNot()<< "\n";
-        stream  << temp.getProducer() << "\n";
-        stream << temp.getMatrRes() << "\n";
-        stream << temp.getChangeLense() << "\n";
-        stream << temp.getSize() << "\n";
-        stream << temp.getWeight() << "\n";
-        stream << temp.getCost() << "\n";
+        stream  << temp.getNameOfModel();
+        stream  << temp.getGategory();
+        stream  << temp.getAnalogOrNot();
+        stream  << temp.getProducer();
+        stream << temp.getMatrRes();
+        stream << temp.getChangeLense();
+        stream << temp.getSize();
+        stream << temp.getWeight();
+        stream << temp.getCost();
         stream  << temp.getmyDate().toString();
     }
 
@@ -59,7 +57,7 @@ bool fotoDatabase::load(QString filename) {
     if (!database.open(QIODevice::ReadOnly)) {
         return false;
     }
-    QTextStream stream(&database);
+    QDataStream stream(&database);
 
     while (!stream.atEnd()) {
 
@@ -76,7 +74,7 @@ bool fotoDatabase::load(QString filename) {
         stream >> tempString;
         temporaryClass.setCategory(tempString);
 
-        stream >> (int&)tempBool;
+        stream >> tempBool;
         temporaryClass.setAnalogOrNot(tempBool);
 
         stream >> tempString;
@@ -85,7 +83,7 @@ bool fotoDatabase::load(QString filename) {
         stream >> tempDouble;
         temporaryClass.setMatrRes(tempDouble);
 
-        stream >> (int&)tempBool;//без этого не робит хех
+        stream >> tempBool;//без этого не робит хех
         temporaryClass.setChangeLense(tempBool);
 
         stream >> tempString;
@@ -94,7 +92,7 @@ bool fotoDatabase::load(QString filename) {
         stream >> tempInt;
         temporaryClass.setWeight(tempInt);
 
-        stream >> tempString;
+        stream >> tempInt;
         temporaryClass.setCost(tempInt);
 
         //тут должна быть дата ыы

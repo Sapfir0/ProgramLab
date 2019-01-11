@@ -323,7 +323,7 @@ void MainWindow::on_saveUsBtn_clicked()
 void MainWindow::on_loadBtn_clicked()
 {
 
-    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.*)"); // получение названия файла
+    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
 	db.clear();
 	initializationTable(0);
 
