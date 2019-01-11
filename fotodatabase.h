@@ -9,6 +9,8 @@ class fotoDatabase
 {
 	private:
 		QList<fotobase> database;
+        uint id;
+        bool moding;
 	public:
 
 		fotoDatabase();
@@ -27,13 +29,13 @@ class fotoDatabase
 		void update(unsigned int id, fotobase record);//вроде это//не то
 		fotobase& record(uint id);
 		QVector<fotobase> records() const;
-		bool save(QString filename) const;
+        bool save(QString filename) ;
 		bool load(QString filename);
 		void clear();
 		bool isModified() const;
 
 		bool isUniqueId(unsigned int id) const;
-		unsigned int get_uniqueId() const;
+        unsigned int get_uniqueId() ;
 };
 
 #endif // FOTODATABASE_H

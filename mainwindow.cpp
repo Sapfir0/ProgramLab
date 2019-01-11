@@ -56,7 +56,7 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 
 void MainWindow::on_filling_clicked()
 {
-	initializationTable(db.count()+10);
+    initializationTable(db.count()+10);
     for (int i=0; i<10; i++) {
         fotobase random = fotobase::randomix();
 		setToUi(db.append(random), db.count());
@@ -128,21 +128,12 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 		t0->update_text();
 		t1->update_text();
 	}
-//    QTableWidgetItem *item = new QTableWidgetItem(db.database.value(indexOfRecord).getNameOfModel());
-//    QTableWidgetItem *item2 = new QTableWidgetItem(db.database.value(indexOfRecord).getCost());
-//    ui->spisok->setItem(numberOfRecords,0,item);
-//    ui->spisok->setItem(numberOfRecords,1,item2);
-
-    /*if (db.database.value(indexOfRecord).getNameOfModel().isEmpty() or db.database.value(indexOfRecord).getCost()==0)
-        qDebug() << "Пустота";*/
 
     if (edit != 1) {
         indexOfRecord++;
     }
-//добавь сдвиг текущего элемента
     editMode(false);
 
-    //запишем в файлик
 	sorting();
 }
 
@@ -187,13 +178,12 @@ void MainWindow::enableDisableEdit(bool arg) {
 }
 
 void MainWindow::on_editBtn_clicked()
-{//нужно еще заливать изменения в список
+{
 
     if ( callEnableDisable == 0)    {
         editMode(true);//записать запись исходя из тго что в форме
         //db.database.replace(indexOfRecord, createRecord() );
-        //setToUi();
-        //loadRecord(db.database.at(indexOfRecord));
+
         qDebug() << "callEnableDisable == 0";
         //не уверен что нужно то что ниже
         callEnableDisable=1;
@@ -201,7 +191,6 @@ void MainWindow::on_editBtn_clicked()
     else if(callEnableDisable ==1) {
         editMode(false);
         qDebug() << "callEnableDisable == 1";
-        //loadRecord(fotobase());
         callEnableDisable=0;
     }
     ui->matrixResolution->setEnabled(false);
@@ -216,11 +205,6 @@ void MainWindow::on_createBtn_clicked()
     editMode(true);
 	createClicked = true;
     loadRecord( fotobase() );
-
-
-
-    //ui->spisok->item(indexOfRecord, 0)->setData(Qt::UserRole, fotobase::id);
-    //надо бы написать еще чтения айди
 
 }
 
@@ -237,26 +221,11 @@ void MainWindow::editMode(bool arg) {
 
 void MainWindow::on_deleteBtn_clicked()
 {
-	db.remove(currentId);
-
-    if (indexOfRecord == ui->spisok->rowCount()-2) {
-        qDebug() << "мусор в плюсах - это ты";
-    }
-
-	if (ui->spisok->rowCount() == 1 || ui->spisok->rowCount()-2 == indexOfRecord) {
-        ui->spisok->reset();
-	}
+    ui->spisok->setCurrentCell(ui->spisok->currentRow(), 0);
+    on_spisok_currentCellChanged(ui->spisok->currentRow());
+    db.remove(currentId);
 
     ui->spisok->removeRow(indexOfRecord);
-    indexOfRecord--;
-
-	if (indexOfRecord < 0 && ui->spisok->rowCount() > 0) indexOfRecord++;//хз почему но куте тейбл с этой херней лучше работает
-
-
-	ui->spisok->setCurrentCell(indexOfRecord, 0);
-	sorting();
-
-	qDebug() << "now index of record" << indexOfRecord;
 }
 
 
@@ -269,7 +238,7 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
 	ui->editBtn->setEnabled(!dataBaseIsEmpty);
 	ui->deleteBtn->setEnabled(!dataBaseIsEmpty);
 
-	qDebug() << "current cecord: " << indexOfRecord;
+    qDebug() << "current record: " << indexOfRecord;
 	if (indexOfRecord != -1) {
 		currentId = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0))->get_id();
 		loadRecord(db.record(currentId));
@@ -304,12 +273,10 @@ void MainWindow::createWindow() {
 
    ui->saveBtn->hide();
    ui->denied->hide();
-   //ui->spinWriting->setDisabled(true);
 
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
 
-   //ui->spisok->setSortingEnabled(true);
 
 }
 
@@ -323,8 +290,8 @@ void MainWindow::on_saveUsBtn_clicked()
 void MainWindow::on_loadBtn_clicked()
 {
 
-    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
-	db.clear();
+    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
+    db.clear();
 	initializationTable(0);
 
 
