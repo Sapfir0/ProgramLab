@@ -54,6 +54,7 @@ bool fotoDatabase::save(QString filename) const {
 
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
+
     QFile database(filename);
     if (!database.open(QIODevice::ReadOnly)) {
         return false;
@@ -84,7 +85,7 @@ bool fotoDatabase::load(QString filename) {
         stream >> tempDouble;
         temporaryClass.setMatrRes(tempDouble);
 
-        stream >> (int&)tempBool;
+        stream >> (int&)tempBool;//без этого не робит хех
         temporaryClass.setChangeLense(tempBool);
 
         stream >> tempString;

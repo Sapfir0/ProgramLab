@@ -153,7 +153,7 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     editMode(false);
     if (createClicked==true) {
         initializationTable(db.count()); //почти дефолтный метод
-        createClicked==false;
+        createClicked=false;
     }
     //то что ниже внимание
     if (!createClicked && db.count() != 0)
@@ -187,7 +187,7 @@ void MainWindow::on_editBtn_clicked()
 {//нужно еще заливать изменения в список
 
     if ( callEnableDisable == 0)    {
-        editMode(true);//записать запись исходя из тго что в форме
+        editMode(true);
         qDebug() << "callEnableDisable == 0";
         callEnableDisable=1;
     }
@@ -230,12 +230,12 @@ void MainWindow::on_deleteBtn_clicked()
 	db.remove(currentId);
 
 //    if (indexOfRecord == ui->spisok->rowCount()-2) {
-//        qDebug() << "мусор в плюсах - это ты";
+//        qDebug() << "м";
 //    }
 
-	if (ui->spisok->rowCount() == 1 || ui->spisok->rowCount()-2 == indexOfRecord) {
+    if (ui->spisok->rowCount() == 1 || ui->spisok->rowCount()-2 == indexOfRecord) {
         ui->spisok->reset();
-	}
+    }
 
     ui->spisok->removeRow(indexOfRecord);
     indexOfRecord--;
@@ -256,6 +256,9 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
 
     if (nonCreating==1) {
         qDebug() << "Переключена строчка. Создание записи отменено";
+        qDebug() << currentRow << ui->spisok->rowCount();
+        if (currentRow+1==ui->spisok->rowCount())
+            return;
         initializationTable(db.count()); //почти дефолтный метод
         //надо вызвать denied
         editMode(false);
@@ -263,19 +266,20 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
     }
 
 
-	bool dataBaseIsEmpty = db.count() == 0;
+    bool dataBaseIsEmpty = db.count() == 0; // if(db.count==0) var=db.count
 
 	ui->editBtn->setEnabled(!dataBaseIsEmpty);
 	ui->deleteBtn->setEnabled(!dataBaseIsEmpty);
 
     qDebug() << "current record: " << indexOfRecord;
-	if (indexOfRecord != -1) {
+
+    if (indexOfRecord != -1) {
 		currentId = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0))->get_id();
 		loadRecord(db.record(currentId));
 	}
 
 	if (dataBaseIsEmpty) {
-		loadRecord(fotobase());//кидаем пустые поля
+        loadRecord(fotobase()); //кидаем пустые поля
 	}
 
 }
@@ -311,7 +315,7 @@ void MainWindow::createWindow() {
 
 void MainWindow::on_saveUsBtn_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
 	if (!filename.isEmpty())
 		db.save(filename);
 }
@@ -319,7 +323,7 @@ void MainWindow::on_saveUsBtn_clicked()
 void MainWindow::on_loadBtn_clicked()
 {
 
-    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.*)"); // получение названия файла
 	db.clear();
 	initializationTable(0);
 
@@ -328,7 +332,7 @@ void MainWindow::on_loadBtn_clicked()
 		if (db.load(filename)) {
 			auto buff = db.records();
 			initializationTable(buff.size());
-			qDebug() << buff.size() << db.count();
+            //qDebug() << buff.size() << db.count();
 			for (int i=0; i<buff.size(); i++) {
 				setToUi(buff[i].id, i);
 			}
@@ -348,8 +352,9 @@ void MainWindow::closeEvent(QCloseEvent *cEvent){
             QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
             if (wsave == QMessageBox::Yes) {
                 if (filename.isEmpty())
-                    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Tyrist Manual Data Base", QDir::homePath() , "Tyrist Manual Data Base (*.tm)"); // получение названия файла
-                if (!filename.isEmpty()) db.save(filename);
+                    filename = QFileDialog::getSaveFileName(this , "Сохранить файл fotodatabase Data Base", QDir::homePath() , "Tyrist Manual Data Base (*.tm)"); // получение названия файла
+                if (!filename.isEmpty())
+                    db.save(filename);
             }
         }*/
     }
