@@ -10,7 +10,6 @@ fotoDatabase::fotoDatabase()
 
 unsigned int fotoDatabase::append(fotobase writing) {
     moding = true;
-    //аргумент не возвращается
 	unsigned int tem = get_uniqueId();
 	writing.id = tem;
 	database.append(writing);
@@ -33,7 +32,7 @@ bool fotoDatabase::save(QString filename) {
         for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
         {
 
-            fotobase temp = *it; //тут вроде надо приравнять к значению данного итератора
+            fotobase temp = *it;
             stream  << temp.getNameOfModel();
             stream  << temp.getGategory() ;
             stream  << temp.getAnalogOrNot();
@@ -48,7 +47,7 @@ bool fotoDatabase::save(QString filename) {
         }
 
         if (database.empty())
-            qDebug() << "я не записал ничего кек";
+            qDebug() << "я не записал ничего";
         else
             qDebug() << "запись прошла успешно";
 
@@ -60,13 +59,10 @@ bool fotoDatabase::save(QString filename) {
 bool fotoDatabase::load(QString filename) {
     QFile database(filename);
     moding = false;
-
         if (!database.open(QIODevice::ReadOnly)) {
             return false;
         }
-
         QDataStream stream(&database);
-
         while (!stream.atEnd()) {
 
             fotobase temporaryClass;
@@ -146,7 +142,7 @@ QVector<fotobase> fotoDatabase::records() const {
     };
 
     return temp;
-    //return QVector<fotobase> (database.begin(), database.end());//сосамба куте не могет в стл стайл
+    //return QVector<fotobase> (database.begin(), database.end());//:(
 }
 
 
@@ -177,12 +173,12 @@ void fotoDatabase::clear() {
 
 
 unsigned int fotoDatabase::get_uniqueId()  {
-    qDebug() << id++;
+    qDebug() << id;
     return id++;
 }
 
 
-bool fotoDatabase::isUniqueId(unsigned int id) const {
+bool fotoDatabase::isUniqueId(unsigned int id) const { //не юзается, но мб
 
     if (id ==0)
         return false;
@@ -195,6 +191,10 @@ bool fotoDatabase::isUniqueId(unsigned int id) const {
     return true;
 }
 
+
+bool fotoDatabase::isModified() const {
+    return moding;
+}
 
 
 

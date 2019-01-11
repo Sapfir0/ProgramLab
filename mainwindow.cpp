@@ -197,6 +197,7 @@ void MainWindow::on_editBtn_clicked()
     ui->changeLens->setEnabled(false);
     edit=1;
 
+    createClicked=false;
 }
 
 
@@ -231,6 +232,7 @@ void MainWindow::on_deleteBtn_clicked()
 
 void MainWindow::on_spisok_currentCellChanged(int currentRow)
 {
+    editMode(false);
     indexOfRecord = currentRow;
 
 	bool dataBaseIsEmpty = db.count() == 0;
@@ -250,6 +252,64 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
 
 }
 
+
+
+
+void MainWindow::on_saveUsBtn_clicked()
+{
+    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+	if (!filename.isEmpty())
+		db.save(filename);
+}
+
+void MainWindow::on_loadBtn_clicked()
+{
+    if (db.isModified()) {
+        saveChanges();
+    }
+
+    filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
+    db.clear();
+	initializationTable(0);
+
+
+	if (!filename.isEmpty()) {
+		if (db.load(filename)) {
+			auto buff = db.records();
+			initializationTable(buff.size());
+			qDebug() << buff.size() << db.count();
+			for (int i=0; i<buff.size(); i++) {
+				setToUi(buff[i].id, i);
+			}
+			sorting();
+		} else {
+			QMessageBox::warning(this, "Alert", "Ошибка, файл не загружен");
+		}
+	}
+}
+
+void MainWindow::saveChanges() {
+
+    QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
+    if (wsave == QMessageBox::Yes) {
+        if (filename.isEmpty())
+            filename = QFileDialog::getSaveFileName(this , "Сохранить файл Tyrist Manual Data Base", QDir::homePath() , "Tyrist Manual Data Base (*.tm)"); // получение названия файла
+        if (!filename.isEmpty()) db.save(filename);
+    }
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *cEvent){
+    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
+    if (wquit == QMessageBox::Yes) {
+
+        cEvent->accept();
+        if (db.isModified()) {
+            saveChanges();
+        }
+    }
+    else cEvent->ignore();
+}
 
 void MainWindow::createWindow() {
 
@@ -278,51 +338,4 @@ void MainWindow::createWindow() {
    ui->matrixResolution->setEnabled(false);
 
 
-}
-
-void MainWindow::on_saveUsBtn_clicked()
-{
-    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
-	if (!filename.isEmpty())
-		db.save(filename);
-}
-
-void MainWindow::on_loadBtn_clicked()
-{
-
-    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
-    db.clear();
-	initializationTable(0);
-
-
-	if (!filename.isEmpty()) {
-		if (db.load(filename)) {
-			auto buff = db.records();
-			initializationTable(buff.size());
-			qDebug() << buff.size() << db.count();
-			for (int i=0; i<buff.size(); i++) {
-				setToUi(buff[i].id, i);
-			}
-			sorting();
-		} else {
-			QMessageBox::warning(this, "Alert", "Ошибка, файл не загружен");
-		}
-	}
-}
-
-
-void MainWindow::closeEvent(QCloseEvent *cEvent){
-    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
-    if (wquit == QMessageBox::Yes) {
-        cEvent->accept();
-        /*if (db.isModidfied()) {
-            QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
-            if (wsave == QMessageBox::Yes) {
-                if (filename.isEmpty())
-                    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Tyrist Manual Data Base", QDir::homePath() , "Tyrist Manual Data Base (*.tm)"); // получение названия файла
-                if (!filename.isEmpty()) db.save(filename);
-            }
-        }*/
-    }
-    else cEvent->ignore();
 }

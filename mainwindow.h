@@ -39,7 +39,7 @@ public:
 
 		void setToUi(uint id, int index);
 
-
+        void saveChanges();
 
 
 private slots:
@@ -74,6 +74,8 @@ private:
     bool edit=0; //нажатие на кнопку отмену было после create -> удалить запись
     bool nonCreating=0;//строка создана, а запись еще нет
 
+
+    QString filename;
 
 };
 
