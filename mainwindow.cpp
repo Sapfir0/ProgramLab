@@ -315,7 +315,7 @@ void MainWindow::createWindow() {
 
 void MainWindow::on_saveUsBtn_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
+    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
 	if (!filename.isEmpty())
 		db.save(filename);
 }
@@ -323,7 +323,7 @@ void MainWindow::on_saveUsBtn_clicked()
 void MainWindow::on_loadBtn_clicked()
 {
 
-    QString filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
+    filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
 	db.clear();
 	initializationTable(0);
 
@@ -348,7 +348,7 @@ void MainWindow::closeEvent(QCloseEvent *cEvent){
     QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
     if (wquit == QMessageBox::Yes) {
         cEvent->accept();
-        /*if (db.isModidfied()) {
+        if (db.isModified()) {
             QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
             if (wsave == QMessageBox::Yes) {
                 if (filename.isEmpty())
@@ -356,7 +356,7 @@ void MainWindow::closeEvent(QCloseEvent *cEvent){
                 if (!filename.isEmpty())
                     db.save(filename);
             }
-        }*/
+        }
     }
     else cEvent->ignore();
 }

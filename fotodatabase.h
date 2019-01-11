@@ -9,6 +9,7 @@ class fotoDatabase
 {
 	private:
 		QList<fotobase> database;
+		bool moding;
 	public:
 
 		fotoDatabase();
@@ -27,7 +28,7 @@ class fotoDatabase
 		void update(unsigned int id, fotobase record);//вроде это//не то
         fotobase& record(uint id); //ух ссылка на фотобейз
 		QVector<fotobase> records() const;
-		bool save(QString filename) const;
+		bool save(QString filename);
 		bool load(QString filename);
 		void clear();
 		bool isModified() const;

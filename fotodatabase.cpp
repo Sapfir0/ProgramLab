@@ -3,10 +3,12 @@
 
 fotoDatabase::fotoDatabase()
 {
-
+	moding = false;
 }
 
 unsigned int fotoDatabase::append(fotobase writing) {
+	moding = true;
+
     //аргумент не возвращается
 	unsigned int tem = get_uniqueId();
 	writing.id = tem;
@@ -17,12 +19,14 @@ unsigned int fotoDatabase::append(fotobase writing) {
 
 
 //сохранить данные в заданный файл, возвращает false, если сохранить данные не удалось;
-bool fotoDatabase::save(QString filename) const {
+bool fotoDatabase::save(QString filename) {
     QFile record(filename);
 
     if ( !record.open(QIODevice::WriteOnly) ) {
         return false;
     }
+
+	moding = false;
 
     QDataStream stream (&record);
 
@@ -52,7 +56,7 @@ bool fotoDatabase::save(QString filename) const {
 
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
-
+	moding = false;
     QFile database(filename);
     if (!database.open(QIODevice::ReadOnly)) {
         return false;
@@ -120,7 +124,7 @@ fotobase& fotoDatabase::record(unsigned int id) {//идея в том что с�
 возвращается новая позиция записи в соответствии с порядком сортировки:
 */
 void fotoDatabase::update(unsigned int id, fotobase record) {
-
+	moding = true;
     for ( auto& it : database)
     {
 		if (it.id == id) {
@@ -154,6 +158,7 @@ int fotoDatabase::count() const {
 
 //удалить из базы данных запись c заданным идентификатором
 void fotoDatabase::remove(unsigned int id) {
+	moding = true;
 	QList<fotobase>::iterator it;
 
     for (it = database.begin(); it != database.end() && it->id != id; ++it);//так и должно быть
@@ -167,6 +172,7 @@ void fotoDatabase::remove(unsigned int id) {
 //уничтожает все данные
 void fotoDatabase::clear() {
     database.clear();
+	moding = true;
 }
 
 /*
@@ -201,6 +207,10 @@ bool fotoDatabase::isUniqueId(unsigned int id) const {
 
 
     return true;
+}
+
+bool fotoDatabase::isModified() const {
+	return moding;
 }
 
 

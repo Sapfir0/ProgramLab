@@ -68,6 +68,7 @@ private:
     Ui::MainWindow *ui;
 	fotoDatabase db;
 	uint currentId = 0;
+	QString filename;
     int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования
     bool createClicked;
