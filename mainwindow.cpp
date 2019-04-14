@@ -19,20 +19,30 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setCheckRes() {
-    if ( callEnableDisable == 1) {
-        if (ui->analogOrNot->isChecked())
+    qDebug() << stopIt;
+    if (stopIt) {
+        if (ui->analogOrNot->isChecked()) {
             ui->matrixResolution->setEnabled(true);
-        else
+            qDebug() << "Включение рез";
+        }
+
+        else {
             ui->matrixResolution->setEnabled(false);
+            qDebug() << "Отключение рез";
+        }
     }
 }
 
 void MainWindow::setCheckPolProf() {
-    if ( callEnableDisable == 1) {
-        if (ui->category->currentIndex() == 2)
+    if (stopIt) {
+        if (ui->category->currentIndex() == 2) {
             ui->changeLens->setEnabled(true);
-        else
+            qDebug() << "Включение линзы";
+        }
+        else {
             ui->changeLens->setEnabled(false);
+            qDebug() << "Отключение линзы";
+        }
     }
 }
 
@@ -61,7 +71,7 @@ void MainWindow::on_filling_clicked()
         fotobase random = fotobase::randomix();
 		setToUi(db.append(random), db.count());
     }
-    //sorting();
+	sorting();
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
@@ -93,6 +103,7 @@ void MainWindow::initializationTable (int rows) {
 
 
 void MainWindow::setToUi(uint id, int indORnumb) {
+	//ui->spisok->setSortingEnabled(false);
 
     QTableWidgetItem *item = new fotobaseTableWidgetItem(id, &db, 0);
     QTableWidgetItem *item2 = new fotobaseTableWidgetItem(id, &db, 1);
@@ -100,6 +111,9 @@ void MainWindow::setToUi(uint id, int indORnumb) {
     ui->spisok->setItem(indORnumb,0,item);
     ui->spisok->setItem(indORnumb,1,item2);
 
+	//ui->spisok->setSortingEnabled(true);
+
+	edit = 0;
 }
 
 
@@ -110,38 +124,31 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
         return;
     }
 
-
-    if (edit==0) { //различаем нажатие: либо после кнопки создать(иф), либо после редактировать(елс)
-        qDebug() << "Кнопка save нажата после кнопочки create";
-
-        initializationTable(db.count()+1); //почти дефолтный метод
-        fotobase temp = createRecord();
+    callEnableDisable=0;
+    //db.database.insert(numberOfRecords, createRecord());
+	if (createClicked) {
+		initializationTable(db.count()+1);
+		fotobase temp = createRecord();
 		setToUi(db.append(temp), db.count());
 
-
 	} else {
-        qDebug() << "Кнопка save нажата после кнопочки edit";
-
-        auto nameOfModel = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0)); //кастуем заклинание
-        auto cost = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
-        db.update(nameOfModel->get_id(), createRecord());
-        nameOfModel->update_text();
-        cost->update_text();
-
-        edit=0; //Редактирование завершено
+		auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
+		auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
+		db.update(t0->get_id(), createRecord());
+		t0->update_text();
+		t1->update_text();
 	}
 
-
+    if (edit != 1) {
+        indexOfRecord++;
+    }
     editMode(false);
 
-    //sorting();
+	sorting();
 }
 
 
-/***
- * void QTableWidget::sortItems(int column, Qt::SortOrder order = Qt::AscendingOrder)
- * Sorts all the rows in the table widget based on column and order.
- */
+
 void MainWindow::sorting() {
    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
 	ui->spisok->sortItems(0);
@@ -149,17 +156,12 @@ void MainWindow::sorting() {
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
 {
-
+    edit =0;
+    callEnableDisable=0;
     editMode(false);
-    if (createClicked==true) {
-        initializationTable(db.count()); //почти дефолтный метод
-        createClicked=false;
-    }
-    //то что ниже внимание
-    if (!createClicked && db.count() != 0)
-        on_spisok_currentCellChanged(indexOfRecord);
 
-
+	if (!createClicked && db.count() != 0)
+		on_spisok_currentCellChanged(indexOfRecord);
 }
 
 void MainWindow::enableDisableEdit(bool arg) {
@@ -181,14 +183,20 @@ void MainWindow::enableDisableEdit(bool arg) {
     ui->createBtn->setEnabled(!arg);
     ui->editBtn->setEnabled(!arg);
 
+
+
 }
 
 void MainWindow::on_editBtn_clicked()
-{//нужно еще заливать изменения в список
+{
 
     if ( callEnableDisable == 0)    {
         editMode(true);
+        //db.database.replace(indexOfRecord, createRecord() );
+        setCheckPolProf();
+        setCheckRes();
         qDebug() << "callEnableDisable == 0";
+        //не уверен что нужно то что ниже
         callEnableDisable=1;
     }
     else if(callEnableDisable ==1) {
@@ -200,90 +208,130 @@ void MainWindow::on_editBtn_clicked()
     ui->changeLens->setEnabled(false);
     edit=1;
 
-    callEnableDisable=0; //подумать над строчкой
+    createClicked=false;
 }
 
 
 void MainWindow::on_createBtn_clicked()
 {
     editMode(true);
-    initializationTable(db.count()+1); //почти дефолтный метод
-
-    createClicked = true;
+	createClicked = true;
     loadRecord( fotobase() );
-    nonCreating=1; //не переключай столбцы или накажу
+
 }
 
 
 void MainWindow::editMode(bool arg) {
-
+    stopIt = arg; //редактирование пошло
     if (arg)
         ui->statusBar->showMessage("Режим редактирования");
     else
         ui->statusBar->showMessage(" ");
 
     enableDisableEdit(arg);
+//    setCheckPolProf();
+//    setCheckRes();
+
+   ui->changeLens->setEnabled(false);
+   ui->matrixResolution->setEnabled(false);
+
+     //закончено
 }
 
 void MainWindow::on_deleteBtn_clicked()
 {
-	db.remove(currentId);
-
-//    if (indexOfRecord == ui->spisok->rowCount()-2) {
-//        qDebug() << "м";
-//    }
-
-    if (ui->spisok->rowCount() == 1 || ui->spisok->rowCount()-2 == indexOfRecord) {
-        ui->spisok->reset();
-    }
+    ui->spisok->setCurrentCell(ui->spisok->currentRow(), 0);
+    on_spisok_currentCellChanged(ui->spisok->currentRow());
+    db.remove(currentId);
 
     ui->spisok->removeRow(indexOfRecord);
-    indexOfRecord--;
-
-//    if (indexOfRecord < 0 && ui->spisok->rowCount() > 0)
-//        indexOfRecord++;//хз почему но куте тейбл так работает
-
-	ui->spisok->setCurrentCell(indexOfRecord, 0);
-    //sorting();
-
-    //qDebug() << "now index of record" << indexOfRecord;
 }
 
 
 void MainWindow::on_spisok_currentCellChanged(int currentRow)
 {
+    editMode(false);
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
+//    callEnableDisable=0;
+
     indexOfRecord = currentRow;
 
-    if (nonCreating==1) {
-        qDebug() << "Переключена строчка. Создание записи отменено";
-        qDebug() << currentRow << ui->spisok->rowCount();
-        if (currentRow+1==ui->spisok->rowCount())
-            return;
-        initializationTable(db.count()); //почти дефолтный метод
-        //надо вызвать denied
-        editMode(false);
-        nonCreating=0;
-    }
-
-
-    bool dataBaseIsEmpty = db.count() == 0; // if(db.count==0) var=db.count
+	bool dataBaseIsEmpty = db.count() == 0;
 
 	ui->editBtn->setEnabled(!dataBaseIsEmpty);
 	ui->deleteBtn->setEnabled(!dataBaseIsEmpty);
 
     qDebug() << "current record: " << indexOfRecord;
-
-    if (indexOfRecord != -1) {
+	if (indexOfRecord != -1) {
 		currentId = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0))->get_id();
 		loadRecord(db.record(currentId));
 	}
 
 	if (dataBaseIsEmpty) {
-        loadRecord(fotobase()); //кидаем пустые поля
+		loadRecord(fotobase());//кидаем пустые поля
 	}
 
 }
 
+
+
+
+void MainWindow::on_saveUsBtn_clicked()
+{
+    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+	if (!filename.isEmpty())
+		db.save(filename);
+}
+
+void MainWindow::on_loadBtn_clicked()
+{
+    if (db.isModified()) {
+        saveChanges();
+    }
+
+    filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
+    db.clear();
+	initializationTable(0);
+
+
+	if (!filename.isEmpty()) {
+		if (db.load(filename)) {
+			auto buff = db.records();
+			initializationTable(buff.size());
+			qDebug() << buff.size() << db.count();
+			for (int i=0; i<buff.size(); i++) {
+				setToUi(buff[i].id, i);
+			}
+			sorting();
+		} else {
+			QMessageBox::warning(this, "Alert", "Ошибка, файл не загружен");
+		}
+	}
+}
+
+void MainWindow::saveChanges() {
+
+    QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
+    if (wsave == QMessageBox::Yes) {
+        if (filename.isEmpty())
+            filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto dataBase", QDir::homePath() , "Fotodata Base (*.fm)"); // получение названия файла
+        if (!filename.isEmpty()) db.save(filename);
+    }
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *cEvent){
+    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
+    if (wquit == QMessageBox::Yes) {
+
+        cEvent->accept();
+        if (db.isModified()) {
+            saveChanges();
+        }
+    }
+    else cEvent->ignore();
+}
 
 void MainWindow::createWindow() {
 
@@ -311,57 +359,5 @@ void MainWindow::createWindow() {
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
 
-}
 
-void MainWindow::on_saveUsBtn_clicked()
-{
-    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
-	if (!filename.isEmpty())
-		db.save(filename);
-}
-
-void MainWindow::on_loadBtn_clicked()
-{
-
-    filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
-	db.clear();
-	initializationTable(0);
-
-
-	if (!filename.isEmpty()) {
-		if (db.load(filename)) {
-			auto buff = db.records();
-			initializationTable(buff.size());
-            //qDebug() << buff.size() << db.count();
-			for (int i=0; i<buff.size(); i++) {
-				setToUi(buff[i].id, i);
-			}
-            //sorting();
-		} else {
-			QMessageBox::warning(this, "Alert", "Ошибка, файл не загружен");
-		}
-	}
-}
-
-
-void MainWindow::closeEvent(QCloseEvent *cEvent){
-    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
-    if (wquit == QMessageBox::Yes) {
-        cEvent->accept();
-        if (db.isModified()) {
-            QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
-            if (wsave == QMessageBox::Yes) {
-                if (filename.isEmpty())
-                    filename = QFileDialog::getSaveFileName(this , "Сохранить файл fotodatabase Data Base", QDir::homePath() , "Tyrist Manual Data Base (*.tm)"); // получение названия файла
-                if (!filename.isEmpty())
-                    db.save(filename);
-            }
-        }
-    }
-    else cEvent->ignore();
-}
-
-void MainWindow::on_sortBtn_clicked()
-{
-    sorting();
 }

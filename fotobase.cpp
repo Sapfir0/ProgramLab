@@ -98,6 +98,10 @@ int fotobase::compare(const fotobase& firstI, const fotobase& secondI)  {
         return 0;
 }
 
+//void fotobase::lower(const fotobase& firstI, const fotobase& secondI) {
+//    // Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
+
+//}
 
 
 void fotobase::setNameOfModel(QString nameofModelclass){
