@@ -29,14 +29,16 @@ SOURCES += \
         mainwindow.cpp \
     fotobase.cpp \
     fotobasetablewidgetitem.cpp \
-    fotodatabase.cpp
+    fotodatabase.cpp \
+    datastream.cpp
 
 HEADERS += \
         mainwindow.h \
     fotobase.h \
     fotobasetablewidgetitem.h \
     fotodatabase.h \
-    randomfunctions.h
+    randomfunctions.h \
+    datastream.h
 
 FORMS += \
         mainwindow.ui

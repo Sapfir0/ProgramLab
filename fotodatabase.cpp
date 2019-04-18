@@ -1,6 +1,6 @@
 #include "fotodatabase.h"
 #include <QFile>
-
+#include "datastream.h"
 fotoDatabase::fotoDatabase()
 {
     id =0;
@@ -22,18 +22,20 @@ unsigned int fotoDatabase::append(fotobase writing) {
 
 //сохранить данные в заданный файл, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::save(QString filename) {
-    QFile record(filename);
 
-        if ( !record.open(QIODevice::WriteOnly) ) {
-            return false;
-        }
-        moding = false;
+  DataStream stream;
 
-        QDataStream stream (&record);
+  if (stream.open(filename, DataStream::out | DataStream::trunc)) {
+          qDebug() << "файл успешно был сохранен";
+      } else {
+          qDebug() << "не предвиденная ошибка";
+          qDebug() << "файл:" << filename << "не создан";
+          return false;
+      }
+      stream << database.size();
 
         for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
         {
-
             fotobase temp = *it;
             stream  << temp.getNameOfModel();
             stream  << temp.getGategory() ;
@@ -45,31 +47,26 @@ bool fotoDatabase::save(QString filename) {
             stream << temp.getWeight() ;
             stream << temp.getCost() ;
             stream  << temp.getmyDate().toString();
-
         }
 
-        if (database.empty())
-            qDebug() << "я не записал ничего";
-        else
-            qDebug() << "запись прошла успешно";
 
+    moding=false;
     return true;
 }
 
 
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
-    qDebug() << "Я хочу высососать данные";
-    QFile database(filename);
-
-    moding = false;
-
-        if (!database.open(QIODevice::ReadOnly)) {
-            return false;
+    DataStream stream;
+    if(!stream.open(filename, DataStream::in)) {
+        qDebug() << "файл:" << filename << " не открылся";
+                return false; // если файл не открылся
         }
+    int size;
+    stream >> size;
 
-        QDataStream stream(&database);
-        while (!stream.atEnd()) {
+
+        for (int i = 0; i < size; i++) {
 
             fotobase temporaryClass;
             QString tempString;
