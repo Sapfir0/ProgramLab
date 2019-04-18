@@ -6,15 +6,15 @@
 
 using Size_t = unsigned long;
 
-class DataStream
+class WinApiHelper
 {
     private:
         HANDLE file;
         bool endFile;
     public:
 
-        DataStream();
-        ~DataStream();
+        WinApiHelper();
+        ~WinApiHelper();
         bool open();
         bool is_open();
         void close();
@@ -24,21 +24,21 @@ class DataStream
 
 };
 
-DataStream& operator << (DataStream&, QChar);
-DataStream& operator << (DataStream&, QString);
-DataStream& operator >> (DataStream&, QChar&);
-DataStream& operator >> (DataStream&, QString&);
+WinApiHelper& operator << (WinApiHelper&, QChar);
+WinApiHelper& operator << (WinApiHelper&, QString);
+WinApiHelper& operator >> (WinApiHelper&, QChar&);
+WinApiHelper& operator >> (WinApiHelper&, QString&);
 
 template <typename num_t>
-DataStream& operator << (DataStream& stream, num_t value) {
+WinApiHelper& operator << (WinApiHelper& stream, num_t value) {
     stream.write(&value, sizeof(value));
     return stream;
 }
 
 template <typename num_t>
-DataStream& operator >> (DataStream& stream, num_t& value) {
+WinApiHelper& operator >> (WinApiHelper& stream, num_t& value) {
     stream.read(&value, sizeof(value));
     return stream;
 }
 
-//#endif // WINDATASTREAM_H
+//#endif // WINWinApiHelper_H

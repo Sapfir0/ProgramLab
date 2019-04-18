@@ -1,18 +1,18 @@
-#include "datastream.h"
+#include "WinApiHelper.h"
 
 #include <windows.h>
 #include <QDebug>
 #include <windef.h>
 
-DataStream::DataStream() {
+WinApiHelper::WinApiHelper() {
     file = NULL;
 }
 
-DataStream::~DataStream() {
+WinApiHelper::~WinApiHelper() {
     close();
 }
 
-bool DataStream::open() {
+bool WinApiHelper::open() {
     if (file != NULL) close();
     file = CreateFileA("./os.txt", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     bool fileOpen = file != INVALID_HANDLE_VALUE;
@@ -20,21 +20,21 @@ bool DataStream::open() {
 }
 
 
-void DataStream::close() {
+void WinApiHelper::close() {
     CloseHandle(file);
     file = NULL;
 }
 
 
-bool DataStream::read(void* begin, Size_t size) {
+bool WinApiHelper::read(void* begin, Size_t size) {
     return  ReadFile(file, begin, size, &size, NULL);
 }
 
-bool DataStream::write(void* begin, Size_t size) {
+bool WinApiHelper::write(void* begin, Size_t size) {
     return WriteFile(file, begin, size, &size, NULL);
 }
 
-DataStream& operator << (DataStream& stream, QString value) {
+WinApiHelper& operator << (WinApiHelper& stream, QString value) {
     stream << value.size();
     for (auto item : value) {
         stream << item;
@@ -42,12 +42,12 @@ DataStream& operator << (DataStream& stream, QString value) {
     return stream;
 }
 
-DataStream& operator << (DataStream& stream, QChar value) {
+WinApiHelper& operator << (WinApiHelper& stream, QChar value) {
     stream.write(&value.unicode(), sizeof(value));
     return stream;
 }
 
-DataStream& operator >> (DataStream& stream, QString &value) {
+WinApiHelper& operator >> (WinApiHelper& stream, QString &value) {
     int size;
     stream >> size;
     value.clear();
@@ -62,7 +62,7 @@ DataStream& operator >> (DataStream& stream, QString &value) {
     return stream;
 }
 
-DataStream& operator >> (DataStream& stream, QChar &value) {
+WinApiHelper& operator >> (WinApiHelper& stream, QChar &value) {
     uint16_t chr;
     stream.read(&chr, sizeof(chr));
     value = chr;

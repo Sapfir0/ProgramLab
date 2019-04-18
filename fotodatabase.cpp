@@ -1,6 +1,6 @@
 #include "fotodatabase.h"
 #include <QFile>
-#include "datastream.h"
+#include "WinApiHelper.h"
 fotoDatabase::fotoDatabase()
 {
     id =0;
@@ -23,7 +23,7 @@ unsigned int fotoDatabase::append(fotobase writing) {
 //сохранить данные в заданный файл, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::save(QString filename) {
 
-  DataStream stream;
+  WinApiHelper stream;
 
   if (!stream.open()) {
         return false;
@@ -53,7 +53,7 @@ bool fotoDatabase::save(QString filename) {
 
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
-    DataStream stream;
+    WinApiHelper stream;
     if(!stream.open()) {
         qDebug() << "файл:" << filename << " не открылся";
                 return false; // если файл не открылся
