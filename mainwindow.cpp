@@ -327,7 +327,7 @@ void MainWindow::closeEvent(QCloseEvent *cEvent){
 
         cEvent->accept();
         if (db.isModified()) {
-            saveChanges();
+            //saveChanges();
         }
     }
     else cEvent->ignore();
