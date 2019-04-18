@@ -25,13 +25,9 @@ bool fotoDatabase::save(QString filename) {
 
   DataStream stream;
 
-  if (stream.open(filename, DataStream::out | DataStream::trunc)) {
-          qDebug() << "файл успешно был сохранен";
-      } else {
-          qDebug() << "не предвиденная ошибка";
-          qDebug() << "файл:" << filename << "не создан";
-          return false;
-      }
+  if (!stream.open()) {
+        return false;
+   }
       stream << database.size();
 
         for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
@@ -58,7 +54,7 @@ bool fotoDatabase::save(QString filename) {
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
     DataStream stream;
-    if(!stream.open(filename, DataStream::in)) {
+    if(!stream.open()) {
         qDebug() << "файл:" << filename << " не открылся";
                 return false; // если файл не открылся
         }

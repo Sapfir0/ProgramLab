@@ -10,21 +10,12 @@ class DataStream
 {
     private:
         HANDLE file;
-        //OFSTRUCT infoFile;
         bool endFile;
     public:
-        enum io {
-            in = 1,             // открыть для чтения
-            out = 2,            // отрыть для записи
-            ate = 4,            // при открытии переместить указатель в конец файла
-            app = out | ate,    // открыть файл для записи в конец файла
-            create = 8,         // создать новый файл
-            trunc = 16          // удалить содержимое файла, если он существует
-        };
 
         DataStream();
         ~DataStream();
-        bool open(QString filename, uint32_t flags);
+        bool open();
         bool is_open();
         void close();
         bool eof();
