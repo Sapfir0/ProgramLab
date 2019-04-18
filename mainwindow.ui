@@ -340,15 +340,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_15">
-            <item>
-             <widget class="QPushButton" name="loadBtn">
-              <property name="text">
-               <string>Загрузить БД</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <layout class="QHBoxLayout" name="horizontalLayout_15"/>
           </item>
           <item>
            <spacer name="verticalSpacer">

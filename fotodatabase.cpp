@@ -61,10 +61,13 @@ bool fotoDatabase::save(QString filename) {
 bool fotoDatabase::load(QString filename) {
     qDebug() << "Я хочу высососать данные";
     QFile database(filename);
+
     moding = false;
+
         if (!database.open(QIODevice::ReadOnly)) {
             return false;
         }
+
         QDataStream stream(&database);
         while (!stream.atEnd()) {
 
@@ -174,7 +177,6 @@ void fotoDatabase::remove(unsigned int id) {
 void fotoDatabase::clear() {
     moding=true;
     database.clear();
-    //save(filename);
 }
 
 
