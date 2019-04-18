@@ -1,5 +1,6 @@
 #include "fotodatabase.h"
 #include <QFile>
+#include <windows.h>
 
 fotoDatabase::fotoDatabase()
 {
@@ -22,31 +23,38 @@ unsigned int fotoDatabase::append(fotobase writing) {
 
 //сохранить данные в заданный файл, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::save(QString filename) {
-    QFile record(filename);
 
-        if ( !record.open(QIODevice::WriteOnly) ) {
-            return false;
-        }
-        moding = false;
+    HANDLE hFile = CreateFile(TEXT("C://OS//os.txt"), GENERIC_WRITE, 0, NULL,
+    OPEN_EXISTING|CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
 
-        QDataStream stream (&record);
+    if (INVALID_HANDLE_VALUE == hFile) {
+        return false;
+    }
 
-        for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
-        {
+    moding = false;
 
+
+    //LPCVOID lpbuff;
+    DWORD temp2;
+    DWORD data; //сюда записать данные из ui
+
+
+    //WriteFile(hFile, &data, sizeof (data), &temp2, NULL );
+
+        for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )  {
             fotobase temp = *it;
-            stream  << temp.getNameOfModel();
-            stream  << temp.getGategory() ;
-            stream  << temp.getAnalogOrNot();
-            stream  << temp.getProducer() ;
-            stream << temp.getMatrRes() ;
-            stream << temp.getChangeLense() ;
-            stream << temp.getSize() ;
-            stream << temp.getWeight() ;
-            stream << temp.getCost() ;
-            stream  << temp.getmyDate().toString();
-
+            WriteFile(hFile, &data, sizeof (temp.getNameOfModel()), &temp.getNameOfModel(), NULL );
+            WriteFile(hFile, &data, sizeof (data), &temp.getGategory(), NULL );
+            WriteFile(hFile, &data, sizeof (data), &temp.getAnalogOrNot(), NULL );
+            WriteFile(hFile, &data, sizeof (data), &temp.getProducer(), NULL );
+            WriteFile(hFile, &data, sizeof (data), &temp.getMatrRes(), NULL );
+            WriteFile(hFile, &data, sizeof (data), &temp.getChangeLense()), NULL );
+            WriteFile(hFile, &data, sizeof (data), &temp.getSize(), NULL );
+            WriteFile(hFile, &data, sizeof (data), &temp.getWeight(), NULL );
+            WriteFile(hFile, &data, sizeof (data), &temp.getCost(), NULL );
+            WriteFile(hFile, &data, sizeof (data), &getmyDate().toString(), NULL );
         }
+        CloseHandle(hFile);
 
         if (database.empty())
             qDebug() << "я не записал ничего";
@@ -59,16 +67,19 @@ bool fotoDatabase::save(QString filename) {
 
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
+
     qDebug() << "Я хочу высососать данные";
-    QFile database(filename);
+
+    HANDLE hFile = CreateFile(TEXT("C://OS//os.txt"), GENERIC_READ, 0, NULL,
+    OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+    if (INVALID_HANDLE_VALUE == hFile) {
+        return false;
+    }
 
     moding = false;
 
-        if (!database.open(QIODevice::ReadOnly)) {
-            return false;
-        }
 
-        QDataStream stream(&database);
         while (!stream.atEnd()) {
 
             fotobase temporaryClass;
@@ -109,6 +120,8 @@ bool fotoDatabase::load(QString filename) {
 
             this->append(temporaryClass);
         }
+
+        CloseHandle(hFile);
     return true;
 }
 
