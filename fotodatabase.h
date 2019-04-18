@@ -11,6 +11,7 @@ class fotoDatabase
 		QList<fotobase> database;
         uint id;
         bool moding;
+        QString filename = "C://OS//os.txt";
 	public:
 
 		fotoDatabase();

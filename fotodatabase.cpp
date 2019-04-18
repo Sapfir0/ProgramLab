@@ -13,6 +13,8 @@ unsigned int fotoDatabase::append(fotobase writing) {
 	unsigned int tem = get_uniqueId();
 	writing.id = tem;
 	database.append(writing);
+
+	save(filename);
 	return tem;
 
 }
@@ -57,6 +59,7 @@ bool fotoDatabase::save(QString filename) {
 
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
+    qDebug() << "Я хочу высососать данные";
     QFile database(filename);
     moding = false;
         if (!database.open(QIODevice::ReadOnly)) {
@@ -128,6 +131,7 @@ void fotoDatabase::update(unsigned int id, fotobase record) {
 			it.id = tid;
 		}
 	}
+	save(filename);
 }
 
 
@@ -142,7 +146,6 @@ QVector<fotobase> fotoDatabase::records() const {
     };
 
     return temp;
-    //return QVector<fotobase> (database.begin(), database.end());//:(
 }
 
 
@@ -162,6 +165,8 @@ void fotoDatabase::remove(unsigned int id) {
 	if (it != database.end())
 		database.erase(it);
 
+    save(filename);
+
 }
 
 
@@ -169,6 +174,7 @@ void fotoDatabase::remove(unsigned int id) {
 void fotoDatabase::clear() {
     moding=true;
     database.clear();
+    //save(filename);
 }
 
 
