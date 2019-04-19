@@ -14,7 +14,7 @@ WinApiHelper::~WinApiHelper() {
 
 bool WinApiHelper::open() {
     if (file != NULL) close();
-    file = CreateFileA("./os.txt", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    file = CreateFileA("./os.txt", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
     bool fileOpen = file != INVALID_HANDLE_VALUE;
     return fileOpen;
 }
@@ -27,7 +27,7 @@ void WinApiHelper::close() {
 
 
 bool WinApiHelper::read(void* begin, Size_t size) {
-    return  ReadFile(file, begin, size, &size, NULL);
+    return ReadFile(file, begin, size, &size, NULL);
 }
 
 bool WinApiHelper::write(void* begin, Size_t size) {

@@ -16,9 +16,7 @@ class WinApiHelper
         WinApiHelper();
         ~WinApiHelper();
         bool open();
-        bool is_open();
         void close();
-        bool eof();
         bool write(void* begin, Size_t size);
         bool read(void* begin, Size_t size);
 
@@ -41,4 +39,4 @@ WinApiHelper& operator >> (WinApiHelper& stream, num_t& value) {
     return stream;
 }
 
-//#endif // WINWinApiHelper_H
+//#endif // WINWinApi_H

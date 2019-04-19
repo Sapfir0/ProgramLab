@@ -14,11 +14,10 @@ unsigned int fotoDatabase::append(fotobase writing) {
 	writing.id = tem;
 	database.append(writing);
 
-	save(filename);
+    save(filename); //тут косяк
 	return tem;
 
 }
-
 
 //сохранить данные в заданный файл, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::save(QString filename) {

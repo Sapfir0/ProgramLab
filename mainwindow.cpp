@@ -322,15 +322,15 @@ void MainWindow::saveChanges() {
 
 
 void MainWindow::closeEvent(QCloseEvent *cEvent){
-    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
-    if (wquit == QMessageBox::Yes) {
+//    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
+//    if (wquit == QMessageBox::Yes) {
 
-        cEvent->accept();
-        if (db.isModified()) {
-            //saveChanges();
-        }
-    }
-    else cEvent->ignore();
+//        cEvent->accept();
+//        if (db.isModified()) {
+//            //saveChanges();
+//        }
+//    }
+//    else cEvent->ignore();
 }
 
 void MainWindow::createWindow() {
