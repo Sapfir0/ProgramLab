@@ -1,6 +1,6 @@
 #include "fotodatabase.h"
 #include <QFile>
-
+#include "WinApiHelper.h"
 fotoDatabase::fotoDatabase()
 {
     id =0;
@@ -13,25 +13,24 @@ unsigned int fotoDatabase::append(fotobase writing) {
 	unsigned int tem = get_uniqueId();
 	writing.id = tem;
 	database.append(writing);
+
+    save(filename); //тут косяк
 	return tem;
 
 }
 
-
 //сохранить данные в заданный файл, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::save(QString filename) {
-    QFile record(filename);
 
-        if ( !record.open(QIODevice::WriteOnly) ) {
-            return false;
-        }
-        moding = false;
+  WinApiHelper stream;
 
-        QDataStream stream (&record);
+  if (!stream.open()) {
+        return false;
+   }
+      stream << database.size();
 
         for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
         {
-
             fotobase temp = *it;
             stream  << temp.getNameOfModel();
             stream  << temp.getGategory() ;
@@ -43,28 +42,25 @@ bool fotoDatabase::save(QString filename) {
             stream << temp.getWeight() ;
             stream << temp.getCost() ;
             stream  << temp.getmyDate().toString();
-
         }
 
-        if (database.empty())
-            qDebug() << "я не записал ничего";
-        else
-            qDebug() << "запись прошла успешно";
 
+    moding=false;
     return true;
 }
 
 
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
-    QFile database(filename);
-    moding = false;
-        if (!database.open(QIODevice::ReadOnly)) {
-            return false;
+    WinApiHelper stream;
+    if(!stream.open()) {
+        qDebug() << "файл:" << filename << " не открылся";
+                return false; // если файл не открылся
         }
 
-        QDataStream stream(&database);
-        while (!stream.atEnd()) {
+    int size;
+    stream >> size;
+        for (int i = 0; i < size; i++) {
 
             fotobase temporaryClass;
             QString tempString;
@@ -129,6 +125,7 @@ void fotoDatabase::update(unsigned int id, fotobase record) {
 			it.id = tid;
 		}
 	}
+	save(filename);
 }
 
 
@@ -143,7 +140,6 @@ QVector<fotobase> fotoDatabase::records() const {
     };
 
     return temp;
-    //return QVector<fotobase> (database.begin(), database.end());//:(
 }
 
 
@@ -162,6 +158,8 @@ void fotoDatabase::remove(unsigned int id) {
 
 	if (it != database.end())
 		database.erase(it);
+
+    save(filename);
 
 }
 

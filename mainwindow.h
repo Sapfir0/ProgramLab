@@ -76,7 +76,7 @@ private:
 
     bool stopIt;
 
-    QString filename;
+    QString filename = "./os.txt";
 
 };
 

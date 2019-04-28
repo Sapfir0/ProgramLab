@@ -279,18 +279,18 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
 
 void MainWindow::on_saveUsBtn_clicked()
 {
-    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
-	if (!filename.isEmpty())
-		db.save(filename);
+//    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
+//	if (!filename.isEmpty())
+//		db.save(filename);
 }
 
 void MainWindow::on_loadBtn_clicked()
 {
-    if (db.isModified()) {
-        saveChanges();
-    }
+//    if (db.isModified()) {
+//        saveChanges();
+//    }
 
-    filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
+    //filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
     db.clear();
 	initializationTable(0);
 
@@ -322,15 +322,15 @@ void MainWindow::saveChanges() {
 
 
 void MainWindow::closeEvent(QCloseEvent *cEvent){
-    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
-    if (wquit == QMessageBox::Yes) {
+//    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
+//    if (wquit == QMessageBox::Yes) {
 
-        cEvent->accept();
-        if (db.isModified()) {
-            saveChanges();
-        }
-    }
-    else cEvent->ignore();
+//        cEvent->accept();
+//        if (db.isModified()) {
+//            //saveChanges();
+//        }
+//    }
+//    else cEvent->ignore();
 }
 
 void MainWindow::createWindow() {
@@ -359,5 +359,5 @@ void MainWindow::createWindow() {
    ui->changeLens->setEnabled(false);
    ui->matrixResolution->setEnabled(false);
 
-
+  on_loadBtn_clicked();
 }

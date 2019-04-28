@@ -29,14 +29,16 @@ SOURCES += \
         mainwindow.cpp \
     fotobase.cpp \
     fotobasetablewidgetitem.cpp \
-    fotodatabase.cpp
+    fotodatabase.cpp \
+    WinApiHelper.cpp
 
 HEADERS += \
         mainwindow.h \
     fotobase.h \
     fotobasetablewidgetitem.h \
     fotodatabase.h \
-    randomfunctions.h
+    randomfunctions.h \
+    WinApiHelper.h
 
 FORMS += \
         mainwindow.ui
