@@ -57,10 +57,9 @@ bool fotoDatabase::load(QString filename) {
         qDebug() << "файл:" << filename << " не открылся";
                 return false; // если файл не открылся
         }
+
     int size;
     stream >> size;
-
-
         for (int i = 0; i < size; i++) {
 
             fotobase temporaryClass;
