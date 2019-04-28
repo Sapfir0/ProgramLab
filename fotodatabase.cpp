@@ -62,6 +62,7 @@ bool fotoDatabase::load(QString filename) {
         if (!database.open(QIODevice::ReadOnly)) {
             return false;
         }
+
         QDataStream stream(&database);
         while (!stream.atEnd()) {
 
