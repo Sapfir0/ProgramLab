@@ -1,6 +1,7 @@
 #include "fotodatabase.h"
 #include <QFile>
 #include "filestream.h"
+
 fotoDatabase::fotoDatabase()
 {
     id =0;

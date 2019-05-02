@@ -22,7 +22,8 @@ SOURCES += \
     pipestream.cpp \
     transmitter.cpp \
     filestream.cpp \
-    filestream.cpp
+    filestream.cpp \
+    fotobase.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -36,4 +37,6 @@ HEADERS += \
     server_command.h \
     pipestream.h \
     filestream.h \
-    datastream.h
+    datastream.h \
+    fotobase.h \
+    randomfunctions.h

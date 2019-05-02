@@ -1,9 +1,7 @@
 //#include <windows.h>
 
 #include "filestream.h"
-
 #include <winbase.h>
-
 #include <QDebug>
 
 

@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <QDebug>
-#include "./../../fotobase.h"
+#include "fotobase.h"
 
 class fotoDatabase
 {
