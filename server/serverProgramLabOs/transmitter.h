@@ -1,17 +1,17 @@
-#ifndef TRANSMITTER_H
-#define TRANSMITTER_H
-#include <windows.h>
-#include  <winbase.h>
-#include <QString>
+//#ifndef TRANSMITTER_H
+//#define TRANSMITTER_H
+//#include <windows.h>
+//#include  <winbase.h>
+//#include <QString>
 
-class transmitter
-{
-    public:
-        transmitter();
-        char* puk2 = ".\\puk2.txt";
+//class transmitter
+//{
+//    public:
+//        transmitter();
+//        char* puk2 = ".\\puk2.txt";
 
-        bool startServerPipe();
+//        bool startServerPipe();
 
-};
+//};
 
-#endif // TRANSMITTER_H
+//#endif // TRANSMITTER_H

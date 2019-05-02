@@ -3,7 +3,7 @@
 
 #include <QList>
 #include <QDebug>
-#include "fotobase.h"
+#include "./../../fotobase.h"
 
 class fotoDatabase
 {
@@ -37,6 +37,9 @@ class fotoDatabase
 
 		bool isUniqueId(unsigned int id) const;
 		unsigned int get_uniqueId() ;
+
+        int compareRecordsByID(uint first, uint second) ;
+
 };
 
 #endif // FOTODATABASE_H

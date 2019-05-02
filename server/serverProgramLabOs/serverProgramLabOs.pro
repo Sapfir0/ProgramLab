@@ -18,7 +18,11 @@ SOURCES += \
         main.cpp \
     transmitter.cpp \
     fotodatabase.cpp \
-    WinApiHelper.cpp
+    server.cpp \
+    pipestream.cpp \
+    transmitter.cpp \
+    filestream.cpp \
+    filestream.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -28,4 +32,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     transmitter.h \
     fotodatabase.h \
-    WinApiHelper.h
+    server.h \
+    server_command.h \
+    pipestream.h \
+    filestream.h \
+    datastream.h

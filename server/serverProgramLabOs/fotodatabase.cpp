@@ -1,6 +1,6 @@
 #include "fotodatabase.h"
 #include <QFile>
-#include "WinApiHelper.h"
+#include "filestream.h"
 fotoDatabase::fotoDatabase()
 {
     id =0;
@@ -10,6 +10,11 @@ fotoDatabase::fotoDatabase()
 
 fotoDatabase::~fotoDatabase() {
     save(filename); //тут косяк
+}
+
+int fotoDatabase::compareRecordsByID(uint first, uint second) {
+    return fotobase::compare(this->record(first),this->record(second));
+
 }
 
 unsigned int fotoDatabase::append(fotobase writing) {
@@ -26,11 +31,14 @@ unsigned int fotoDatabase::append(fotobase writing) {
 //сохранить данные в заданный файл, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::save(QString filename) {
 
-  WinApiHelper stream;
-
-  if (!stream.open()) {
+    FileStream stream;
+    if (stream.open(filename, FileStream::out | FileStream::trunc)) {
+        qDebug() << "file saved";
+    } else {
+        qDebug() << "file save error";
+        qDebug() << "file:" << filename << "not created";
         return false;
-   }
+    }
       stream << database.size();
 
         for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
@@ -56,11 +64,11 @@ bool fotoDatabase::save(QString filename) {
 
 //загрузить данные из заданного файла; при этом предыдущие данные уничтожаются, возвращает false, если сохранить данные не удалось;
 bool fotoDatabase::load(QString filename) {
-    WinApiHelper stream;
-    if(!stream.open()) {
-        qDebug() << "файл:" << filename << " не открылся";
-                return false; // если файл не открылся
-        }
+    FileStream stream;
+    if(!stream.open(filename, FileStream::in)) {
+        qDebug() << "file:" << filename << " not opened";
+        return false; // если файл не открылся
+    }
 
     int size;
     stream >> size;
