@@ -8,13 +8,17 @@ fotoDatabase::fotoDatabase()
 
 }
 
+fotoDatabase::~fotoDatabase() {
+    save(filename); //тут косяк
+}
+
 unsigned int fotoDatabase::append(fotobase writing) {
     moding = true;
 	unsigned int tem = get_uniqueId();
 	writing.id = tem;
 	database.append(writing);
 
-    save(filename); //тут косяк
+    //save(filename); //тут косяк
 	return tem;
 
 }

@@ -15,7 +15,7 @@ class fotoDatabase
 	public:
 
 		fotoDatabase();
-
+        ~fotoDatabase() ;
 
 		//4 lab
 		void createDatabase();
