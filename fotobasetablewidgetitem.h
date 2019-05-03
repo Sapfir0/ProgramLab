@@ -8,11 +8,11 @@ class fotobaseTableWidgetItem : public QTableWidgetItem
 {
 	private:
 		unsigned int id;
-		fotoDatabase *d;
+        DataBasePrototype *d;
 		int column;
 
 	public:
-		fotobaseTableWidgetItem(unsigned int id, fotoDatabase* d, int column) {
+        fotobaseTableWidgetItem(unsigned int id, DataBasePrototype* d, int column) {
 			this->id = id;
 			this->d = d;
 			this->column = column;

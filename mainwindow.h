@@ -8,7 +8,8 @@
 
 
 #include "fotobase.h"
-#include "fotodatabase.h"
+#include "databasecontroller.h"
+#include "fotobasetablewidgetitem.h"
 
 
 namespace Ui {
@@ -65,7 +66,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-	fotoDatabase db;
+    DataBaseController db;
 	uint currentId = 0;
     int indexOfRecord = 0; //это счетчик [1,countRecordAndRows] мухах
     int callEnableDisable = 0; //основная переменная для работы с режимом редактирования

@@ -44,26 +44,26 @@ int DataBaseController::count() const {
     return count;
 }
 
-id_type DataBaseController::append(TyristManual record) {
+uint DataBaseController::append(fotobase record) {
     commandOutputStream << ServerCommand::append;
     dataOutputStream << record;
-    id_type id;
+    uint id;
     dataInputStream >> id;
     return id;
 }
 
-void DataBaseController::remove(id_type id) {
+void DataBaseController::remove(uint id) {
     commandOutputStream << ServerCommand::remove;
     dataOutputStream << id;
 }
 
-void DataBaseController::update(id_type record_id, TyristManual record) {
+void DataBaseController::update(uint record_id, fotobase record) {
     commandOutputStream << ServerCommand::update;
     dataOutputStream << record_id << record;
 }
 
-TyristManual DataBaseController::record(id_type id) const {
-    TyristManual tmp;
+fotobase DataBaseController::record(uint id) const {
+    fotobase tmp;
 
     commandOutputStream << ServerCommand::record;
     dataOutputStream << id;
@@ -72,14 +72,14 @@ TyristManual DataBaseController::record(id_type id) const {
     return tmp;
 }
 
-QVector<TyristManual> DataBaseController::records() {
-    QVector<TyristManual> tmp;
+QVector<fotobase> DataBaseController::records() {
+    QVector<fotobase> tmp;
     int vector_size = 0;
     commandOutputStream << ServerCommand::records;
     dataInputStream >> vector_size;
     tmp.reserve(vector_size);
     for (int i = 0; i < vector_size; i++) {
-        TyristManual tmp_record;
+        fotobase tmp_record;
         dataInputStream >> tmp_record;
         tmp.push_back(tmp_record);
     }
@@ -119,7 +119,7 @@ bool DataBaseController::isModidfied() const {
     return res;
 }
 
-int DataBaseController::compareRecordsByID(id_type first, id_type second) {
+int DataBaseController::compareRecordsByID(uint first, uint second) {
     int res;
 
     commandOutputStream << ServerCommand::compare_two_records;
