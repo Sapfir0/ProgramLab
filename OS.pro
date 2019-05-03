@@ -30,7 +30,11 @@ SOURCES += \
     fotobase.cpp \
     fotobasetablewidgetitem.cpp \
     fotodatabase.cpp \
-    WinApiHelper.cpp
+    WinApiHelper.cpp \
+    databasecontroller.cpp \
+    datastream.cpp \
+    filestream.cpp \
+    pipestream.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +42,13 @@ HEADERS += \
     fotobasetablewidgetitem.h \
     fotodatabase.h \
     randomfunctions.h \
-    WinApiHelper.h
+    WinApiHelper.h \
+    databasecontroller.h \
+    datastream.h \
+    filestream.h \
+    pipestream.h \
+    databaseprototype.h \
+    server_command.h
 
 FORMS += \
         mainwindow.ui

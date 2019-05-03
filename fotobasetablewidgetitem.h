@@ -2,7 +2,7 @@
 #define FOTOBASETABLEWIDGETITEM_H
 
 #include <QTableWidgetItem>
-#include "fotodatabase.h"
+#include <databaseprototype.h>
 
 class fotobaseTableWidgetItem : public QTableWidgetItem
 {
