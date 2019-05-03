@@ -23,7 +23,8 @@ SOURCES += \
     transmitter.cpp \
     filestream.cpp \
     filestream.cpp \
-    fotobase.cpp
+    fotobase.cpp \
+    datastream.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
