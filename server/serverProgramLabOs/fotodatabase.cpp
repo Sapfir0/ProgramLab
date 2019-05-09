@@ -6,6 +6,7 @@ fotoDatabase::fotoDatabase()
 {
     id =0;
     moding = false;
+    load("./database.db");
 
 }
 
