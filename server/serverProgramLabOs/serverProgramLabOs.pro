@@ -22,7 +22,6 @@ SOURCES += \
     pipestream.cpp \
     transmitter.cpp \
     filestream.cpp \
-    filestream.cpp \
     fotobase.cpp \
     datastream.cpp
 

@@ -98,10 +98,52 @@ int fotobase::compare(const fotobase& firstI, const fotobase& secondI)  {
         return 0;
 }
 
-//void fotobase::lower(const fotobase& firstI, const fotobase& secondI) {
-//    // Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
+DataStream& operator << (DataStream& stream, fotobase tmp) {
+    stream << tmp.getNameOfModel();
+    stream << tmp.getGategory();
+    stream << tmp.getAnalogOrNot();
+    stream << tmp.getProducer();
+    stream << tmp.getMatrRes();
+    stream << tmp.getChangeLense();
+    stream << tmp.getSize();
+    stream << tmp.getWeight();
+    stream << tmp.getCost();
+    stream << tmp.getmyDate();
+    stream << tmp.id;
+    return stream;
+}
 
-//}
+DataStream& operator >> (DataStream& stream, fotobase& tmp_fotobase) {
+    QString tmp_str;
+    int tmp_int;
+    double tmp_double;
+    bool tmp_bool;
+    QDate tmp_date;
+
+    stream >> tmp_str;
+    tmp_fotobase.setNameOfModel(tmp_str);
+    stream >> tmp_str;
+    tmp_fotobase.setCategory(tmp_str);
+    stream >> tmp_bool;
+    tmp_fotobase.setAnalogOrNot(tmp_bool);
+    stream >> tmp_str;
+    tmp_fotobase.setProducer(tmp_str);
+    stream >> tmp_double;
+    tmp_fotobase.setMatrRes(tmp_double);
+    stream >> tmp_bool;
+    tmp_fotobase.setChangeLense(tmp_bool);
+    stream >> tmp_str;
+    tmp_fotobase.setSize(tmp_str);
+    stream >> tmp_int;
+    tmp_fotobase.setWeight(tmp_int);
+    stream >> tmp_int;
+    tmp_fotobase.setCost(tmp_int);
+    stream >> tmp_date;
+    tmp_fotobase.setmyDate(tmp_date);
+
+    stream >> tmp_fotobase.id;
+    return stream;
+}
 
 
 void fotobase::setNameOfModel(QString nameofModelclass){

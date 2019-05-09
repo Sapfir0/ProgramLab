@@ -8,7 +8,8 @@
 
 
 bool FileStream::open(QString filename, uint32_t flags) {
-    if (file != NULL) close();
+    if (file != NULL)
+        close();
     DWORD DesiredAccess = 0, // в режим чтения/запись
             CreationDisposition = 0, // как открывать
             FileAttribute = 0; // атрибут файла - константа
