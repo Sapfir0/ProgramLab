@@ -25,18 +25,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp \
         mainwindow.cpp \
-    fotobase.cpp \
+    main.cpp \
     fotobasetablewidgetitem.cpp \
     databasecontroller.cpp \
     datastream.cpp \
     filestream.cpp \
-    pipestream.cpp
+    pipestream.cpp \
+    fotobase.cpp
 
 HEADERS += \
         mainwindow.h \
-    fotobase.h \
     fotobasetablewidgetitem.h \
     randomfunctions.h \
     databasecontroller.h \
@@ -45,7 +44,9 @@ HEADERS += \
     pipestream.h \
     databaseprototype.h \
     server_command.h \
-    randomfunctions.h
+    randomfunctions.h \
+    databaseprototype.h \
+    fotobase.h
 
 FORMS += \
         mainwindow.ui

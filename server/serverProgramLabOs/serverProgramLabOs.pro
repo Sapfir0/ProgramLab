@@ -16,14 +16,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    transmitter.cpp \
     fotodatabase.cpp \
-    server.cpp \
-    pipestream.cpp \
-    transmitter.cpp \
-    filestream.cpp \
     fotobase.cpp \
-    datastream.cpp
+    datastream.cpp \
+    filestream.cpp \
+    pipestream.cpp \
+    server.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -31,12 +29,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    transmitter.h \
-    fotodatabase.h \
-    server.h \
-    server_command.h \
-    pipestream.h \
-    filestream.h \
-    datastream.h \
     fotobase.h \
+    datastream.h \
+    filestream.h \
+    pipestream.h \
+    server_command.h \
+    fotodatabase.h \
+    databaseprototype.h \
+    server.h \
     randomfunctions.h

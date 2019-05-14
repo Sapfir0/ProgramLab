@@ -3,7 +3,9 @@
 
 #include <QList>
 #include <QDebug>
-#include "fotobase.h"
+//#include "fotobase.h"
+#include "databaseprototype.h"
+
 
 class fotoDatabase
 {

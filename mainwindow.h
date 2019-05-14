@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 
-#include "fotobase.h"
+//#include "fotobaseы.h"
 #include "databasecontroller.h"
 #include "fotobasetablewidgetitem.h"
 

@@ -3,12 +3,12 @@
 
 #include <QDate>
 #include <QDebug>
+#include <datastream.h>
 
 
 class fotobase
 {
 private:
-
 
     QString nameOfModel; //Название модели
     QString category; //Категория
@@ -36,9 +36,6 @@ public:
     bool operator ==(const fotobase&);
     bool operator !=(const fotobase&);
    // void operator =(fotobase write);
-
-
-
 
 
     static fotobase randomix();
@@ -74,5 +71,8 @@ public:
     QDate getmyDate()  const;
 };
 
+
+DataStream& operator << (DataStream&, fotobase);
+DataStream& operator >> (DataStream&, fotobase&);
 
 #endif // FOTOBASE_H
