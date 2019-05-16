@@ -72,7 +72,7 @@ public:
 };
 
 
-DataStream& operator << (DataStream&, fotobase);
-DataStream& operator >> (DataStream&, fotobase&);
+WinApiHelper& operator << (WinApiHelper&, fotobase);
+WinApiHelper& operator >> (WinApiHelper&, fotobase&);
 
 #endif // FOTOBASE_H

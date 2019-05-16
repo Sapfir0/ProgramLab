@@ -29,11 +29,8 @@ bool PipeStream::open(QString filename, uint32_t flags) {
                          timeOut,
                          nullptr);
     } else {
-        // игра классов
         FileStream game;
         game.open(filename, flags);
-        //PipeStream &next_game = reinterpret_cast <PipeStream&>(game);
-        //this->file = next_game.file;
         file = game.getHandle();
         game.setHandle(NULL);
     }
@@ -42,7 +39,7 @@ bool PipeStream::open(QString filename, uint32_t flags) {
     bool fileOpen = file != INVALID_HANDLE_VALUE;
 
     if (!fileOpen) {
-        qDebug() << "Pipe create error: " << filename;
+        //qDebug() << "Pipe create error: " << filename;
     }
 
     return fileOpen;

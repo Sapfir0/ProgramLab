@@ -6,7 +6,7 @@
 
 using Size_t = unsigned long;
 
-class DataStream
+class WinApiHelper
 {
     protected:
         HANDLE file;
@@ -22,8 +22,8 @@ class DataStream
             trunc = 16          // удалить содержимое файла, если он существует
         };
 
-        DataStream() ;
-        virtual ~DataStream() ;
+        WinApiHelper() ;
+        virtual ~WinApiHelper() ;
         bool is_open();
         void close();
         bool eof();
@@ -38,19 +38,19 @@ class DataStream
         virtual bool open(QString filename, uint32_t flags) = 0;
 };
 
-DataStream& operator << (DataStream&, QChar);
-DataStream& operator << (DataStream&, QString);
-DataStream& operator >> (DataStream&, QChar&);
-DataStream& operator >> (DataStream&, QString&);
+WinApiHelper& operator << (WinApiHelper&, QChar);
+WinApiHelper& operator << (WinApiHelper&, QString);
+WinApiHelper& operator >> (WinApiHelper&, QChar&);
+WinApiHelper& operator >> (WinApiHelper&, QString&);
 
 template <typename num_t>
-DataStream& operator << (DataStream& stream, num_t value) {
+WinApiHelper& operator << (WinApiHelper& stream, num_t value) {
     stream.write(&value, sizeof(value));
     return stream;
 }
 
 template <typename num_t>
-DataStream& operator >> (DataStream& stream, num_t& value) {
+WinApiHelper& operator >> (WinApiHelper& stream, num_t& value) {
     stream.read(&value, sizeof(value));
     return stream;
 }

@@ -17,9 +17,9 @@ DataBaseController::DataBaseController() {
     int poputok = 0;
     bool commandOutConnected = false, dataInputConnected = false, dataOutputConnected = false;
     do {
-        if (!commandOutConnected) commandOutConnected = commandOutputStream.open(commandOutputStreamName, DataStream::out);
-        if (!dataInputConnected) dataInputConnected = dataInputStream.open(dataInputStreamName, DataStream::in);
-        if (!dataOutputConnected) dataOutputConnected = dataOutputStream.open(dataOutputStreamName, DataStream::out);
+        if (!commandOutConnected) commandOutConnected = commandOutputStream.open(commandOutputStreamName, WinApiHelper::out);
+        if (!dataInputConnected) dataInputConnected = dataInputStream.open(dataInputStreamName, WinApiHelper::in);
+        if (!dataOutputConnected) dataOutputConnected = dataOutputStream.open(dataOutputStreamName, WinApiHelper::out);
 
         fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected;
         hasConnectedStream = commandOutConnected || dataInputConnected || dataOutputConnected;

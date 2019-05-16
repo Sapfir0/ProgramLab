@@ -98,7 +98,7 @@ int fotobase::compare(const fotobase& firstI, const fotobase& secondI)  {
         return 0;
 }
 
-DataStream& operator << (DataStream& stream, fotobase tmp) {
+WinApiHelper& operator << (WinApiHelper& stream, fotobase tmp) {
     stream << tmp.getNameOfModel();
     stream << tmp.getGategory();
     stream << tmp.getAnalogOrNot();
@@ -113,7 +113,7 @@ DataStream& operator << (DataStream& stream, fotobase tmp) {
     return stream;
 }
 
-DataStream& operator >> (DataStream& stream, fotobase& tmp_fotobase) {
+WinApiHelper& operator >> (WinApiHelper& stream, fotobase& tmp_fotobase) {
     QString tmp_str;
     int tmp_int;
     double tmp_double;

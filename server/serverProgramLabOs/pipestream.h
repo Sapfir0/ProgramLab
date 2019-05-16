@@ -2,7 +2,7 @@
 
 #include <datastream.h>
 
-class PipeStream : public DataStream
+class PipeStream : public WinApiHelper
 {
     public:
         bool open(QString filename, uint32_t flags);

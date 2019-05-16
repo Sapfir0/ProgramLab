@@ -3,40 +3,40 @@
 #include <windows.h>
 #include <QDebug>
 
-DataStream::DataStream()
+WinApiHelper::WinApiHelper()
 {
     file = NULL;
 }
 
-DataStream::~DataStream() {
+WinApiHelper::~WinApiHelper() {
     close();
 }
 
-bool DataStream::is_open() {
+bool WinApiHelper::is_open() {
     return file != INVALID_HANDLE_VALUE && file != NULL;
 }
 
-void DataStream::close() {
+void WinApiHelper::close() {
     CloseHandle(file);
     file = NULL;
 }
 
-bool DataStream::eof() {
+bool WinApiHelper::eof() {
     bool rd;
     rd = true;
     return !rd;
 }
 
-bool DataStream::read(void* begin, Size_t size) {
+bool WinApiHelper::read(void* begin, Size_t size) {
     Size_t readByte = size;
     auto bRes = ReadFile(file, begin, size, &readByte, NULL);
     if (!bRes && readByte != size) {
-        qDebug() << "fail read";
+        //qDebug() << "fail read";
     }
     return bRes;
 }
 
-bool DataStream::write(void* begin, Size_t size) {
+bool WinApiHelper::write(void* begin, Size_t size) {
     Size_t readByte = size;
     auto bRes = WriteFile(file, begin, size, &readByte, NULL);
     if (!bRes && readByte != size) {
@@ -45,14 +45,14 @@ bool DataStream::write(void* begin, Size_t size) {
     return bRes;
 }
 
-HANDLE DataStream::getHandle() const {
+HANDLE WinApiHelper::getHandle() const {
     return this->file;
 }
-void DataStream::setHandle(HANDLE newHandle) {
+void WinApiHelper::setHandle(HANDLE newHandle) {
     this->file = newHandle;
 }
 
-DataStream& operator << (DataStream& stream, QString value) {
+WinApiHelper& operator << (WinApiHelper& stream, QString value) {
     stream << value.size();
     for (auto item : value) {
         stream << item;
@@ -60,12 +60,12 @@ DataStream& operator << (DataStream& stream, QString value) {
     return stream;
 }
 
-DataStream& operator << (DataStream& stream, QChar value) {
+WinApiHelper& operator << (WinApiHelper& stream, QChar value) {
     stream.write(&value.unicode(), sizeof(value));
     return stream;
 }
 
-DataStream& operator >> (DataStream& stream, QString &value) {
+WinApiHelper& operator >> (WinApiHelper& stream, QString &value) {
     int size;
     stream >> size;
     value.clear();
@@ -80,7 +80,7 @@ DataStream& operator >> (DataStream& stream, QString &value) {
     return stream;
 }
 
-DataStream& operator >> (DataStream& stream, QChar &value) {
+WinApiHelper& operator >> (WinApiHelper& stream, QChar &value) {
     uint16_t chr;
     stream.read(&chr, sizeof(chr));
     value = chr;

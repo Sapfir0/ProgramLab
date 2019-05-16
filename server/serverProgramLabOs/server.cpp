@@ -6,7 +6,7 @@
 
 Server::Server() : running(false)
 {
-
+    qDebug() << "Constructor";
 }
 
 int Server::exec() {
@@ -18,17 +18,16 @@ int Server::exec() {
 
     PipeStream dataInputPipe, dataOutputPipe, commandInputPipe;
 
-    if (!dataInputPipe.open(dataInputPipeName, DataStream::create | DataStream::in) ||
-            !dataOutputPipe.open(dataOutputPipeName, DataStream::create | DataStream::out) ||
-            !commandInputPipe.open(commandInputPipeName, DataStream::create | DataStream::in))
+    if (!dataInputPipe.open(dataInputPipeName, WinApiHelper::create | WinApiHelper::in) ||
+            !dataOutputPipe.open(dataOutputPipeName, WinApiHelper::create | WinApiHelper::out) ||
+            !commandInputPipe.open(commandInputPipeName, WinApiHelper::create | WinApiHelper::in))
     {
         qCritical() << "Couldn't create pipe";
         return -1;
     }
 
     qDebug() << "Input pipe has created." << endl << "Waiting for clients.." << endl;
-    // по идее достаточно дождаться какогото одного
-    // но это не точно
+
     commandInputPipe.waitingClient();
 
     qDebug() << "Client has been connected." << endl << endl;
