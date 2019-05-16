@@ -35,10 +35,10 @@ bool fotoDatabase::save(QString filename) {
 
     FileStream stream;
     if (stream.open(filename, FileStream::out | FileStream::trunc)) {
-        //qDebug() << "file saved";
+        qDebug() << "file saved";
     } else {
-        //qDebug() << "file save error";
-        //qDebug() << "file:" << filename << "not created";
+        qDebug() << "file save error";
+        qDebug() << "file:" << filename << "not created";
         return false;
     }
       stream << database.size();
@@ -68,7 +68,7 @@ bool fotoDatabase::save(QString filename) {
 bool fotoDatabase::load(QString filename) {
     FileStream stream;
     if(!stream.open(filename, FileStream::in)) {
-        //qDebug() << "file:" << filename << " not opened";
+        qDebug() << "file:" << filename << " not opened";
         return false; // если файл не открылся
     }
 
@@ -186,7 +186,6 @@ void fotoDatabase::clear() {
 
 
 unsigned int fotoDatabase::get_uniqueId()  {
-    //qDebug() << id;
     return id++;
 }
 

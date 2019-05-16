@@ -31,7 +31,7 @@ bool WinApiHelper::read(void* begin, Size_t size) {
     Size_t readByte = size;
     auto bRes = ReadFile(file, begin, size, &readByte, NULL);
     if (!bRes && readByte != size) {
-        //qDebug() << "fail read";
+        qDebug() << "fail read";
     }
     return bRes;
 }

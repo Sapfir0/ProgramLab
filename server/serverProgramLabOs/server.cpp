@@ -40,7 +40,7 @@ int Server::exec() {
         running = this->doCommand(c, dataInputPipe, dataOutputPipe);
     } while (running);
 
-    qDebug() << "########## FINISHING THE SERVER ##########" << endl << endl;
+    qDebug() << " FINISHING THE SERVER" << endl << endl;
 
     return 0;
 }
@@ -76,7 +76,7 @@ bool Server::doCommand(ServerCommand command, PipeStream &input, PipeStream &out
                 db.update(id, value);
                 break;
             }
-            case ServerCommand::compare_two_records: {
+            case ServerCommand::compare_two_records: { //для сортировки
                 qDebug() << "compare two record";
                 uint first, second;
                 input >> first >> second;
@@ -96,19 +96,21 @@ bool Server::doCommand(ServerCommand command, PipeStream &input, PipeStream &out
                 break;
             }
             case ServerCommand::record: {
-                qDebug() << "record";
+                //qDebug() << "record";
                 uint id;
                 input >> id;
                 output << db.record(id);
                 break;
             }
             case ServerCommand::save: {
+                qDebug() << "save";
                 QString filename;
                 input >> filename;
                 output << db.save(filename);
                 break;
             }
             case ServerCommand::load: {
+                qDebug() << "load";
                 QString filename;
                 input >> filename;
                 output << db.load(filename);
@@ -120,9 +122,11 @@ bool Server::doCommand(ServerCommand command, PipeStream &input, PipeStream &out
                 break;
             }
             case ServerCommand::is_modified: {
+                qDebug() << "if modifies";
                 break;
             }
             case ServerCommand::end_connection: {
+                qDebug() << "end_connect";
                 output << db.isModified();
                 return false;
             }
