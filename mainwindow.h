@@ -64,7 +64,11 @@ private slots:
 
     void on_loadBtn_clicked();
 
+public slots:
     void addRecordToUi(uint id);
+    void updateRecordByID(uint id);
+    void removeRecordFromUiByID(uint);
+    void clearBrowser();
 
 private:
     Ui::MainWindow *ui;
@@ -80,6 +84,8 @@ private:
     bool stopIt;
 
     QString filename = "./os.txt";
+    std::map <uint, fotobaseTableWidgetItem*> browserWidgetItems;
+
 
 };
 

@@ -2,17 +2,17 @@
 #define FOTOBASETABLEWIDGETITEM_H
 
 #include <QTableWidgetItem>
-#include <databaseprototype.h>
+#include <databasecontroller.h>
 
 class fotobaseTableWidgetItem : public QTableWidgetItem
 {
 	private:
 		unsigned int id;
-        DataBasePrototype *d;
+        DataBaseController *d;
 		int column;
 
 	public:
-        fotobaseTableWidgetItem(unsigned int id, DataBasePrototype* d, int column) {
+        fotobaseTableWidgetItem(unsigned int id, DataBaseController* d, int column) {
 			this->id = id;
 			this->d = d;
 			this->column = column;
@@ -23,11 +23,11 @@ class fotobaseTableWidgetItem : public QTableWidgetItem
 			const fotobaseTableWidgetItem& tmp = static_cast<const fotobaseTableWidgetItem&>(other);
 			return d->record(id) < tmp.d->record(tmp.id);
 		}
-        fotobaseTableWidgetItem(uint _id, DataBasePrototype* _d, QString _text) {
-             id = _id;
-             d = _d;
-             this->setText(_text);
-         }
+//        fotobaseTableWidgetItem(uint _id, DataBaseController* _d, QString _text) {
+//             id = _id;
+//             d = _d;
+//             this->setText(_text);
+//         }
 		uint get_id() {
 			return id;
 		}

@@ -5,6 +5,8 @@
 #include <pipestream.h>
 #include "config_pipe_naming.h"
 
+PipeStream Server::signalOutputPipe(serverSignalsOutputPipeName, WinApiHelper::create | WinApiHelper::out);
+
 Server::Server() : running(false)
 {
     qDebug() << "Constructor";
@@ -13,15 +15,12 @@ Server::Server() : running(false)
 int Server::exec() {
     qDebug() << "STARTING THE SERVER";
 
-    QString dataInputPipeName = "\\\\.\\pipe\\dataInputPipe",
-            dataOutputPipeName = "\\\\.\\pipe\\dataOutputPipe",
-            commandInputPipeName = "\\\\.\\pipe\\commandInputPipe";
-
     PipeStream dataInputPipe, dataOutputPipe, commandInputPipe;
 
     if (!dataInputPipe.open(serverDataInputPipeName, WinApiHelper::create | WinApiHelper::in) ||
             !dataOutputPipe.open(serverDataOutputPipeName, WinApiHelper::create | WinApiHelper::out) ||
-            !commandInputPipe.open(serverCommandInputPipeName, WinApiHelper::create | WinApiHelper::in))
+            !commandInputPipe.open(serverCommandInputPipeName, WinApiHelper::create | WinApiHelper::in) ||
+            !signalOutputPipe.is_open())
     {
         qCritical() << "Couldn't create pipe";
         return -1;
@@ -59,7 +58,7 @@ bool Server::doCommand(ServerCommand command, PipeStream &input, PipeStream &out
                 qDebug() << "append";
                 fotobase value;
                 input >> value;
-                output << db.append(value);
+                signalOutputPipe << ClientCommand::append << db.append(value);
                 break;
             }
             case ServerCommand::remove: {
@@ -67,6 +66,7 @@ bool Server::doCommand(ServerCommand command, PipeStream &input, PipeStream &out
                 uint id;
                 input >> id;
                 db.remove(id);
+                signalOutputPipe << ClientCommand::remove << id;
                 break;
             }
             case ServerCommand::update: {
@@ -75,6 +75,7 @@ bool Server::doCommand(ServerCommand command, PipeStream &input, PipeStream &out
                 fotobase value;
                 input >> id >> value;
                 db.update(id, value);
+                signalOutputPipe << ClientCommand::update << id;
                 break;
             }
             case ServerCommand::compare_two_records: { //для сортировки
@@ -119,11 +120,12 @@ bool Server::doCommand(ServerCommand command, PipeStream &input, PipeStream &out
             }
             case ServerCommand::clear: {
                 qDebug() << "clear";
+                signalOutputPipe << ClientCommand::clear;
                 db.clear();
                 break;
             }
             case ServerCommand::is_modified: {
-                output << db.isModidfied();
+                output << db.isModified();
                 qDebug() << "if modifies";
                 break;
             }

@@ -2,8 +2,8 @@
 #include "ui_mainwindow.h"
 
 #include "fotobasetablewidgetitem.h"
-
 #include <QCloseEvent>
+#include <fotobase.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -366,14 +366,45 @@ void MainWindow::createWindow() {
   while (it.hasNext()) {
       auto item = it.next();
       auto id = item.id;
-      addRecordToUi(id)
+      addRecordToUi(id);
   }
+  connect(&records, &DataBaseController::update_signal, this, &MainWindow::updateRecordByID);
+   connect(&records, &DataBaseController::append_signal, this, &MainWindow::addRecordToUi);
+   connect(&records, &DataBaseController::remove_signal, this, &MainWindow::removeRecordFromUiByID);
+   connect(&records, &DataBaseController::clear_signal , this, &MainWindow::clearBrowser);
 
 }
+
+void MainWindow::addRecordToDatabase(const fotobase &data) {
+    db.append(data);
+}
+
 
 void MainWindow::addRecordToUi(uint id) {
     fotobaseTableWidgetItem* temp = new fotobaseTableWidgetItem(id, &db);
     ui->spisok->addItem(temp);
     ui->spisok->setCurrentItem(temp);
-    browserWidgetItems.insert(std::make_pair(id, temp));
+    //browserWidgetItems.insert(std::make_pair(id, temp));
+    browserWidgetItems.insert(id,temp);
+}
+
+void MainWindow::addRecordToDatabase(const fotobase & import) {
+    db.append(import);
+}
+
+void MainWindow::updateRecordByID(uint id) {
+    removeRecordFromUiByID(id);
+    addRecordToUi(id);
+}
+
+void MainWindow::removeRecordFromUiByID(uint id) {
+    if (browserWidgetItems.contains(id)) {
+         browserWidgetItems.remove(id);
+         delete browserWidgetItems[id];
+     }
+}
+
+void MainWindow::clearBrowser() {
+    browserWidgetItems.clear();
+    ui->browserRecord->clear();
 }

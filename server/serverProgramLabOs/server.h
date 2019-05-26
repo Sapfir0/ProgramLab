@@ -11,6 +11,7 @@ class Server
     private:
         fotoDatabase db;
         bool running;
+        static PipeStream signalOutputPipe;
     public:
         Server();
         bool doCommand(ServerCommand command, PipeStream &,PipeStream &);

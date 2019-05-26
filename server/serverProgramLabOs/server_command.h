@@ -14,3 +14,12 @@ enum class ServerCommand {
     is_modified,
     end_connection
 };
+
+
+enum class ClientCommand {
+    append = 0,
+    remove,
+    update,
+    clear,
+    end_connection
+};

@@ -4,6 +4,7 @@
 #include <filestream.h>
 #include <QDebug>
 
+
 bool PipeStream::open(QString filename, uint32_t flags) {
     DWORD openMode = 0, pipeMode = 0;
 
