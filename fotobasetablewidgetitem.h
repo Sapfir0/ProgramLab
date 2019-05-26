@@ -18,7 +18,9 @@ class fotobaseTableWidgetItem : public QTableWidgetItem
 			this->column = column;
 			update_text();
 		}
-		fotobaseTableWidgetItem() {d->remove(id);}
+        fotobaseTableWidgetItem() {
+            d->remove(id);
+        }
 		bool operator < (const QTableWidgetItem &other) const {
 			const fotobaseTableWidgetItem& tmp = static_cast<const fotobaseTableWidgetItem&>(other);
 			return d->record(id) < tmp.d->record(tmp.id);
@@ -28,6 +30,12 @@ class fotobaseTableWidgetItem : public QTableWidgetItem
 //             d = _d;
 //             this->setText(_text);
 //         }
+        fotobaseTableWidgetItem(uint _id, DataBaseController* _d) {
+            id = _id;
+            d = _d;
+            update_text();
+        }
+
 		uint get_id() {
 			return id;
 		}

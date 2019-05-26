@@ -72,6 +72,11 @@ void MainWindow::on_filling_clicked()
 		setToUi(db.append(random), db.count());
     }
 	sorting();
+
+
+//    for (int i = 0; i < 15; i++) {
+//        addRecordToDatabase(TyristManual::createRandomObject());
+//    }
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
@@ -368,10 +373,10 @@ void MainWindow::createWindow() {
       auto id = item.id;
       addRecordToUi(id);
   }
-  connect(&records, &DataBaseController::update_signal, this, &MainWindow::updateRecordByID);
-   connect(&records, &DataBaseController::append_signal, this, &MainWindow::addRecordToUi);
-   connect(&records, &DataBaseController::remove_signal, this, &MainWindow::removeRecordFromUiByID);
-   connect(&records, &DataBaseController::clear_signal , this, &MainWindow::clearBrowser);
+  connect(&db, &DataBaseController::update_signal, this, &MainWindow::updateRecordByID);
+   connect(&db, &DataBaseController::append_signal, this, &MainWindow::addRecordToUi);
+   connect(&db, &DataBaseController::remove_signal, this, &MainWindow::removeRecordFromUiByID);
+   connect(&db, &DataBaseController::clear_signal , this, &MainWindow::clearBrowser);
 
 }
 
@@ -382,14 +387,17 @@ void MainWindow::addRecordToDatabase(const fotobase &data) {
 
 void MainWindow::addRecordToUi(uint id) {
     fotobaseTableWidgetItem* temp = new fotobaseTableWidgetItem(id, &db);
-    ui->spisok->addItem(temp);
-    ui->spisok->setCurrentItem(temp);
-    //browserWidgetItems.insert(std::make_pair(id, temp));
-    browserWidgetItems.insert(id,temp);
-}
 
-void MainWindow::addRecordToDatabase(const fotobase & import) {
-    db.append(import);
+    QTableWidgetItem* cost = new QTableWidgetItem(temp->get_record().getCost());
+    QTableWidgetItem* model = new QTableWidgetItem(temp->get_record().getNameOfModel());
+
+    ui->spisok->setRowCount(id);
+    ui->spisok->setItem(id, 0, cost); ////////////////////////////////////////////////////возможно тут будет косяк
+    ui->spisok->setItem(id, 1, model); ////////////////////////////////////////////////////возможно тут будет косяк
+
+    //ui->spisok->setCurrentItem(temp);
+    //browserWidgetItems.insert(std::make_pair(id, temp));
+    //browserWidgetItems.insert(id,temp);
 }
 
 void MainWindow::updateRecordByID(uint id) {
@@ -398,13 +406,14 @@ void MainWindow::updateRecordByID(uint id) {
 }
 
 void MainWindow::removeRecordFromUiByID(uint id) {
-    if (browserWidgetItems.contains(id)) {
-         browserWidgetItems.remove(id);
-         delete browserWidgetItems[id];
-     }
+    auto it = browserWidgetItems.find(id);
+    if (it != browserWidgetItems.end()) {
+        delete it->second;
+        browserWidgetItems.erase(it);
+    }
 }
 
 void MainWindow::clearBrowser() {
     browserWidgetItems.clear();
-    ui->browserRecord->clear();
+    ui->spisok->clear();
 }

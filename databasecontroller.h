@@ -22,7 +22,7 @@ class DataBaseController : public QObject
         DataBaseController();
         ~DataBaseController();
         int count() const;
-        void append(fotobase record);
+        uint append(fotobase record);
         void remove(uint id);
         void update(uint record_id, fotobase record);
         int compareRecordsByID(uint, uint);

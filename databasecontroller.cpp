@@ -27,7 +27,7 @@ DataBaseController::DataBaseController() {
         if(!signalInputConnected) {
             signalInputConnected = signalInputStream.open(clientSignalsInputPipeName, WinApiHelper::in | WinApiHelper::ate);
         }
-        fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected && signalInputConnected
+        fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected && signalInputConnected;
         hasConnectedStream = commandOutConnected || dataInputConnected || dataOutputConnected ||signalInputConnected;
         poputok++;
     } while (!fullConnect && hasConnectedStream && poputok < 10);
@@ -43,7 +43,7 @@ DataBaseController::DataBaseController() {
     connect(checkerThread, SIGNAL(finished()),  checkerThread, SLOT(deleteLater()));
     connect(checkerThread, SIGNAL(started()), checker, SLOT(start()));
     connect(this, SIGNAL(checking_next_signal()), checker, SLOT(start()));
-    connect(checker, &ServerSignalChecker::check_command, this, &DataBaseController::serverSignaled)
+    connect(checker, &ServerSignalChecker::check_command, this, &DataBaseController::serverSignaled);
     checkerThread->start();
 }
 
@@ -54,7 +54,7 @@ DataBaseController::~DataBaseController() {
     }
 }
 
-DataBaseController::ServerSignalChecker::ServerSignalChecker(PipeStream* input) : signalInputStream(input) {
+DataBaseController::ServerSignalChecker::ServerSignalChecker(PipeStream& input) : signalInputStream(input) {
 }
 
 void DataBaseController::ServerSignalChecker::start() {
@@ -64,7 +64,7 @@ void DataBaseController::ServerSignalChecker::start() {
 }
 
 void DataBaseController::serverSignaled(ClientCommand command) {
-    id_type id;
+    uint id;
 
     switch (command) {
         case ClientCommand::append:
@@ -98,9 +98,10 @@ int DataBaseController::count() const {
     return count;
 }
 
-void DataBaseController::append(fotobase record) {
+uint DataBaseController::append(fotobase record) {
     commandOutputStream << ServerCommand::append;
     dataOutputStream << record;
+    return record.id;         /////////////////////////////////////----------------------
 }
 
 void DataBaseController::remove(uint id) {
