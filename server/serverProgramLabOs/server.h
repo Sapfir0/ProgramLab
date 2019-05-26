@@ -9,9 +9,9 @@
 class Server
 {
     private:
+        static PipeStream signalOutputPipe;
         fotoDatabase db;
         bool running;
-        static PipeStream signalOutputPipe;
     public:
         Server();
         bool doCommand(ServerCommand command, PipeStream &,PipeStream &);
