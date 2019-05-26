@@ -360,4 +360,20 @@ void MainWindow::createWindow() {
    ui->matrixResolution->setEnabled(false);
 
   on_loadBtn_clicked();
+  ui->spisok->setSortingEnabled(true);
+  QVector<fotobase> temp_vector = db.records();
+  QVectorIterator<fotobase> it(temp_vector);
+  while (it.hasNext()) {
+      auto item = it.next();
+      auto id = item.id;
+      addRecordToUi(id)
+  }
+
+}
+
+void MainWindow::addRecordToUi(uint id) {
+    fotobaseTableWidgetItem* temp = new fotobaseTableWidgetItem(id, &db);
+    ui->spisok->addItem(temp);
+    ui->spisok->setCurrentItem(temp);
+    browserWidgetItems.insert(std::make_pair(id, temp));
 }

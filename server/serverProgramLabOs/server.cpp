@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include <pipestream.h>
+#include "config_pipe_naming.h"
 
 Server::Server() : running(false)
 {
@@ -18,9 +19,9 @@ int Server::exec() {
 
     PipeStream dataInputPipe, dataOutputPipe, commandInputPipe;
 
-    if (!dataInputPipe.open(dataInputPipeName, WinApiHelper::create | WinApiHelper::in) ||
-            !dataOutputPipe.open(dataOutputPipeName, WinApiHelper::create | WinApiHelper::out) ||
-            !commandInputPipe.open(commandInputPipeName, WinApiHelper::create | WinApiHelper::in))
+    if (!dataInputPipe.open(serverDataInputPipeName, WinApiHelper::create | WinApiHelper::in) ||
+            !dataOutputPipe.open(serverDataOutputPipeName, WinApiHelper::create | WinApiHelper::out) ||
+            !commandInputPipe.open(serverCommandInputPipeName, WinApiHelper::create | WinApiHelper::in))
     {
         qCritical() << "Couldn't create pipe";
         return -1;
@@ -122,6 +123,7 @@ bool Server::doCommand(ServerCommand command, PipeStream &input, PipeStream &out
                 break;
             }
             case ServerCommand::is_modified: {
+                output << db.isModidfied();
                 qDebug() << "if modifies";
                 break;
             }

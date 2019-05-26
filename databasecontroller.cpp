@@ -6,22 +6,26 @@
 
 #include <QDebug>
 
-const static QString
-commandOutputStreamName = "\\\\.\\pipe\\commandInputPipe",
-dataInputStreamName = "\\\\.\\pipe\\dataOutputPipe",
-dataOutputStreamName = "\\\\.\\pipe\\dataInputPipe"
-;
+#include "config_pipe_naming.h"
+
 
 DataBaseController::DataBaseController() {
     bool fullConnect = true, hasConnectedStream = false;
     int poputok = 0;
-    bool commandOutConnected = false, dataInputConnected = false, dataOutputConnected = false;
+    bool commandOutConnected = false, dataInputConnected = false, dataOutputConnected = false,
+            signalInputConnected = false;
     do {
-        if (!commandOutConnected) commandOutConnected = commandOutputStream.open(commandOutputStreamName, WinApiHelper::out);
-        if (!dataInputConnected) dataInputConnected = dataInputStream.open(dataInputStreamName, WinApiHelper::in);
-        if (!dataOutputConnected) dataOutputConnected = dataOutputStream.open(dataOutputStreamName, WinApiHelper::out);
+        if (!commandOutConnected)
+            commandOutConnected = commandOutputStream.open(clientCommandOutputPipeName, WinApiHelper::out);
+        if (!dataInputConnected)
+            dataInputConnected = dataInputStream.open(clientDataInputPipeName, WinApiHelper::in);
+        if (!dataOutputConnected)
+            dataOutputConnected = dataOutputStream.open(clientDataOutputPipeName, WinApiHelper::out);
 
         fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected;
+        if(!signalInputConnected) {
+            signalInputConnected = signalInputStream.open(clientSignalsInputPipe)
+        }
         hasConnectedStream = commandOutConnected || dataInputConnected || dataOutputConnected;
         poputok++;
     } while (!fullConnect && hasConnectedStream && poputok < 10);

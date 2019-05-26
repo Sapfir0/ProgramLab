@@ -1,13 +1,18 @@
 #ifndef DATABASECONTROLLER_H
 #define DATABASECONTROLLER_H
 
-#include <databaseprototype.h>
-#include <pipestream.h>
+//#include <databaseprototype.h>
 
-class DataBaseController : public DataBasePrototype
+#include <pipestream.h>
+#include <thread.h>
+#include <QObject>
+
+class DataBaseController : public QObject, public DataBasePrototype
 {
+    Q_OBJECT
     private:
-        mutable PipeStream commandOutputStream, dataInputStream, dataOutputStream;
+        mutable PipeStream commandOutputStream, dataInputStream, dataOutputStream,  signalInputStream;
+        Thread chekingSignal;
     public:
         DataBaseController();
         ~DataBaseController();
@@ -22,6 +27,12 @@ class DataBaseController : public DataBasePrototype
         bool load(QString filename);
         void clear();
         bool isModidfied() const;
+
+    signals:
+           void update_signal(uint);
+           void append_signal(uint);
+
+
 };
 
 #endif // DATABASECONTROLLER_H

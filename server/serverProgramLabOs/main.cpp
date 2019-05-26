@@ -1,6 +1,5 @@
 #include <QCoreApplication>
 #include <server.h>
-#include <iostream>
 
 using namespace std;
 

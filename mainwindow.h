@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 
-//#include "fotobaseы.h"
+//#include "fotobase.h"
 #include "databasecontroller.h"
 #include "fotobasetablewidgetitem.h"
 
@@ -63,6 +63,8 @@ private slots:
     void on_saveUsBtn_clicked();
 
     void on_loadBtn_clicked();
+
+    void addRecordToUi(uint id);
 
 private:
     Ui::MainWindow *ui;

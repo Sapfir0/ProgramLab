@@ -32,7 +32,8 @@ SOURCES += \
     datastream.cpp \
     filestream.cpp \
     pipestream.cpp \
-    fotobase.cpp
+    fotobase.cpp \
+    thread.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,11 +43,11 @@ HEADERS += \
     datastream.h \
     filestream.h \
     pipestream.h \
-    databaseprototype.h \
     server_command.h \
     randomfunctions.h \
-    databaseprototype.h \
-    fotobase.h
+    fotobase.h \
+    thread.h \
+    config_pipe_naming.h
 
 FORMS += \
         mainwindow.ui

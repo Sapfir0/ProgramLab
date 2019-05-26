@@ -23,6 +23,11 @@ class fotobaseTableWidgetItem : public QTableWidgetItem
 			const fotobaseTableWidgetItem& tmp = static_cast<const fotobaseTableWidgetItem&>(other);
 			return d->record(id) < tmp.d->record(tmp.id);
 		}
+        fotobaseTableWidgetItem(uint _id, DataBasePrototype* _d, QString _text) {
+             id = _id;
+             d = _d;
+             this->setText(_text);
+         }
 		uint get_id() {
 			return id;
 		}
