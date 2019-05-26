@@ -30,7 +30,7 @@ DataBaseController::DataBaseController() {
         fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected && signalInputConnected;
         hasConnectedStream = commandOutConnected || dataInputConnected || dataOutputConnected ||signalInputConnected;
         poputok++;
-    } while (!fullConnect && hasConnectedStream && poputok < 10);
+    } while (!fullConnect && (hasConnectedStream || poputok < 3) && poputok < 10);
 
     if (!fullConnect) {
         throw std::runtime_error("error connected to server");
@@ -98,7 +98,7 @@ int DataBaseController::count() const {
     return count;
 }
 
-uint DataBaseController::append(fotobase record) {
+void DataBaseController::append(fotobase record) {
     commandOutputStream << ServerCommand::append;
     dataOutputStream << record;
     return record.id;         /////////////////////////////////////----------------------

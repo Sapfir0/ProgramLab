@@ -10,7 +10,7 @@
 //#include "fotobase.h"
 #include "databasecontroller.h"
 #include "fotobasetablewidgetitem.h"
-
+#include <map>
 
 namespace Ui {
 class MainWindow;

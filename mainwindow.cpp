@@ -68,15 +68,12 @@ void MainWindow::on_filling_clicked()
 {
     initializationTable(db.count()+10);
     for (int i=0; i<10; i++) {
-        fotobase random = fotobase::randomix();
-		setToUi(db.append(random), db.count());
+        //setToUi(db.append(fotobase::randomix()), db.count());
+        addRecordToDatabase(fotobase::randomix());
+        //addRecordToUi() //как-то нужно кидать сюда айдишник
     }
 	sorting();
 
-
-//    for (int i = 0; i < 15; i++) {
-//        addRecordToDatabase(TyristManual::createRandomObject());
-//    }
 }
 
 void MainWindow::loadRecord(fotobase value) //выводит на ui данные из экземпляра класса
