@@ -8,6 +8,7 @@ serverDataInputPipeName = "\\\\.\\pipe\\dataInputPipe",
 serverDataOutputPipeName = "\\\\.\\pipe\\dataOutputPipe",
 serverCommandInputPipeName = "\\\\.\\pipe\\commandInputPipe",
 serverSignalsOutputPipeName = "\\\\.\\pipe\\signalsOutputPipe"
+
 ;
 
 const QString
@@ -16,6 +17,8 @@ clientDataOutputPipeName = "\\\\.\\pipe\\dataInputPipe",
 clientCommandOutputPipeName = "\\\\.\\pipe\\commandInputPipe",
 clientSignalsInputPipeName = "\\\\.\\pipe\\signalsOutputPipe"
 ;
+
+const QString ConnectPipeName = "\\\\.\\pipe\\connect";
 
 #endif // CONFIG_PIPE_NAMING_H
 

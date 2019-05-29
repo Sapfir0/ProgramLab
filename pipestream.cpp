@@ -35,11 +35,13 @@ bool PipeStream::open(QString filename, uint32_t flags) {
                          1024,
                          5000,
                          nullptr);
+       type =2;
     } else {
         FileStream game;
         game.open(filename, flags);
         file = game.getHandle();
         game.setHandle(NULL);
+        type=1;
     }
 
     bool fileOpen = file != INVALID_HANDLE_VALUE;
@@ -49,4 +51,13 @@ bool PipeStream::open(QString filename, uint32_t flags) {
     }
 
     return fileOpen;
+}
+
+void PipeStream::close() {
+    if (type < 2) {
+        CloseHandle(file);
+    } else {
+        DisconnectNamedPipe(file);
+    }
+    file = NULL;
 }

@@ -374,6 +374,11 @@ void MainWindow::createWindow() {
    connect(&db, &DataBaseController::append_signal, this, &MainWindow::addRecordToUi);
    connect(&db, &DataBaseController::remove_signal, this, &MainWindow::removeRecordFromUiByID);
    connect(&db, &DataBaseController::clear_signal , this, &MainWindow::clearBrowser);
+   connect(&db, &DataBaseController::server_stop_signal, [this](){
+       QMessageBox::critical(nullptr, "Ошибка подключения к серверу", "К сожалению приложение не может работать");
+       this->close();
+       this->~MainWindow();
+    });
 
 }
 

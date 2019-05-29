@@ -11,27 +11,23 @@
 Q_DECLARE_METATYPE(ClientCommand)
 
 DataBaseController::DataBaseController() {
-    bool fullConnect = true, hasConnectedStream = false;
+    bool fullConnect = false;
     int poputok = 0;
     bool commandOutConnected = false, dataInputConnected = false, dataOutputConnected = false,
             signalInputConnected = false;
-    do {
-        if (!commandOutConnected)
-            commandOutConnected = commandOutputStream.open(clientCommandOutputPipeName, WinApiHelper::out);
-        if (!dataInputConnected)
-            dataInputConnected = dataInputStream.open(clientDataInputPipeName, WinApiHelper::in);
-        if (!dataOutputConnected)
-            dataOutputConnected = dataOutputStream.open(clientDataOutputPipeName, WinApiHelper::out);
+    clientID_t id = 0;
+    PipeStream connectPipe(ConnectPipeName, DataStream::in);
+    if (connectPipe.is_open()) {
+           connectPipe >> id;
+           qDebug() << "my id: " << id;
+           connectPipe.close();
 
-        fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected;
-        if(!signalInputConnected) {
-            signalInputConnected = signalInputStream.open(clientSignalsInputPipeName, WinApiHelper::in | WinApiHelper::ate);
-        }
-        fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected && signalInputConnected;
-        hasConnectedStream = commandOutConnected || dataInputConnected || dataOutputConnected ||signalInputConnected;
-        poputok++;
-    } while (!fullConnect && (hasConnectedStream || poputok < 3) && poputok < 10);
-
+           commandOutConnected = commandOutputStream.open(clientCommandOutputPipeName + QString::number(id), DataStream::out);
+           dataInputConnected = dataInputStream.open(clientDataInputPipeName + QString::number(id), DataStream::in);
+           dataOutputConnected = dataOutputStream.open(clientDataOutputPipeName + QString::number(id), DataStream::out);
+           signalInputConnected = signalInputStream.open(clientSignalsInputPipeName + QString::number(id), DataStream::in);
+         fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected && signalInputConnected;
+    }
     if (!fullConnect) {
         throw std::runtime_error("error connected to server");
     }

@@ -17,6 +17,8 @@ clientCommandOutputPipeName = "\\\\.\\pipe\\commandInputPipe",
 clientSignalsInputPipeName = "\\\\.\\pipe\\signalsOutputPipe"
 ;
 
+const QString ConnectPipeName = "\\\\.\\pipe\\connect";
+
 #endif // CONFIG_PIPE_NAMING_H
 
 

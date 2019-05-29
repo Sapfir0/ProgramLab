@@ -21,8 +21,8 @@ SOURCES += \
     datastream.cpp \
     filestream.cpp \
     pipestream.cpp \
-    server.cpp \
-    thread.cpp
+    thread.cpp \
+    serverworker.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -37,7 +37,7 @@ HEADERS += \
     server_command.h \
     fotodatabase.h \
     databaseprototype.h \
-    server.h \
     randomfunctions.h \
     thread.h \
-    config_pipe_naming.h
+    config_pipe_naming.h \
+    serverworker.h
