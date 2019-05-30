@@ -1,6 +1,6 @@
 #pragma once
 
-#include <datastream.h>
+#include <WinApiHelper.h>
 
 class PipeStream : public WinApiHelper
 {

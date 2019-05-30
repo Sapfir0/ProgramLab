@@ -29,25 +29,25 @@ SOURCES += \
     main.cpp \
     fotobasetablewidgetitem.cpp \
     databasecontroller.cpp \
-    datastream.cpp \
     filestream.cpp \
     pipestream.cpp \
     fotobase.cpp \
-    thread.cpp
+    thread.cpp \
+    WinApiHelper.cpp
 
 HEADERS += \
         mainwindow.h \
     fotobasetablewidgetitem.h \
     randomfunctions.h \
     databasecontroller.h \
-    datastream.h \
     filestream.h \
     pipestream.h \
     server_command.h \
     randomfunctions.h \
     fotobase.h \
     thread.h \
-    config_pipe_naming.h
+    config_pipe_naming.h \
+    WinApiHelper.h
 
 FORMS += \
         mainwindow.ui

@@ -3,7 +3,7 @@
 
 #include <QDate>
 #include <QDebug>
-#include <datastream.h>
+#include <WinApiHelper.h>
 
 
 class fotobase

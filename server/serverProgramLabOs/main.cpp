@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     connectLoop.start( [&](){
         clientID_t clientID = 0;
         while (running) {
-            qDebug() << "sleep";
+            qDebug() << "sleep worker";
             PipeStream connectPipe(ConnectPipeName, WinApiHelper::create | WinApiHelper::out);
             connectPipe.waitingClient();
             clientID++;

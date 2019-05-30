@@ -1,11 +1,11 @@
-#include "datastream.h"
+#include "WinApiHelper.h"
 
 #include <windows.h>
 #include <QDebug>
 
-WinApiHelper::WinApiHelper() : file(NULL)
+WinApiHelper::WinApiHelper()
 {
-
+    file = NULL;
 }
 
 WinApiHelper::~WinApiHelper() {

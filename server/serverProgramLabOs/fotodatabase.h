@@ -13,7 +13,7 @@ class fotoDatabase
 		QList<fotobase> database;
         uint id;
         bool moding;
-        QString filename = "./database.db";
+        QString filename = "./os.txt"; //еще в filestream.cpp есть это название
 	public:
 
 		fotoDatabase();
