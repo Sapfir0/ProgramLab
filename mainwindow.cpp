@@ -73,7 +73,7 @@ void MainWindow::on_filling_clicked()
         //setToUi(temp.id, db.count());
 
     }
-    sorting();
+    //sorting();
 
 }
 
