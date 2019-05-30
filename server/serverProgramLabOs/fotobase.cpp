@@ -18,6 +18,7 @@ fotobase::fotobase()
 
 fotobase::fotobase(const fotobase& f)
 {
+   qDebug() << id;
     nameOfModel = f.nameOfModel;
     category = f.category;
     analogOrNot = f.analogOrNot;
@@ -31,6 +32,20 @@ fotobase::fotobase(const fotobase& f)
     id = f.id;
 }
 
+fotobase& fotobase::operator = (const fotobase& f) {
+    nameOfModel = f.nameOfModel;
+    category = f.category;
+    analogOrNot = f.analogOrNot;
+    producer = f.producer;
+    matrixRes = f.matrixRes;
+    changeLens = f.changeLens;
+    size = f.size;
+    weight = f.weight;
+    cost = f.cost;
+
+    id = f.id;
+    return *this;
+}
 
 bool fotobase::operator >(const fotobase &record) {
     return compare(*this, record) > 0;
@@ -244,7 +259,7 @@ fotobase fotobase::randomix( ) {
     QDate mydata;
     mydata = randomDate(mydata);
 
-	fotobase write;
+    fotobase write;
 
     write.setNameOfModel( nameOfModelList.at( rand() % nameOfModelList.size() ) );
     write.setCategory ( strCategory );

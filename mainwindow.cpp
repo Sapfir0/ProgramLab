@@ -70,8 +70,8 @@ void MainWindow::on_filling_clicked()
     for (int i=0; i<10; i++) {
         fotobase temp = fotobase::randomix();
         addRecordToDatabase(temp);
-        setToUi(temp.id, db.count());
-        //addRecordToUi() //как-то нужно кидать сюда айдишник
+        //setToUi(temp.id, db.count());
+
     }
 	sorting();
 
@@ -119,7 +119,9 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 		fotobase temp = createRecord();
         addRecordToDatabase(temp);
         qDebug() << temp.id << " ПОЧЕМУ ТЫ ВЫЛЕТАЕШЬ " << db.count();
-        setToUi(temp.id, db.count());/////////////////////////////////////////
+        //setToUi(temp.id, db.count());/////////////////////////////////////////
+        //addRecordToUi(temp.id);
+        addRecordToUi(1);
 
     } else {
 		auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));

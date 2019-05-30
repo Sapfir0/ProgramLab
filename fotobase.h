@@ -29,6 +29,7 @@ public:
     unsigned int id;
 
     static int compare(const fotobase&, const fotobase&);
+    fotobase& operator = (const fotobase& f);
     bool operator <(const fotobase&);
     bool operator >(const fotobase&);
     bool operator <=(const fotobase&);
