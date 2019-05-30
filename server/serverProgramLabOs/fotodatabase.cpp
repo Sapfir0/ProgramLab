@@ -21,12 +21,12 @@ int fotoDatabase::compareRecordsByID(uint first, uint second) {
 
 unsigned int fotoDatabase::append(fotobase writing) {
     moding = true;
-	unsigned int tem = get_uniqueId();
-	writing.id = tem;
-	database.append(writing);
+    unsigned int tem = get_uniqueId();
+    writing.id = tem;
+    database.append(writing);
 
     //save(filename); //тут косяк
-	return tem;
+    return tem;
 
 }
 
@@ -42,22 +42,13 @@ bool fotoDatabase::save(QString filename) {
         qDebug() << "file:" << filename << "not created";
         return false;
     }
-      stream << database.size();
+    stream << database.size();
 
-        for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
-        {
-            fotobase temp = *it;
-            stream  << temp.getNameOfModel();
-            stream  << temp.getGategory() ;
-            stream  << temp.getAnalogOrNot();
-            stream  << temp.getProducer() ;
-            stream << temp.getMatrRes() ;
-            stream << temp.getChangeLense() ;
-            stream << temp.getSize() ;
-            stream << temp.getWeight() ;
-            stream << temp.getCost() ;
-            stream  << temp.getmyDate().toString();
-        }
+    for (QList<fotobase>::const_iterator it = database.begin(); it < database.end(); it++ )
+    {
+        fotobase temp = *it;
+        stream  << temp;
+    }
 
 
     moding=false;
@@ -75,46 +66,14 @@ bool fotoDatabase::load(QString filename) {
 
     int size;
     stream >> size;
-        for (int i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++) {
 
-            fotobase temporaryClass;
-            QString tempString;
-            int tempInt;
-            bool tempBool;
-            double tempDouble;
+        fotobase temporaryClass;
 
-            stream >> tempString;
-            temporaryClass.setNameOfModel(tempString);
+        stream >> temporaryClass;
 
-            stream >> tempString;
-            temporaryClass.setCategory(tempString);
-
-            stream >> tempBool;
-            temporaryClass.setAnalogOrNot(tempBool);
-
-            stream >> tempString;
-            temporaryClass.setProducer(tempString);
-
-            stream >> tempDouble;
-            temporaryClass.setMatrRes(tempDouble);
-
-            stream >> tempBool;
-            temporaryClass.setChangeLense(tempBool);
-
-            stream >> tempString;
-            temporaryClass.setSize(tempString);
-
-            stream >> tempInt;
-            temporaryClass.setWeight(tempInt);
-
-            stream >> tempInt;
-            temporaryClass.setCost(tempInt);
-
-            stream >> tempString;
-            temporaryClass.setmyDate( QDate::fromString(tempString) );
-
-            this->append(temporaryClass);
-        }
+        this->append(temporaryClass);
+    }
     return true;
 }
 
@@ -132,15 +91,15 @@ fotobase& fotoDatabase::record(unsigned int id) {//идея в том что с�
 void fotoDatabase::update(unsigned int id, fotobase record) {
     moding = true;
 
-	for ( auto& it : database)
+    for ( auto& it : database)
     {
-		if (it.id == id) {
-			uint tid = it.id;
-			it = record;
-			it.id = tid;
-		}
-	}
-	save(filename);
+        if (it.id == id) {
+            uint tid = it.id;
+            it = record;
+            it.id = tid;
+        }
+    }
+    save(filename);
 }
 
 
@@ -148,7 +107,7 @@ void fotoDatabase::update(unsigned int id, fotobase record) {
 где fotobase — структура, соответствующая строке браузера
 (поля структуры совпадают с колонками барузера, также структура содержат идентификатор записи);*/
 QVector<fotobase> fotoDatabase::records() const {
-	QVector<fotobase> temp;
+    QVector<fotobase> temp;
 
     for (auto& i : database) {
         temp.push_back(i);
@@ -167,12 +126,12 @@ int fotoDatabase::count() const {
 void fotoDatabase::remove(unsigned int id) {
     moding = true;
 
-	QList<fotobase>::iterator it;
+    QList<fotobase>::iterator it;
 
     for (it = database.begin(); it != database.end() && it->id != id; ++it);//так и должно быть
 
-	if (it != database.end())
-		database.erase(it);
+    if (it != database.end())
+        database.erase(it);
 
     save(filename);
 
@@ -199,7 +158,7 @@ bool fotoDatabase::isUniqueId(unsigned int id) const { //не юзается, н
     for (auto it = database.begin(); it != database.end(); ++it) {
         if (it->id == id) return false;
 
-	}
+    }
 
     return true;
 }

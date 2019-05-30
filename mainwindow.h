@@ -60,10 +60,6 @@ private slots:
 
     void on_spisok_currentCellChanged(int currentRow);
 
-    void on_saveUsBtn_clicked();
-
-    void on_loadBtn_clicked();
-
 public slots:
     void addRecordToUi(uint id);
     void updateRecordByID(uint id);
@@ -83,7 +79,6 @@ private:
 
     bool stopIt;
 
-    QString filename = "./os.txt";
     std::map <uint, fotobaseTableWidgetItem*> browserWidgetItems;
 
 

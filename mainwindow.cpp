@@ -73,7 +73,7 @@ void MainWindow::on_filling_clicked()
         //setToUi(temp.id, db.count());
 
     }
-	sorting();
+    sorting();
 
 }
 
@@ -114,35 +114,35 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 
     callEnableDisable=0;
     //db.database.insert(numberOfRecords, createRecord());
-	if (createClicked) {
+    if (createClicked) {
         //initializationTable(db.count()+1);
-		fotobase temp = createRecord();
+        fotobase temp = createRecord();
         addRecordToDatabase(temp);
         qDebug() << temp.id << " ПОЧЕМУ ТЫ ВЫЛЕТАЕШЬ " << db.count();
         //setToUi(temp.id, db.count());/////////////////////////////////////////
         //addRecordToUi(temp.id);
 
     } else {
-		auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
-		auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
-		db.update(t0->get_id(), createRecord());
-		t0->update_text();
-		t1->update_text();
-	}
+        auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
+        auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
+        db.update(t0->get_id(), createRecord());
+        t0->update_text();
+        t1->update_text();
+    }
 
     if (edit != 1) {
         indexOfRecord++;
     }
     editMode(false);
 
-	sorting();
+    sorting();
 }
 
 
 
 void MainWindow::sorting() {
-   //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
-	ui->spisok->sortItems(0);
+    //  Записи упорядочиваются по следующим полям: категория, разрешение матрицы, цена, производитель, модель
+    ui->spisok->sortItems(0);
 }
 
 void MainWindow::on_denied_clicked()//нажатие на кнопку Отменить
@@ -151,8 +151,8 @@ void MainWindow::on_denied_clicked()//нажатие на кнопку Отме�
     callEnableDisable=0;
     editMode(false);
 
-	if (!createClicked && db.count() != 0)
-		on_spisok_currentCellChanged(indexOfRecord);
+    if (!createClicked && db.count() != 0)
+        on_spisok_currentCellChanged(indexOfRecord);
 }
 
 void MainWindow::enableDisableEdit(bool arg) {
@@ -206,7 +206,7 @@ void MainWindow::on_editBtn_clicked()
 void MainWindow::on_createBtn_clicked()
 {
     editMode(true);
-	createClicked = true;
+    createClicked = true;
     loadRecord( fotobase() );
 
 }
@@ -220,13 +220,13 @@ void MainWindow::editMode(bool arg) {
         ui->statusBar->showMessage(" ");
 
     enableDisableEdit(arg);
-//    setCheckPolProf();
-//    setCheckRes();
+    //    setCheckPolProf();
+    //    setCheckRes();
 
-   ui->changeLens->setEnabled(false);
-   ui->matrixResolution->setEnabled(false);
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
 
-     //закончено
+    //закончено
 }
 
 void MainWindow::on_deleteBtn_clicked()
@@ -235,7 +235,7 @@ void MainWindow::on_deleteBtn_clicked()
     on_spisok_currentCellChanged(ui->spisok->currentRow());
     db.remove(currentId);
 
-    ui->spisok->removeRow(indexOfRecord);
+    //ui->spisok->removeRow(indexOfRecord);
 }
 
 
@@ -244,76 +244,44 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
     editMode(false);
     ui->changeLens->setEnabled(false);
     ui->matrixResolution->setEnabled(false);
-//    callEnableDisable=0;
+    //    callEnableDisable=0;
 
     indexOfRecord = currentRow;
 
-	bool dataBaseIsEmpty = db.count() == 0;
+    bool dataBaseIsEmpty = db.count() == 0;
 
-	ui->editBtn->setEnabled(!dataBaseIsEmpty);
-	ui->deleteBtn->setEnabled(!dataBaseIsEmpty);
+    ui->editBtn->setEnabled(!dataBaseIsEmpty);
+    ui->deleteBtn->setEnabled(!dataBaseIsEmpty);
 
     qDebug() << "current record: " << indexOfRecord;
-	if (indexOfRecord != -1) {
-		currentId = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0))->get_id();
-		loadRecord(db.record(currentId));
-	}
-
-	if (dataBaseIsEmpty) {
-		loadRecord(fotobase());//кидаем пустые поля
-	}
-
-}
-
-
-void MainWindow::on_saveUsBtn_clicked()
-{
-}
-
-void MainWindow::on_loadBtn_clicked()
-{
-
-
-    db.clear();
-	initializationTable(0);
-
-
-	if (!filename.isEmpty()) {
-		if (db.load(filename)) {
-			auto buff = db.records();
-			initializationTable(buff.size());
-			qDebug() << buff.size() << db.count();
-			for (int i=0; i<buff.size(); i++) {
-				setToUi(buff[i].id, i);
-			}
-			sorting();
-		} else {
-			QMessageBox::warning(this, "Alert", "Ошибка, файл не загружен");
-		}
-	}
-}
-
-void MainWindow::saveChanges() {
-
-    QMessageBox::StandardButton wsave = QMessageBox::question(this, "Внимание", "Сохранить изменения?");
-    if (wsave == QMessageBox::Yes) {
-        if (filename.isEmpty())
-            filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto dataBase", QDir::homePath() , "Fotodata Base (*.fm)"); // получение названия файла
-        if (!filename.isEmpty()) db.save(filename);
+    if (indexOfRecord != -1) {
+        auto item = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
+        if (item) {
+            currentId = item->get_id();
+            loadRecord(db.record(currentId));
+        } else {
+            qDebug() << "item is empty";
+        }
     }
+
+    if (dataBaseIsEmpty) {
+        loadRecord(fotobase());//кидаем пустые поля
+    }
+
 }
+
 
 
 void MainWindow::closeEvent(QCloseEvent *cEvent){
-//    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
-//    if (wquit == QMessageBox::Yes) {
+    //    QMessageBox::StandardButton wquit = QMessageBox::question(this, "Внимание", "Вы действительно хотите выйти?");
+    //    if (wquit == QMessageBox::Yes) {
 
-//        cEvent->accept();
-//        if (db.isModified()) {
-//            //saveChanges();
-//        }
-//    }
-//    else cEvent->ignore();
+    //        cEvent->accept();
+    //        if (db.isModified()) {
+    //            //saveChanges();
+    //        }
+    //    }
+    //    else cEvent->ignore();
 }
 
 void MainWindow::createWindow() {
@@ -336,29 +304,28 @@ void MainWindow::createWindow() {
     ui->weight->setSuffix(" гр.");
     setWindowTitle("Почти курсач");
 
-   ui->saveBtn->hide();
-   ui->denied->hide();
+    ui->saveBtn->hide();
+    ui->denied->hide();
 
-   ui->changeLens->setEnabled(false);
-   ui->matrixResolution->setEnabled(false);
+    ui->changeLens->setEnabled(false);
+    ui->matrixResolution->setEnabled(false);
 
-  on_loadBtn_clicked();
-  ui->spisok->setSortingEnabled(true);
-  QVector<fotobase> temp_vector = db.records();
-  QVectorIterator<fotobase> it(temp_vector);
-  while (it.hasNext()) {
-      auto item = it.next();
-      auto id = item.id;
-      addRecordToUi(id);
-  }
-  connect(&db, &DataBaseController::update_signal, this, &MainWindow::updateRecordByID);
-   connect(&db, &DataBaseController::append_signal, this, &MainWindow::addRecordToUi);
-   connect(&db, &DataBaseController::remove_signal, this, &MainWindow::removeRecordFromUiByID);
-   connect(&db, &DataBaseController::clear_signal , this, &MainWindow::clearBrowser);
-   connect(&db, &DataBaseController::server_stop_signal, [this](){
-       QMessageBox::critical(nullptr, "Ошибка подключения к серверу", "К сожалению приложение не может работать");
-       this->close();
-       this->~MainWindow();
+    ui->spisok->setSortingEnabled(true);
+    QVector<fotobase> temp_vector = db.records();
+    QVectorIterator<fotobase> it(temp_vector);
+    while (it.hasNext()) {
+        auto item = it.next();
+        auto id = item.id;
+        addRecordToUi(id);
+    }
+    connect(&db, &DataBaseController::update_signal, this, &MainWindow::updateRecordByID);
+    connect(&db, &DataBaseController::append_signal, this, &MainWindow::addRecordToUi);
+    connect(&db, &DataBaseController::remove_signal, this, &MainWindow::removeRecordFromUiByID);
+    connect(&db, &DataBaseController::clear_signal , this, &MainWindow::clearBrowser);
+    connect(&db, &DataBaseController::server_stop_signal, [this](){
+        QMessageBox::critical(nullptr, "Ошибка подключения к серверу", "К сожалению приложение не может работать");
+        this->close();
+        this->~MainWindow();
     });
 
 }
@@ -370,17 +337,15 @@ void MainWindow::addRecordToDatabase(const fotobase &data) {
 
 void MainWindow::addRecordToUi(uint id) {
 
-    QTableWidgetItem* cost = new fotobaseTableWidgetItem(id, &db, 0);
-    QTableWidgetItem* model = new fotobaseTableWidgetItem(id, &db, 1);
+    auto cost = new fotobaseTableWidgetItem(id, &db, 0);
+    auto model = new fotobaseTableWidgetItem(id, &db, 1);
 
     auto count = ui->spisok->rowCount();
     ui->spisok->setRowCount(count+1);
-    ui->spisok->setItem(count, 0, cost); ////////////////////////////////////////////////////возможно тут будет косяк
-    ui->spisok->setItem(count, 1, model); ////////////////////////////////////////////////////возможно тут будет косяк
+    ui->spisok->setItem(count, 0, cost);
+    ui->spisok->setItem(count, 1, model);
 
-    //ui->spisok->setCurrentItem(temp);
-    //browserWidgetItems.insert(std::make_pair(id, temp));
-    //browserWidgetItems.insert(id,temp);
+    browserWidgetItems.insert(std::make_pair(id, cost));
 }
 
 void MainWindow::setToUi(uint id, int indORnumb) {
@@ -402,7 +367,8 @@ void MainWindow::updateRecordByID(uint id) {
 void MainWindow::removeRecordFromUiByID(uint id) {
     auto it = browserWidgetItems.find(id);
     if (it != browserWidgetItems.end()) {
-        delete it->second;
+        auto& item = it->second;
+        ui->spisok->removeRow(item->row());
         browserWidgetItems.erase(it);
     }
 }
