@@ -66,7 +66,7 @@ fotobase MainWindow::createRecord() //из ui в экземпляр класса
 
 void MainWindow::on_filling_clicked()
 {
-    initializationTable(db.count()+10);
+    //initializationTable(db.count()+10);
     for (int i=0; i<10; i++) {
         fotobase temp = fotobase::randomix();
         addRecordToDatabase(temp);
@@ -115,13 +115,12 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
     callEnableDisable=0;
     //db.database.insert(numberOfRecords, createRecord());
 	if (createClicked) {
-		initializationTable(db.count()+1);
+        //initializationTable(db.count()+1);
 		fotobase temp = createRecord();
         addRecordToDatabase(temp);
         qDebug() << temp.id << " ПОЧЕМУ ТЫ ВЫЛЕТАЕШЬ " << db.count();
         //setToUi(temp.id, db.count());/////////////////////////////////////////
         //addRecordToUi(temp.id);
-        addRecordToUi(1);
 
     } else {
 		auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
@@ -370,14 +369,14 @@ void MainWindow::addRecordToDatabase(const fotobase &data) {
 
 
 void MainWindow::addRecordToUi(uint id) {
-    fotobaseTableWidgetItem* temp = new fotobaseTableWidgetItem(id, &db);
 
-    QTableWidgetItem* cost = new QTableWidgetItem(temp->get_record().getCost());
-    QTableWidgetItem* model = new QTableWidgetItem(temp->get_record().getNameOfModel());
+    QTableWidgetItem* cost = new fotobaseTableWidgetItem(id, &db, 0);
+    QTableWidgetItem* model = new fotobaseTableWidgetItem(id, &db, 1);
 
-    ui->spisok->setRowCount(id);
-    ui->spisok->setItem(id, 0, cost); ////////////////////////////////////////////////////возможно тут будет косяк
-    ui->spisok->setItem(id, 1, model); ////////////////////////////////////////////////////возможно тут будет косяк
+    auto count = ui->spisok->rowCount();
+    ui->spisok->setRowCount(count+1);
+    ui->spisok->setItem(count, 0, cost); ////////////////////////////////////////////////////возможно тут будет косяк
+    ui->spisok->setItem(count, 1, model); ////////////////////////////////////////////////////возможно тут будет косяк
 
     //ui->spisok->setCurrentItem(temp);
     //browserWidgetItems.insert(std::make_pair(id, temp));
