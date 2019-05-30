@@ -173,9 +173,6 @@ void MainWindow::enableDisableEdit(bool arg) {
     ui->deleteBtn->setEnabled(!arg);
     ui->createBtn->setEnabled(!arg);
     ui->editBtn->setEnabled(!arg);
-
-
-
 }
 
 void MainWindow::on_editBtn_clicked()
@@ -325,7 +322,6 @@ void MainWindow::createWindow() {
     connect(&db, &DataBaseController::server_stop_signal, [this](){
         QMessageBox::critical(nullptr, "Ошибка подключения к серверу", "К сожалению приложение не может работать");
         this->close();
-        this->~MainWindow();
     });
 
 }
@@ -337,26 +333,16 @@ void MainWindow::addRecordToDatabase(const fotobase &data) {
 
 void MainWindow::addRecordToUi(uint id) {
 
-    auto cost = new fotobaseTableWidgetItem(id, &db, 0);
-    auto model = new fotobaseTableWidgetItem(id, &db, 1);
+    auto model = new fotobaseTableWidgetItem(id, &db, 0);
+    auto cost = new fotobaseTableWidgetItem(id, &db, 1);
+    //cost->update_text();
 
     auto count = ui->spisok->rowCount();
     ui->spisok->setRowCount(count+1);
-    ui->spisok->setItem(count, 0, cost);
-    ui->spisok->setItem(count, 1, model);
+    ui->spisok->setItem(count, 0, model);
+    ui->spisok->setItem(count, 1, cost);
 
-    browserWidgetItems.insert(std::make_pair(id, cost));
-}
-
-void MainWindow::setToUi(uint id, int indORnumb) {
-
-    QTableWidgetItem *item = new fotobaseTableWidgetItem(id, &db, 0);
-    QTableWidgetItem *item2 = new fotobaseTableWidgetItem(id, &db, 1);
-
-    ui->spisok->setItem(indORnumb,0,item);
-    ui->spisok->setItem(indORnumb,1,item2);
-
-    edit = 0;
+    browserWidgetItems.insert(std::make_pair(id, model));
 }
 
 void MainWindow::updateRecordByID(uint id) {

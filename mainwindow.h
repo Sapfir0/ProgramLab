@@ -38,8 +38,6 @@ public:
 		void fillingTable(int rows); //
 		// int deleting();
 
-		void setToUi(uint id, int index);
-
         void saveChanges();
 
 
