@@ -9,7 +9,7 @@ ServerWorker::ServerWorker() : pipes(nullptr), db(nullptr) {
 
 }
 
-ServerWorker::ServerWorker(pipes_t& signalPipe, DataBase& database, clientID_t id) : pipes(&signalPipe), db(&database), clientid(id)
+ServerWorker::ServerWorker(pipes_t& signalPipe, fotoDatabase& database, clientID_t id) : pipes(&signalPipe), db(&database), clientid(id)
 {
 
 }
@@ -126,7 +126,7 @@ bool ServerWorker::doCommand(ServerCommand command, PipeStream &input, PipeStrea
                 break;
             }
             case ServerCommand::is_modified: {
-                output << db->isModidfied();
+                output << db->isModified();
                 break;
             }
             case ServerCommand::end_connection: {

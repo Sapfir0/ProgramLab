@@ -16,16 +16,16 @@ DataBaseController::DataBaseController() {
     bool commandOutConnected = false, dataInputConnected = false, dataOutputConnected = false,
             signalInputConnected = false;
     clientID_t id = 0;
-    PipeStream connectPipe(ConnectPipeName, DataStream::in);
+    PipeStream connectPipe(ConnectPipeName, WinApiHelper::in);
     if (connectPipe.is_open()) {
            connectPipe >> id;
            qDebug() << "my id: " << id;
            connectPipe.close();
 
-           commandOutConnected = commandOutputStream.open(clientCommandOutputPipeName + QString::number(id), DataStream::out);
-           dataInputConnected = dataInputStream.open(clientDataInputPipeName + QString::number(id), DataStream::in);
-           dataOutputConnected = dataOutputStream.open(clientDataOutputPipeName + QString::number(id), DataStream::out);
-           signalInputConnected = signalInputStream.open(clientSignalsInputPipeName + QString::number(id), DataStream::in);
+           commandOutConnected = commandOutputStream.open(clientCommandOutputPipeName + QString::number(id), WinApiHelper::out);
+           dataInputConnected = dataInputStream.open(clientDataInputPipeName + QString::number(id), WinApiHelper::in);
+           dataOutputConnected = dataOutputStream.open(clientDataOutputPipeName + QString::number(id), WinApiHelper::out);
+           signalInputConnected = signalInputStream.open(clientSignalsInputPipeName + QString::number(id), WinApiHelper::in);
          fullConnect = commandOutConnected && dataInputConnected && dataOutputConnected && signalInputConnected;
     }
     if (!fullConnect) {

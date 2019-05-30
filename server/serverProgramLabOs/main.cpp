@@ -24,10 +24,10 @@ int main(int argc, char *argv[])
     connectLoop.start( [&](){
         clientID_t clientID = 0;
         while (running) {
-            PipeStream connectPipe(ConnectPipeName, DataStream::create | DataStream::out);
+            PipeStream connectPipe(ConnectPipeName, WinApiHelper::create | WinApiHelper::out);
             connectPipe.waitingClient();
             clientID++;
-            pipes.insert(make_pair(clientID, make_shared<PipeStream>(serverSignalsOutputPipeName+QString::number(clientID), DataStream::create | DataStream::out)));
+            pipes.insert(make_pair(clientID, make_shared<PipeStream>(serverSignalsOutputPipeName+QString::number(clientID), WinApiHelper::create | WinApiHelper::out)));
             workers.emplace(make_pair(clientID, ServerWorker(pipes, db, clientID)));
             auto& swork = workers[clientID];
             Thread worker;

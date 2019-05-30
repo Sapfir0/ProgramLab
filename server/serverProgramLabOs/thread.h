@@ -21,6 +21,7 @@ class Thread/* : QObject*/
         bool wait(unsigned long time = ULONG_MAX);
 
 //    public slots:
+        static void sleep(unsigned mls);
         void quit(); // сообщает потоку завершиться с кодом ноль
         void start(std::function<void()> func); // старт потока
 //    signals:

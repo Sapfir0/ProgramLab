@@ -22,3 +22,5 @@ enum class ClientCommand {
     clear,
     end_connection
 };
+
+using clientID_t = unsigned;
