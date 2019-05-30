@@ -18,11 +18,11 @@ SOURCES += \
         main.cpp \
     fotodatabase.cpp \
     fotobase.cpp \
-    datastream.cpp \
     filestream.cpp \
     pipestream.cpp \
     thread.cpp \
-    serverworker.cpp
+    serverworker.cpp \
+    WinApiHelper.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -31,7 +31,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     fotobase.h \
-    datastream.h \
     filestream.h \
     pipestream.h \
     server_command.h \
@@ -40,4 +39,5 @@ HEADERS += \
     randomfunctions.h \
     thread.h \
     config_pipe_naming.h \
-    serverworker.h
+    serverworker.h \
+    WinApiHelper.h

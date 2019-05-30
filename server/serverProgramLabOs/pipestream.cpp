@@ -29,10 +29,7 @@ bool PipeStream::open(QString filename, uint32_t flags) {
         file = CreateNamedPipeA(filename.toStdString().c_str(),
                          openMode,
                          pipeMode,
-                         254,
-                         1024,
-                         1024,
-                         5000,
+                         254,1024,1024,5000,
                          nullptr);
     } else {
         FileStream game;
