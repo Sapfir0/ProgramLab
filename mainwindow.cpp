@@ -68,8 +68,9 @@ void MainWindow::on_filling_clicked()
 {
     initializationTable(db.count()+10);
     for (int i=0; i<10; i++) {
-        //setToUi(db.append(fotobase::randomix()), db.count());
-        addRecordToDatabase(fotobase::randomix());
+        fotobase temp = fotobase::randomix();
+        addRecordToDatabase(temp);
+        setToUi(temp.id, db.count());
         //addRecordToUi() //как-то нужно кидать сюда айдишник
     }
 	sorting();
@@ -104,21 +105,6 @@ void MainWindow::initializationTable (int rows) {
 }
 
 
-void MainWindow::setToUi(uint id, int indORnumb) {
-	//ui->spisok->setSortingEnabled(false);
-
-    QTableWidgetItem *item = new fotobaseTableWidgetItem(id, &db, 0);
-    QTableWidgetItem *item2 = new fotobaseTableWidgetItem(id, &db, 1);
-
-    ui->spisok->setItem(indORnumb,0,item);
-    ui->spisok->setItem(indORnumb,1,item2);
-
-	//ui->spisok->setSortingEnabled(true);
-
-	edit = 0;
-}
-
-
 void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сохранить
 {
     if (ui->nameOfModel->text() == nullptr ) {//пустая строка
@@ -131,9 +117,11 @@ void MainWindow::on_saveBtn_clicked() //нажатие на кнопку Сох�
 	if (createClicked) {
 		initializationTable(db.count()+1);
 		fotobase temp = createRecord();
-		setToUi(db.append(temp), db.count());
+        addRecordToDatabase(temp);
+        qDebug() << temp.id << " ПОЧЕМУ ТЫ ВЫЛЕТАЕШЬ " << db.count();
+        setToUi(temp.id, db.count());/////////////////////////////////////////
 
-	} else {
+    } else {
 		auto t0 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 0));
 		auto t1 = static_cast<fotobaseTableWidgetItem*>(ui->spisok->item(indexOfRecord, 1));
 		db.update(t0->get_id(), createRecord());
@@ -277,22 +265,14 @@ void MainWindow::on_spisok_currentCellChanged(int currentRow)
 }
 
 
-
-
 void MainWindow::on_saveUsBtn_clicked()
 {
-//    filename = QFileDialog::getSaveFileName(this , "Сохранить файл Foto Base", QDir::homePath() , "fotobase (*.fm)"); // получение названия файла
-//	if (!filename.isEmpty())
-//		db.save(filename);
 }
 
 void MainWindow::on_loadBtn_clicked()
 {
-//    if (db.isModified()) {
-//        saveChanges();
-//    }
 
-    //filename = QFileDialog::getOpenFileName(this , "Открыть файл Foto Base", QString() , "fotobase data (*.fm)"); // получение названия файла
+
     db.clear();
 	initializationTable(0);
 
@@ -400,6 +380,17 @@ void MainWindow::addRecordToUi(uint id) {
     //ui->spisok->setCurrentItem(temp);
     //browserWidgetItems.insert(std::make_pair(id, temp));
     //browserWidgetItems.insert(id,temp);
+}
+
+void MainWindow::setToUi(uint id, int indORnumb) {
+
+    QTableWidgetItem *item = new fotobaseTableWidgetItem(id, &db, 0);
+    QTableWidgetItem *item2 = new fotobaseTableWidgetItem(id, &db, 1);
+
+    ui->spisok->setItem(indORnumb,0,item);
+    ui->spisok->setItem(indORnumb,1,item2);
+
+    edit = 0;
 }
 
 void MainWindow::updateRecordByID(uint id) {

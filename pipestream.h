@@ -11,4 +11,5 @@ class PipeStream : public WinApiHelper
         PipeStream(QString filename, uint32_t flags);
         bool open(QString filename, uint32_t flags);
         bool waitingClient();
+        void close();
 };

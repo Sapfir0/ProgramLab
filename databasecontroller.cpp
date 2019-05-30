@@ -97,7 +97,6 @@ int DataBaseController::count() const {
 void DataBaseController::append(fotobase record) {
     commandOutputStream << ServerCommand::append;
     dataOutputStream << record;
-    return record.id;         /////////////////////////////////////----------------------
 }
 
 void DataBaseController::remove(uint id) {
